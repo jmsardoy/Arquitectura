@@ -1,13 +1,13 @@
 `timescale 1ns / 1ps
 
-`define ADD 8'b00100000
-`define SUB 8'b00100010
-`define AND 8'b00100100
-`define OR  8'b00100101
-`define XOR 8'b00100110
-`define NOR 8'b00100111
-`define SRA 8'b00000011
-`define SRL 8'b00000010
+`define ADD 6'b100000
+`define SUB 6'b100010
+`define AND 6'b100100
+`define OR  6'b100101
+`define XOR 6'b100110
+`define NOR 6'b100111
+`define SRA 6'b000011
+`define SRL 6'b000010
 `define BUS_LEN 8
 
 module ALU 
@@ -28,8 +28,8 @@ module ALU
 			`OR : out = A|B; 
 			`XOR: out = A^B; 
 			`NOR: out = ~(A|B); 
-			`SRA: out = A>>>B; 
-			`SRL: out = A>>B; 
+			`SRA: out = A >>> (B % BUS_LEN);
+            `SRL: out = A >> B;
 			default: out = 0;
 		endcase
 	end

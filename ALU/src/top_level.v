@@ -21,7 +21,7 @@ module top_level(
 
     reg [BUS_LEN-1 : 0] A;
     reg [BUS_LEN-1 : 0] B;
-    reg [BUS_LEN-1 : 0] opcode;
+    reg [5 : 0] opcode;
 
     ALU alu(.A(A),.B(B),.opcode(opcode),.out(leds));
 
@@ -43,7 +43,7 @@ module top_level(
             if (buttonB)
                 B <= switches;
             if (button_opcode)
-                opcode <= switches;
+                opcode <= switches[5:0];
         end
     end
 	
