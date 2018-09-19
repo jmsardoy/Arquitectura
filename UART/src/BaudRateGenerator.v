@@ -10,7 +10,7 @@ module BaudRateGenerator
 
 	localparam MAX_COUNT = (FREQUENCY / (BAUD_RATE * 16)) + 1;
 
-	integer count = 0;
+	reg [7:0] count = 0;
 	always@(posedge clk or negedge rst)
 	begin 
 	    if (!rst) out = 0;
