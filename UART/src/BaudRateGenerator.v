@@ -8,18 +8,25 @@ module BaudRateGenerator
                  input rst,
                  output reg out);
 
-	localparam MAX_COUNT = (FREQUENCY / (BAUD_RATE * 16)) + 1;
+	localparam MAX_COUNT = (FREQUENCY / (BAUD_RATE * 16));
+    localparam COUNT_NBITS = $clog2(MAX_COUNT);
 
-	reg [7:0] count = 0;
+	reg [COUNT_NBITS : 0] count;
 	always@(posedge clk or negedge rst)
 	begin 
-	    if (!rst) out = 0;
+	    if (!rst) begin
+            out <= 0;
+            count <= 0;
+        end 
         else begin
-            count = count + 1;
             if(count == MAX_COUNT)
             begin
-                out = ~out;
-                count = 0;
+                out <= 1;
+                count <= 0;
+            end
+            else begin
+                out <= 0;
+                count <= count + 1;
             end
 	    end
 	end

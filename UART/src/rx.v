@@ -1,17 +1,17 @@
 `define NBITS 8
 
-module TX(
+module RX(
     input clk,
     input rst,
     input i_baud_rate,
-    input i_tx_start,
-    input [`NBITS-1 : 0] i_data,
-    output reg o_tx_done,
-    output reg o_tx);
+    input i_rx,
+    output reg o_rx_done,
+    output reg [`NBITS-1 : 0] o_data
+);
 
     localparam NBITS = `NBITS;
     localparam COUNTER_NBITS = $clog2(NBITS)+1;
-
+    
     localparam
         idle  = 'b00,
         start = 'b01,
@@ -20,8 +20,9 @@ module TX(
 
     reg [1:0] state, next_state;
     reg [3:0] tick_count, next_tick_count;
-    reg [COUNTER_NBITS-1 : 0] data_count, next_data_count;
-    reg [NBITS - 1 : 0] data_reg, next_data_reg;
+    reg [COUNTER_NBITS-1:0] data_count, next_data_count;
+    reg [NBITS-1 : 0] next_data;
+    reg next_rx_done;
 
 
     always@(posedge clk or negedge rst) begin
@@ -29,49 +30,49 @@ module TX(
             state <= idle;
             tick_count <= 0;
             data_count <= 0;
-            o_tx_done <= 1;
-            o_tx <= 1;
+            o_data <= {NBITS{1'b0}};
+            o_rx_done <= 0; //uno si se mantiene mientras no recibe
         end
         else begin
             state <= next_state;
             tick_count <= next_tick_count;
             data_count <= next_data_count;
-            data_reg <= next_data_reg;
+            o_data <= next_data;
+            o_rx_done <= next_rx_done;
         end
     end
 
 
     always@* begin
-        
-        o_tx = o_tx;
-        o_tx_done = o_tx_done;
+
         next_state = state;
         next_tick_count = tick_count;
         next_data_count = data_count;
-        next_data_reg = data_reg;
+        next_data = o_data;
+
+        next_rx_done = 0;
 
         case (state)
-            
+
             idle:
             begin
-                o_tx = 1;
-                o_tx_done = 1;
-                if(i_tx_start) begin
+                //o_rx_done = 1; //desconmentar si se quiere que el rx_done no
+                                 //sea un tick sino que se mantenga mientras 
+                                 //no recibe
+                if (!i_rx) begin
                     next_state = start;
                     next_tick_count = 0;
-                    next_data_count = 0;
-                    next_data_reg = i_data;
+                    next_data_count = {COUNTER_NBITS{1'b0}};
+                    next_data = {NBITS{1'b0}};
                 end
             end
 
             start:
             begin
-                o_tx = 0;
-                o_tx_done = 0;
                 if (i_baud_rate) begin
-                    if(tick_count == 15) begin
-                        next_tick_count = 0;
+                    if(tick_count == 7) begin
                         next_state = data;
+                        next_tick_count = 0;
                     end
                     else next_tick_count = tick_count + 1;
                 end
@@ -82,31 +83,29 @@ module TX(
                 if (i_baud_rate) begin
                     if (data_count == NBITS) next_state = stop;
                     else begin
-                        if(tick_count == 0) begin
-                            o_tx = data_reg[0];
-                            next_data_reg = data_reg >> 1;
-                        end
-                        if (tick_count == 15) begin
-                            next_tick_count = 0;
+                        if(tick_count == 15) begin
+                            next_data = {i_rx, o_data[NBITS-1:1]};     
                             next_data_count = data_count + 1;
+                            next_tick_count = 0;
                         end
                         else next_tick_count = tick_count + 1;
                     end
                 end
             end
-
+            
             stop:
             begin
-                o_tx = 1;
                 if (i_baud_rate) begin
-                    if(tick_count == 15) begin
-                        next_state = idle;
-                    end
+                    if (tick_count == 15) begin
+                            next_state = idle;
+                            next_rx_done = 1;
+                        end
                     else next_tick_count = tick_count + 1;
                 end
             end
-
+        
         endcase
+    
     end
 
 endmodule
