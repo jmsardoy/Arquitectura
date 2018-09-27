@@ -31,7 +31,7 @@ module RX(
             tick_count <= 0;
             data_count <= 0;
             o_data <= {NBITS{1'b0}};
-            o_rx_done <= 0; //uno si se mantiene mientras no recibe
+            o_rx_done <= 0; 
         end
         else begin
             state <= next_state;
@@ -45,20 +45,17 @@ module RX(
 
     always@* begin
 
+        //defaults
         next_state = state;
         next_tick_count = tick_count;
         next_data_count = data_count;
         next_data = o_data;
-
         next_rx_done = 0;
 
         case (state)
 
             idle:
             begin
-                //o_rx_done = 1; //desconmentar si se quiere que el rx_done no
-                                 //sea un tick sino que se mantenga mientras 
-                                 //no recibe
                 if (!i_rx) begin
                     next_state = start;
                     next_tick_count = 0;

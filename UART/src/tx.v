@@ -22,6 +22,7 @@ module TX(
     reg [3:0] tick_count, next_tick_count;
     reg [COUNTER_NBITS-1 : 0] data_count, next_data_count;
     reg [NBITS - 1 : 0] data_reg, next_data_reg;
+    reg next_tx, next_tx_done;
 
 
     always@(posedge clk or negedge rst) begin
@@ -29,6 +30,7 @@ module TX(
             state <= idle;
             tick_count <= 0;
             data_count <= 0;
+            data_reg <= 0;
             o_tx_done <= 1;
             o_tx <= 1;
         end
@@ -37,14 +39,17 @@ module TX(
             tick_count <= next_tick_count;
             data_count <= next_data_count;
             data_reg <= next_data_reg;
+            o_tx_done <= next_tx_done;
+            o_tx <= next_tx;
         end
     end
 
 
     always@* begin
         
-        o_tx = o_tx;
-        o_tx_done = o_tx_done;
+        //defaults
+        next_tx = o_tx;
+        next_tx_done = o_tx_done;
         next_state = state;
         next_tick_count = tick_count;
         next_data_count = data_count;
@@ -54,8 +59,8 @@ module TX(
             
             idle:
             begin
-                o_tx = 1;
-                o_tx_done = 1;
+                next_tx = 1;
+                next_tx_done = 1;
                 if(i_tx_start) begin
                     next_state = start;
                     next_tick_count = 0;
@@ -66,8 +71,8 @@ module TX(
 
             start:
             begin
-                o_tx = 0;
-                o_tx_done = 0;
+                next_tx = 0;
+                next_tx_done = 0;
                 if (i_baud_rate) begin
                     if(tick_count == 15) begin
                         next_tick_count = 0;
@@ -83,7 +88,7 @@ module TX(
                     if (data_count == NBITS) next_state = stop;
                     else begin
                         if(tick_count == 0) begin
-                            o_tx = data_reg[0];
+                            next_tx = data_reg[0];
                             next_data_reg = data_reg >> 1;
                         end
                         if (tick_count == 15) begin
@@ -97,7 +102,7 @@ module TX(
 
             stop:
             begin
-                o_tx = 1;
+                next_tx = 1;
                 if (i_baud_rate) begin
                     if(tick_count == 15) begin
                         next_state = idle;
