@@ -25,6 +25,9 @@ module tb_tx();
         #2 data = 8'b01110101;
         #2 tx_start = 1;
         #2 tx_start = 0;
+
+        #1000 tx_start = 1;
+        #2 tx_start = 0;
         
     end
 

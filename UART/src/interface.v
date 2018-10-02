@@ -10,16 +10,18 @@ module Interface(
     output reg [7:0] o_tx,
     output reg [7:0] o_alu_a,
     output reg [7:0] o_alu_b,
-    output reg [5:0] o_alu_opcode
+    output reg [5:0] o_alu_opcode,
+    output reg [3:0] o_led
 );
 
     localparam
-        get_a       = 'b00,
-        get_b       = 'b01,
-        get_opcode  = 'b11,
-        send_result = 'b10; 
+        get_a        = 'b000,
+        get_b        = 'b001,
+        get_opcode   = 'b010,
+        latch_result = 'b011,
+        send_result  = 'b100; 
 
-    reg [1:0] state, next_state;
+    reg [2:0] state, next_state;
     reg next_tx_start;
     reg [7:0] next_tx;
     reg [7:0] next_alu_a;
@@ -34,8 +36,10 @@ module Interface(
             o_alu_a <= 0;
             o_alu_b <= 0;
             o_alu_opcode <= 0;
+            o_led <= 0;
         end
         else begin
+            o_led <= state;
             state <= next_state;
             o_tx_start <= next_tx_start;
             o_tx <= next_tx;
@@ -75,16 +79,19 @@ module Interface(
             begin
                 if(i_rx_done) begin
                     next_alu_opcode = i_rx[5:0];
-                    next_state = send_result;
+                    next_state = latch_result;
                 end
+            end
+
+            latch_result:
+            begin
+                next_tx = i_alu_result;
+                next_state = send_result;
             end
             send_result:
             begin
-                if(i_tx_done) begin
-                    next_tx = i_alu_result;
-                    next_tx_start = 1;
-                    next_state = get_a;
-                end
+                next_tx_start = 1;
+                next_state = get_a;
             end
                     
         endcase
