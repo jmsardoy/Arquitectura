@@ -1,0 +1,50 @@
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+\title{Trabajo Practico 1: Universal Asynchronous Receiver Transmitter}
+\author{Perez, Federico\\
+        \texttt{perezfederico@unc.edu.ar}
+        \and 
+        Sardoy, Juan Manuel\\
+        \texttt{jmsardoy@gmail.com}
+        }
+\begin{document}
+\maketitle
+\\
+\begin{center}
+    \includegraphics[scale=2]{unc-logo}
+\end{center}
+\newpage
+\section{Descripción del trabajo}
+
+El siguiente trabajo consiste en la implementación práctica de un módulo completamente
+funcional del protocolo UART o "Universal Asynchronous Receiver-Transmitter. \\
+Como su nombre lo especifica, se trata de un protocolo asíncrono y \textit{full-duplex}
+pero de facil uso e implementación dado su simplicidad.\\
+La arquitectura completa del trabajo de aplicación será aproximadamente en siguiente:
+
+\begin{center}
+    \includegraphics[scale=0.5]{arch}
+\end{center}
+
+\indent A fines prácticos y demostrativos, dicho módulo UART se conectará mediante un 
+módulo que actuará de interfaz, a una \textit{Unidad Aritmetico Lógica} o ALU.
+Dicho módulo interfaz contendrá lógica que permitirá procesar instrucciones y argumentos recibidos
+por el módulo RX del UART, enviarlos a la ALU para su resolución, y reenviarlos por el módulo TX 
+nuevamente hacia el solicitante del cálculo. \\
+\indent Como usuario de dicho sistema, conectaremos el puerto USB de una computadora, y con un convertidor
+\textit{USB-UART}, se enviarán las instrucciones y argumentos requeridos. Para dicho fin, además se 
+desarrollará algún tipo de software que haga uso del hardware convertidor, y facilite el envío de instrucciones
+y la recepción de los resultados calculados en la ALU.\\ 
+
+\newpage
+\section{Implementación}
+
+
+\section{Simulación}
+
+\end{document}
