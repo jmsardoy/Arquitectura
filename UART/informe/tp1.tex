@@ -2,10 +2,12 @@
 
 \usepackage[spanish]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage{float}
 \usepackage{graphicx}
 \graphicspath{{images/}}
 
-\title{Trabajo Practico 1: Universal Asynchronous Receiver Transmitter}
+\title{Trabajo Practico 2: Universal Asynchronous Receiver Transmitter}
 \author{Perez, Federico\\
         \texttt{perezfederico@unc.edu.ar}
         \and 
@@ -13,8 +15,8 @@
         \texttt{jmsardoy@gmail.com}
         }
 \begin{document}
-\maketitle
-\\
+
+\maketitle	
 \begin{center}
     \includegraphics[scale=2]{unc-logo}
 \end{center}
@@ -27,9 +29,10 @@ Como su nombre lo especifica, se trata de un protocolo asíncrono y \textit{full
 pero de facil uso e implementación dado su simplicidad.\\
 La arquitectura completa del trabajo de aplicación será aproximadamente en siguiente:
 
-\begin{center}
+\begin{figure}[H]
     \includegraphics[scale=0.5]{arch}
-\end{center}
+    \caption{\textit{Diagrama de la arquitectura básica del proyecto}}
+\end{figure}
 
 \indent A fines prácticos y demostrativos, dicho módulo UART se conectará mediante un 
 módulo que actuará de interfaz, a una \textit{Unidad Aritmetico Lógica} o ALU.
@@ -44,7 +47,31 @@ y la recepción de los resultados calculados en la ALU.\\
 \newpage
 \section{Implementación}
 
+\newpage
+\section{Protocolo UART}
+\indent Este protocolo, como se ha explicado anteriormente, es bastante simple. El siguiente diagrama muestra los 
+datagramas básicos de una comunicación UART.
 
+\begin{figure}[H]
+    \includegraphics[scale=0.5]{protocol}
+    \caption{\textit{Diagrama del datagrama del protocolo UART}}
+\end{figure}
+
+\subsection{Módulo RX}
+\indent El módulo RX o receptor es el encargado de detectar el comienzo de la transmisión por el pin de recepción,
+de interpretar los datos, y exponerlo por el bus de salida. Típicamente el bus de salida, y el largo de los datos recibidos
+es de un \textit{byte} o 8 \textit{bits}.
+\indent Como se verá también en la implementación del módulo TX, es 
+
+\subsection{Módulo TX}
+
+
+
+\subsection{Módulo Interface}
+
+	
+
+\newpage
 \section{Simulación}
 
 \end{document}
