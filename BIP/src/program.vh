@@ -1,0 +1,15 @@
+`ifndef PROGRAM_VH
+`define PROGRAM_VH
+
+//Sample data
+DATA_MEMORY(0, 'b001) 
+DATA_MEMORY(1, 'b001)
+DATA_MEMORY(2, 'b001)
+DATA_MEMORY(3, 'b001)
+DATA_MEMORY(4, 'b001)
+DATA_MEMORY(5, 'b001)
+DATA_MEMORY(6, 'b001)
+
+`undef DATA_MEMORY
+
+`endif
