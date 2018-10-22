@@ -10,9 +10,9 @@ module InstructionDecoder(
 	output reg o_write_acc,
 	output reg o_operation);
 
-always@(negedge clk)
+always@(posedge clk)
 begin
-	
+
 end
 
 endmodule
