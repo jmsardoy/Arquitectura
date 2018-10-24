@@ -15,18 +15,20 @@ module Datapath
 );
 
     reg  signed [15 : 0] accumulator;
-    reg  signed [15 : 0] op_result;
-    wire signed [15 : 0] operand_ext = {{5{i_operand[10]}}, i_operand}; //signal extention
-    wire signed [15 : 0] multiplexor_b = (i_sel_b) ? operand_ext : i_mem_data;
-
+    wire signed [15 : 0] op_result;
+    wire signed [15 : 0] operand_ext;
+    wire signed [15 : 0] multiplexor_b;
     
-    always@* begin
-        if (i_operation) op_result = accumulator - multiplexor_b;
-        else             op_result = accumulator + multiplexor_b;
-    end
+    
+    //multiplexor b
+    multiplexor_b = (i_sel_b) ? operand_ext : i_mem_data;
+    
+    //signal extention
+    operand_ext = {{5{i_operand[10]}}, i_operand};
 
-
-
+    //operation unit
+    assign op_result = (i_operation) ? accumulator - multiplexor_b
+                                     : accumulator + multiplexor_b;
 
     always@(negedge clk) begin
         if(!rst) begin
