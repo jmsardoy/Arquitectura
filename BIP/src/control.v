@@ -35,8 +35,6 @@ module Control
     
     assign o_prog_address = program_counter;
 
-    assign o_done = ~enable_pc;
-
     InstructionDecoder ID_u
     (
         .opcode(opcode),
@@ -46,7 +44,8 @@ module Control
         .o_write_acc(o_write_acc),
         .o_operation(o_operation),
         .o_write_mem(o_write_mem),
-        .o_read_mem(o_read_mem)
+        .o_read_mem(o_read_mem),
+        .bip_done(o_done)
     );
 
 

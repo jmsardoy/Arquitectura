@@ -8,6 +8,7 @@ module ProgramMemory
 )
 (
 	input clk,
+    input rst,
 	input wire [ADDRESS_BITS-1:0] i_address,
 	output reg [DATA_BITS-1:0] o_data
 );
@@ -26,25 +27,28 @@ module ProgramMemory
     localparam SUB  = 'b00110;
     localparam SUBI = 'b00111;
 
-    initial begin
-        mem[0]  <= { LDI  , -11'd4};
-        mem[1]  <= { STO  , 11'd1};
-        mem[2]  <= { LDI  , 11'd2};
-        mem[3]  <= { ADD  , 11'd1};
-        mem[4]  <= { STO  , 11'd2};
-        mem[5]  <= { LDI  , 11'd123};
-        mem[6]  <= { ADDI , 11'd7 };
-        mem[7]  <= { LD   , 11'd2};
-        mem[8]  <= { ADDI , 11'd4};
-        mem[9]  <= { SUBI , 11'd50};
-        mem[10] <= { SUB  , 11'd1};
-        mem[11] <= { HLT  , 11'd0};
-
-        mem[12] <= {16{1'b1}}; //para evitar warning que elimina bits de o_data
-    end
 	
     always@(negedge clk) begin
-        o_data <= mem[i_address];
-	end
+        if(!rst) begin
+            mem[0]  <= { LDI  , -11'd4};
+            mem[1]  <= { STO  , 11'd1};
+            mem[2]  <= { LDI  , 11'd2};
+            mem[3]  <= { ADD  , 11'd1};
+            mem[4]  <= { STO  , 11'd2};
+            mem[5]  <= { LDI  , 11'd123};
+            mem[6]  <= { ADDI , 11'd7 };
+            mem[7]  <= { LD   , 11'd2};
+            mem[8]  <= { ADDI , 11'd4};
+            mem[9]  <= { SUBI , 11'd50};
+            mem[10] <= { SUB  , 11'd1};
+            mem[11] <= { HLT  , 11'd0};
+
+            mem[12] <= {16{1'b1}}; //para evitar warning que elimina bits de o_data
+
+        end
+        else begin
+            o_data <= mem[i_address];
+        end
+    end
 
 endmodule

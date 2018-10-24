@@ -21,10 +21,10 @@ module Datapath
     
     
     //multiplexor b
-    multiplexor_b = (i_sel_b) ? operand_ext : i_mem_data;
+    assign multiplexor_b = (i_sel_b) ? operand_ext : i_mem_data;
     
     //signal extention
-    operand_ext = {{5{i_operand[10]}}, i_operand};
+    assign operand_ext = {{5{i_operand[10]}}, i_operand};
 
     //operation unit
     assign op_result = (i_operation) ? accumulator - multiplexor_b
@@ -40,8 +40,11 @@ module Datapath
                     0: accumulator <= i_mem_data;
                     1: accumulator <= operand_ext;
                     2: accumulator <= op_result;
-                    default: accumulator <= accumulator;
+                    default: accumulator <= 0;
                 endcase
+            end
+            else begin
+                accumulator <= accumulator;
             end
         end
     end

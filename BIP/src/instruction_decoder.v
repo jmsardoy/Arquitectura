@@ -8,7 +8,8 @@ module InstructionDecoder
 	output reg o_write_acc,
 	output reg o_operation,
     output reg o_write_mem,
-    output reg o_read_mem
+    output reg o_read_mem,
+    output reg bip_done
 );
 
     localparam HLT  = 'b00000;
@@ -32,6 +33,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 0;
+                bip_done    <= 1;
             end
 
             STO: 
@@ -43,6 +45,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 1;
                 o_read_mem  <= 0;
+                bip_done    <= 0;
             end
         
             LD: 
@@ -54,6 +57,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 1;
+                bip_done    <= 0;
             end
 
             LDI: 
@@ -65,6 +69,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 0;
+                bip_done    <= 0;
             end
 
             ADD: 
@@ -76,6 +81,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 1;
+                bip_done    <= 0;
             end
 
             ADDI: 
@@ -87,6 +93,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 0;
+                bip_done    <= 0;
             end
 
             SUB: 
@@ -98,6 +105,7 @@ module InstructionDecoder
                 o_operation <= 1;
                 o_write_mem <= 0;
                 o_read_mem  <= 1;
+                bip_done    <= 0;
             end
 
             SUBI: 
@@ -109,6 +117,7 @@ module InstructionDecoder
                 o_operation <= 1;
                 o_write_mem <= 0;
                 o_read_mem  <= 0;
+                bip_done    <= 0;
             end
 
             default:
@@ -120,6 +129,7 @@ module InstructionDecoder
                 o_operation <= 0;
                 o_write_mem <= 0;
                 o_read_mem  <= 0;
+                bip_done    <= 0;
             end
 
         endcase

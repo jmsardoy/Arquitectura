@@ -10,7 +10,8 @@ module TX(
     output reg o_tx);
 
     localparam NBITS = `NBITS;
-    localparam COUNTER_NBITS = $clog2(NBITS)+1;
+    //localparam COUNTER_NBITS = $clog2(NBITS)+1;
+    localparam COUNTER_NBITS = 8;
 
     localparam
         idle  = 'b00,
@@ -66,6 +67,7 @@ module TX(
                     next_tick_count = 0;
                     next_data_count = 0;
                     next_data_reg = i_data;
+                    next_tx_done = 0;
                 end
             end
 

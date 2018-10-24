@@ -51,6 +51,7 @@ Control control_u
 ProgramMemory prog_mem_u
 (
     .clk(clk),
+    .rst(rst),
     .i_address(program_address),
     .o_data(instruction)
 );
@@ -60,7 +61,7 @@ DataMemory data_mem_u
     .clk(clk),
     .read(read_mem),
     .write(write_mem),
-    .i_address(operand),
+    .i_address(data_address),
     .i_data(data_mem_in),
     .o_data(data_mem_out)
 );
