@@ -4,7 +4,7 @@ import serial
 #ser = serial.serial_for_url('loop://', timeout=1)
 
 ser = serial.Serial(
-     port     = '/dev/ttyUSB0',	#Configurar con el puerto
+     port     = '/dev/ttyUSB1',	#Configurar con el puerto
      baudrate = 19200,
      parity   = serial.PARITY_NONE,
      stopbits = serial.STOPBITS_ONE,

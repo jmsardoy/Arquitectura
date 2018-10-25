@@ -3,11 +3,12 @@
 module TopLevel
 (
     input clk,
-    input inv_rst,
-    output tx
+    input rst,
+    //input inv_rst,
+    output tx_out
 );
     
-    wire rst = ~inv_rst;
+    //wire rst = ~inv_rst;
     wire [15:0] accumulator;
     wire [ 7:0] inst_count;
     wire bip_done;
@@ -28,6 +29,6 @@ module TopLevel
         .accumulator(accumulator),
         .inst_count(inst_count),
         .bip_done(bip_done),
-        .o_tx(tx)
+        .o_tx(tx_out)
     );
 endmodule

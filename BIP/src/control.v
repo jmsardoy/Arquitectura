@@ -22,7 +22,7 @@ module Control
 
     reg [10 : 0] program_counter;
 
-    always@(posedge clk) begin
+    always@(negedge clk) begin
         if (!rst) begin
             program_counter <= 0;
         end

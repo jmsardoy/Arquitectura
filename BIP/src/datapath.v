@@ -30,7 +30,7 @@ module Datapath
     assign op_result = (i_operation) ? accumulator - multiplexor_b
                                      : accumulator + multiplexor_b;
 
-    always@(negedge clk) begin
+    always@(posedge clk) begin
         if(!rst) begin
             accumulator <= 0;
         end

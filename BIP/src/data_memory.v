@@ -19,7 +19,7 @@ module DataMemory
 
 	reg [DATA_BITS-1:0] mem [0:MEM_SIZE-1];
 
-	always@(posedge clk) 
+	always@(negedge clk) 
 	begin
 		if (read)
 		begin

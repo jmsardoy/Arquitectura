@@ -28,7 +28,7 @@ module ProgramMemory
     localparam SUBI = 'b00111;
 
 	
-    always@(negedge clk) begin
+    always@(posedge clk) begin
         if(!rst) begin
             mem[0]  <= { LDI  , -11'd4};
             mem[1]  <= { STO  , 11'd1};
@@ -45,6 +45,7 @@ module ProgramMemory
 
             mem[12] <= {16{1'b1}}; //para evitar warning que elimina bits de o_data
 
+            o_data  <= {16{1'b1}};
         end
         else begin
             o_data <= mem[i_address];

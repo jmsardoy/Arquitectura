@@ -26,7 +26,7 @@ module TX(
     reg next_tx, next_tx_done;
 
 
-    always@(posedge clk or negedge rst) begin
+    always@(posedge clk) begin
         if (!rst) begin
             state <= idle;
             tick_count <= 0;
