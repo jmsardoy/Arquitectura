@@ -24,11 +24,11 @@ always@(posedge clk) begin
 end
 
 wire [ADDRESS_BITS -1 : 0]  program_address;
-wire [DATA_BITS -1 : 0]     instruction;
+wire [DATA_BITS -1 :    0]     instruction;
 wire [ADDRESS_BITS -1 : 0]  operand;
 wire [ADDRESS_BITS -1 : 0]  data_address;
-wire [DATA_BITS -1 : 0]     data_mem_in;
-wire [DATA_BITS -1 : 0]     data_mem_out;
+wire [DATA_BITS -1 :    0]     data_mem_in;
+wire [DATA_BITS -1 :    0]     data_mem_out;
 wire [ 1 : 0] sel_a;
 wire sel_b;
 wire write_acc;

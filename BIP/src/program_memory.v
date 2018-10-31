@@ -16,17 +16,16 @@ module ProgramMemory
 
 	reg [DATA_BITS-1:0] mem [0:MEM_SIZE-1];
 
-    `define INSTRUCTION(mnemonic, opcode) localparam mnemonic = opcode;
+    `define INSTRUCTION(MNEMONIC, OPCODE) localparam MNEMONIC = OPCODE;
     `include "instructions.vh"
 
     always@(posedge clk) begin
         if(!rst) begin
 
-            `define DATA_MEMORY(address, instruction, arguments) \
-            memory[adress] <= {instruction, arguments};
+            `define DATA_MEMORY(ADDRESS, MNEMONIC, ARGS) mem[ADDRESS] <= {MNEMONIC, ARGS};
             `include "program.vh"
 
-            mem[12] <= {16{1'b1}}; //para evitar warning que elimina bits de o_data
+            mem[`LAST_ADDRESS] <= {16{1'b1}}; //para evitar warning que elimina bits de o_data
             o_data  <= {16{1'b1}};
         end
         else begin

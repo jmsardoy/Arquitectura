@@ -22,7 +22,7 @@ module Control
 
     wire enable_pc;
 
-    wire [4 : 0] opcode = i_instruction[ADDRESS_BITS - 1:11];
+    wire [4 : 0] opcode = i_instruction[DATA_BITS - 1:ADDRESS_BITS];
     assign o_operand = i_instruction[ADDRESS_BITS - 1:0];
 
     reg [10 : 0] program_counter;
