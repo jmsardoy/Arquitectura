@@ -1,5 +1,4 @@
-`define ADDRESS_BITS 11
-`define DATA_BITS 16
+`include "memory_defs.vh"
 
 module DataMemory
 #(
@@ -14,12 +13,12 @@ module DataMemory
 	input wire [DATA_BITS-1:0] i_data,
 	output reg [DATA_BITS-1:0] o_data
 );
-	
+
 	localparam MEM_SIZE = 2**ADDRESS_BITS;
 
 	reg [DATA_BITS-1:0] mem [0:MEM_SIZE-1];
 
-	always@(negedge clk) 
+	always@(negedge clk)
 	begin
 		if (read)
 		begin

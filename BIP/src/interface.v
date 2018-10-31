@@ -1,10 +1,14 @@
-
+`include "memory_defs.vh"
 
 module Interface
+#(
+    parameter ADDRESS_BITS = `ADDRESS_BITS,
+    parameter DATA_BITS = `DATA_BITS
+)
 (
     input clk,
     input rst,
-    input [15 : 0] accumulator,
+    input [DATA_BITS - 1 : 0] accumulator,
     input [7 : 0] inst_count,
     input bip_done,
     output o_tx
@@ -12,7 +16,7 @@ module Interface
 
     wire baud_rate;
     wire tx_done;
-    
+
     reg tx_start;
     reg [7 : 0] tx_data;
 
@@ -22,9 +26,9 @@ module Interface
     reg [3 : 0] state;
     reg [3 : 0] next_state;
 
-    reg [15 : 0] accumulator_latch;
+    reg [DATA_BITS -1: 0] accumulator_latch;
     reg [ 7 : 0] inst_count_latch;
-    reg [15 : 0] next_accumulator_latch;
+    reg [DATA_BITS -1 : 0] next_accumulator_latch;
     reg [ 7 : 0] next_inst_count_latch;
 
 
@@ -74,7 +78,7 @@ module Interface
                     next_state = SEND_INST_COUNT;
                 end
             end
-            
+
             SEND_INST_COUNT:
             begin
                 next_tx_data = inst_count_latch;
@@ -154,5 +158,5 @@ module Interface
         .out(baud_rate)
     );
 
-    
+
 endmodule
