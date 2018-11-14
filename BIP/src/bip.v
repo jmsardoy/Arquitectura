@@ -1,9 +1,14 @@
+`include "memory_defs.vh"
 
 module BIP
+#(
+    parameter ADDRESS_BITS = `ADDRESS_BITS,
+    parameter DATA_BITS = `DATA_BITS
+)
 (
     input clk,
     input rst,
-    output [15 : 0] accumulator,
+    output [DATA_BITS -1 : 0] accumulator,
     output reg [7 : 0] inst_count,
     output done
 );
@@ -13,17 +18,17 @@ always@(posedge clk) begin
         inst_count <= 0;
     end
     else begin
-        if (!done) 
+        if (!done)
             inst_count <= inst_count+1;
     end
 end
 
-wire [10 : 0] program_address;
-wire [15 : 0] instruction;
-wire [10 : 0] operand;
-wire [10 : 0] data_address;
-wire [15 : 0] data_mem_in;
-wire [15 : 0] data_mem_out;
+wire [ADDRESS_BITS -1 : 0]  program_address;
+wire [DATA_BITS -1 :    0]     instruction;
+wire [ADDRESS_BITS -1 : 0]  operand;
+wire [ADDRESS_BITS -1 : 0]  data_address;
+wire [DATA_BITS -1 :    0]     data_mem_in;
+wire [DATA_BITS -1 :    0]     data_mem_out;
 wire [ 1 : 0] sel_a;
 wire sel_b;
 wire write_acc;

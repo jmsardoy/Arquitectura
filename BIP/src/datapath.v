@@ -1,30 +1,34 @@
-
+`include "memory_defs.vh"
 
 module Datapath
+#(
+    parameter ADDRESS_BITS = `ADDRESS_BITS,
+    parameter DATA_BITS = `DATA_BITS
+)
 (
     input  clk,
     input  rst,
-    input  [10 : 0] i_operand,
+    input  [ADDRESS_BITS - 1 : 0] i_operand,
     input  [ 1 : 0] i_sel_a,
     input  i_sel_b,
     input  i_write_acc,
     input  i_operation,
-    input  [15 : 0] i_mem_data,
-    output [15 : 0] o_mem_data,
-    output [10 : 0] o_mem_address
+    input  [DATA_BITS - 1 : 0] i_mem_data,
+    output [DATA_BITS - 1 : 0] o_mem_data,
+    output [ADDRESS_BITS - 1 : 0] o_mem_address
 );
 
-    reg  signed [15 : 0] accumulator;
-    wire signed [15 : 0] op_result;
-    wire signed [15 : 0] operand_ext;
-    wire signed [15 : 0] multiplexor_b;
-    
-    
+    reg  signed [DATA_BITS - 1 : 0] accumulator;
+    wire signed [DATA_BITS - 1 : 0] op_result;
+    wire signed [DATA_BITS - 1 : 0] operand_ext;
+    wire signed [DATA_BITS - 1 : 0] multiplexor_b;
+
+
     //multiplexor b
     assign multiplexor_b = (i_sel_b) ? operand_ext : i_mem_data;
-    
+
     //signal extention
-    assign operand_ext = {{5{i_operand[10]}}, i_operand};
+    assign operand_ext = {{(DATA_BITS - ADDRESS_BITS){i_operand[ADDRESS_BITS - 1]}}, i_operand};
 
     //operation unit
     assign op_result = (i_operation) ? accumulator - multiplexor_b

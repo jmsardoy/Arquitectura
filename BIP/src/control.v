@@ -1,11 +1,16 @@
+`include "memory_defs.vh"
 
 module Control
+#(
+    parameter ADDRESS_BITS = `ADDRESS_BITS,
+    parameter DATA_BITS = `DATA_BITS
+)
 (
     input clk,
     input rst,
-    input [15:0] i_instruction,
-    output [10 : 0] o_prog_address,
-    output [10 : 0] o_operand,
+    input [DATA_BITS - 1:0] i_instruction,
+    output [ADDRESS_BITS - 1 : 0] o_prog_address,
+    output [ADDRESS_BITS - 1 : 0] o_operand,
     output [ 1 : 0] o_sel_a,
     output o_sel_b,
     output o_write_acc,
@@ -17,8 +22,8 @@ module Control
 
     wire enable_pc;
 
-    wire [4 : 0] opcode = i_instruction[15:11];
-    assign o_operand = i_instruction[10:0];
+    wire [4 : 0] opcode = i_instruction[DATA_BITS - 1:ADDRESS_BITS];
+    assign o_operand = i_instruction[ADDRESS_BITS - 1:0];
 
     reg [10 : 0] program_counter;
 
@@ -32,7 +37,7 @@ module Control
             end
         end
     end
-    
+
     assign o_prog_address = program_counter;
 
     InstructionDecoder ID_u
