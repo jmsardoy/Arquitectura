@@ -1,0 +1,3 @@
+NET "clk" LOC = B8;
+NET "tx" LOC = B2;
+NET "inv_rst" LOC = G12;
