@@ -1,0 +1,7 @@
+`ifndef CONSTANTS_VH
+`define CONSTANTS_VH
+
+`define PROCESSOR_BITS 32
+`define REGISTERS_ADDRESSING_SIZE 5
+
+`endif
