@@ -6,7 +6,8 @@ module RegisterFile
 #(
 	// -1 to have MSB index ready
     parameter REG_ADDRS_BITS_I 	= `REG_ADDRS_BITS - 1,
-    parameter PROC_BITS_I	 	= `PROC_BITS - 1
+    parameter PROC_BITS_I	 	= `PROC_BITS - 1,
+    parameter DEBUG_BITS_I 		= (`PROC_BITS*`PROC_BITS) - 1
 )
 (
 	input wire clk,
@@ -17,24 +18,27 @@ module RegisterFile
 	input wire 	[PROC_BITS_I	 :0] 	i_write_data,
 	output reg  [PROC_BITS_I	 :0] 	o_read_data_1,
 	output reg  [PROC_BITS_I	 :0] 	o_read_data_2,
-	output wire [(32*32)-1:0] 			o_debug_regs
-); 
+	output wire [DEBUG_BITS_I	 :0]	o_debug_regs
+);
 
 	localparam REG_COUNT = 2**(REG_ADDRS_BITS_I + 1);
 
 	reg [PROC_BITS_I:0] registers [0:REG_COUNT];
 
-	integer i;
-	for (i=0; i<32; i=i+1) begin
-		assign o_debug_regs[(i+1)*32-1:i*32] = registers[i]; 
-	end 
+	generate
+	   genvar i;
+	   for (i=0; i<32; i=i+1) begin
+           localparam start_i = (i+1)*32-1;
+           localparam end_i = i*32;
+           assign o_debug_regs[start_i:end_i] = registers[i];
+	   end
+	endgenerate
 
-	always@(negedge clk) begin
+	always@(posedge clk) begin
 		o_read_data_1 <= registers[i_read_register_1];
 		o_read_data_2 <= registers[i_read_register_2];
 		if (i_reg_write) begin
 			registers[i_write_register] <= i_write_data;
 		end
 	end
-
-	always
+endmodule // RegisterFile
