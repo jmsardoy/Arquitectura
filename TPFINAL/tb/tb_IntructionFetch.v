@@ -26,7 +26,9 @@ module tb_InstructionFetch();
         inst_mem_addr = 0;
         inst_mem_data = 0;
 
+        //check escritura de memoria
         #20
+        rst = 1;
         write_inst_mem = 1;
         inst_mem_addr = 0;
         inst_mem_data = 10;
@@ -36,6 +38,24 @@ module tb_InstructionFetch();
         #20
         inst_mem_addr = 2;
         inst_mem_data = 20;
+
+        //check instruction fetch
+
+        #20
+        write_inst_mem = 0;
+        enable = 1;
+
+        //check branch
+
+        #100
+        PCSrc = 1;
+        PCBranch = 1;
+
+        #20
+        PCSrc = 0;
+
+
+
     end
 
     always #10 clk = ~clk;
@@ -45,13 +65,13 @@ module tb_InstructionFetch();
         .clk(clk),
         .rst(rst),
         .enable(enable),
-        .PCSrc(PCSrc),
-        .PCBranch(PCBranch),
-        .write_inst_mem(write_inst_mem),
-        .inst_mem_addr(inst_mem_addr),
-        .inst_mem_data(inst_mem_data),
-        .PCNext(PCNext),
-        .instruction(instruction)
+        .i_PCSrc(PCSrc),
+        .i_PCBranch(PCBranch),
+        .i_write_inst_mem(write_inst_mem),
+        .i_inst_mem_addr(inst_mem_addr),
+        .i_inst_mem_data(inst_mem_data),
+        .o_PCNext(PCNext),
+        .o_instruction(instruction)
     );
 
 

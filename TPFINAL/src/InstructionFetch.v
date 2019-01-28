@@ -1,46 +1,52 @@
 `timescale 1ns / 1ps
 
+`include "constants.vh"
 
-module InstructionFetch(
+module InstructionFetch
+#(
+    parameter PC_BITS          = `PC_BITS,
+    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
+)
+(
     input wire clk,
     input wire rst,
     input wire enable,
-    input wire PCSrc,
-    input wire [7:0] PCBranch,
-    input wire write_inst_mem,
-    input wire [7:0] inst_mem_addr,
-    input wire [31:0] inst_mem_data,
-    output wire [7:0] PCNext,
-    output wire [31:0] instruction
+    input wire                             i_PCSrc,
+    input wire [PC_BITS - 1 : 0]           i_PCBranch,
+    input wire                             i_write_inst_mem,
+    input wire [PC_BITS - 1 : 0]           i_inst_mem_addr,
+    input wire [INSTRUCTION_BITS - 1 : 0]  i_inst_mem_data,
+    output wire [PC_BITS - 1 : 0]          o_PCNext,
+    output wire [INSTRUCTION_BITS - 1 : 0] o_instruction
 );
 
-    reg [7 : 0] pc;
-    reg [31 : 0] inst_data;
+    reg [PC_BITS - 1 : 0] pc;
+    reg [INSTRUCTION_BITS - 1 : 0] inst_data;
     
-    assign PCNext = pc + 1;
-    wire pc_input = (PCSrc) ? PCBranch : PCNext;
-    wire mem_addr = (write_inst_mem) ? inst_mem_addr : pc;
+    assign o_PCNext = pc + 1;
+    wire [PC_BITS - 1 : 0] pc_input = (i_PCSrc) ? i_PCBranch : o_PCNext;
+    wire [PC_BITS - 1 : 0] mem_addr = (i_write_inst_mem) ? i_inst_mem_addr : pc;
 
     always@(posedge clk) begin
         if (~rst) begin
             pc <= 0;
         end
         else begin
-            if (enable & ~write_inst_mem) begin
+            if (enable & ~i_write_inst_mem) begin
                 pc <= pc_input;
             end
         end
     end
 
     BRAM  #(
-        .ADDRESS_BITS(8),
-        .DATA_BITS(32)
+        .ADDRESS_BITS(PC_BITS),
+        .DATA_BITS(INSTRUCTION_BITS)
     ) instruction_memory (
         .clk(clk),
-        .write_enable(write_inst_mem),
+        .write_enable(i_write_inst_mem),
         .i_address(mem_addr),
-        .i_data(inst_mem_data),
-        .o_data(instruction)
+        .i_data(i_inst_mem_data),
+        .o_data(o_instruction)
     );
 
 endmodule
