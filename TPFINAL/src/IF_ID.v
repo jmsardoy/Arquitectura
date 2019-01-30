@@ -13,7 +13,7 @@ module IF_ID
     input wire [PC_BITS - 1 : 0]           i_PCNext,
     input wire [INSTRUCTION_BITS - 1 : 0]  i_instruction,
     output reg [PC_BITS - 1 : 0]           o_PCNext,
-    output reg [INSTRUCTION_BITS - 1 : 0]  o_instruction,
+    output reg [INSTRUCTION_BITS - 1 : 0]  o_instruction
 );
 
     always@(posedge clk) begin

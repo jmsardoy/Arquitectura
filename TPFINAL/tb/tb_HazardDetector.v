@@ -5,7 +5,6 @@ module tb_HazardDetector();
 
     reg [4:0] rs;
     reg [4:0] rt;
-    wire [9:0] instruction_rs_rt = {rs, rt};
     reg [4:0] id_ex_rt;
     reg id_ex_MemRead;
     wire PCWrite;
@@ -58,7 +57,8 @@ module tb_HazardDetector();
     end
 
     HazardDetector hazard_detector_u(
-        .i_instruction_rs_rt(instruction_rs_rt),
+        .i_instruction_rs(rs),
+        .i_instruction_rt(rt),
         .i_id_ex_rt(id_ex_rt),
         .i_id_ex_MemRead(id_ex_MemRead),
         .o_PCWrite(PCWrite),

@@ -1,16 +1,21 @@
 `timescale 1ns / 1ps
 
+`include "constants.vh"
 
-module Control(
-    input wire  [5:0] i_opcode,
-    output reg        o_RegDst,
-    output reg  [1:0] o_ALUOp,
-    output reg        o_ALUSrc,
-    output reg        o_Branch,
-    output reg        o_MemRead,
-    output reg        o_MemWrite,
-    output reg        o_RegWrite,
-    output reg        o_MemtoReg
+module Control
+#(
+    parameter OPCODE_BITS = `OPCODE_BITS
+)
+(
+    input wire  [OPCODE_BITS - 1 : 0] i_opcode,
+    output reg                        o_RegDst,
+    output reg  [1:0]                 o_ALUOp,
+    output reg                        o_ALUSrc,
+    output reg                        o_Branch,
+    output reg                        o_MemRead,
+    output reg                        o_MemWrite,
+    output reg                        o_RegWrite,
+    output reg                        o_MemtoReg
 );
     localparam RFORMAT = 'b000000;
     localparam LW      = 'b100011;
