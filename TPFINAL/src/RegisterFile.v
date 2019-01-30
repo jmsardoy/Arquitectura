@@ -23,7 +23,7 @@ module RegisterFile
 
 	localparam REG_COUNT = 2**(REG_ADDRS_BITS_I + 1);
 
-	reg [PROC_BITS_I:0] registers [0:REG_COUNT];
+	reg [PROC_BITS_I:0] registers [0:REG_COUNT-1];
 
 	generate
 	   genvar i;
@@ -35,10 +35,14 @@ module RegisterFile
 	endgenerate
 
 	always@(posedge clk) begin
-		o_read_data_1 <= registers[i_read_register_1];
-		o_read_data_2 <= registers[i_read_register_2];
 		if (i_reg_write) begin
 			registers[i_write_register] <= i_write_data;
 		end
 	end
+
+    always@(negedge clk) begin
+		o_read_data_1 <= registers[i_read_register_1];
+		o_read_data_2 <= registers[i_read_register_2];
+    end
+
 endmodule // RegisterFile

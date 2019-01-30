@@ -23,6 +23,10 @@ module BRAM
 	always@(posedge clk)
 	begin
 		if (write_enable) mem[i_address] <= i_data;
-		else o_data <= mem[i_address];
 	end
+
+    always@(negedge clk) begin
+	    o_data <= mem[i_address];
+    end
+
 endmodule
