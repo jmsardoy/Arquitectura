@@ -8,14 +8,15 @@ module InstructionFetch
     parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
 )
 (
-    input wire clk,
-    input wire rst,
-    input wire enable,
-    input wire                             i_PCSrc,
-    input wire [PC_BITS - 1 : 0]           i_PCBranch,
-    input wire                             i_write_inst_mem,
-    input wire [PC_BITS - 1 : 0]           i_inst_mem_addr,
-    input wire [INSTRUCTION_BITS - 1 : 0]  i_inst_mem_data,
+    input  wire clk,
+    input  wire rst,
+    input  wire enable,
+    input  wire                             i_PCWrite,
+    input  wire                             i_PCSrc,
+    input  wire [PC_BITS - 1 : 0]           i_PCBranch,
+    input  wire                             i_write_inst_mem,
+    input  wire [PC_BITS - 1 : 0]           i_inst_mem_addr,
+    input  wire [INSTRUCTION_BITS - 1 : 0]  i_inst_mem_data,
     output wire [PC_BITS - 1 : 0]          o_PCNext,
     output wire [INSTRUCTION_BITS - 1 : 0] o_instruction
 );
@@ -32,8 +33,10 @@ module InstructionFetch
             pc <= 0;
         end
         else begin
+            //enable and write_inst_mem come from Debug
             if (enable & ~i_write_inst_mem) begin
-                pc <= pc_input;
+                //PCWrite is the signal comming from Hazard Detector Unit
+                if (i_PCWrite) pc <= pc_input;
             end
         end
     end
