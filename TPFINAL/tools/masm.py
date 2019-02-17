@@ -10,6 +10,7 @@ class Masm():
     def _parse(self, asm_file):
         for line in asm_file:
             bytecodeline = int()
+            print(len(bytecodeline))
             sline = line.split()
             mnemonic = sline[0].lower()
             if mnemonic in INSTRUCTIONS:
@@ -26,6 +27,6 @@ class Masm():
                         imm = sline[index+1].strip(',')
                         print(imm)
             else:
-                raise Exception("Invalid instruction")
+                raise Exception("Invalid instruction: " + mnemonic)
 
             print(format_bin32(bytecodeline))
