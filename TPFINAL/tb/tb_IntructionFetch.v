@@ -8,11 +8,11 @@ module tb_InstructionFetch();
     reg enable;
     reg PCWrite;
     reg PCSrc;
-    reg [7:0] PCBranch;
+    reg [31:0] PCBranch;
     reg write_inst_mem;
-    reg [7:0] inst_mem_addr;
+    reg [31:0] inst_mem_addr;
     reg [31:0] inst_mem_data;
-    wire [7:0] PCNext;
+    wire [31:0] PCNext;
     wire [31:0] instruction;
 
 
@@ -28,7 +28,7 @@ module tb_InstructionFetch();
         inst_mem_addr = 0;
         inst_mem_data = 0;
 
-        //check escritura de memoria
+        //check memory write
         #20
         rst = 1;
         //we leave PCWrite=1 cause were not testing hazard right now
