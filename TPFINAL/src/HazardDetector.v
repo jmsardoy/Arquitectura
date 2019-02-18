@@ -8,13 +8,13 @@ module HazardDetector
     parameter REG_ADDRS_BITS   = `REG_ADDRS_BITS
 )
 (
-    input wire [REG_ADDRS_BITS - 1: 0] i_instruction_rs,
-    input wire [REG_ADDRS_BITS - 1: 0] i_instruction_rt,
-    input wire [REG_ADDRS_BITS - 1  : 0] i_id_ex_rt,
-    input wire                           i_id_ex_MemRead,
-    output reg                           o_PCWrite,
-    output reg                           o_if_id_write,
-    output reg                           o_control_mux
+    input wire [REG_ADDRS_BITS - 1 : 0] i_instruction_rs,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_instruction_rt,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_id_ex_rt,
+    input wire                          i_id_ex_MemRead,
+    output reg                          o_PCWrite,
+    output reg                          o_if_id_write,
+    output reg                          o_control_mux
 );
 
     //control_mux = 0 when we want to set all control lines to 0 and
