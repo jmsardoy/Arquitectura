@@ -5,7 +5,8 @@
 module InstructionFetch
 #(
     parameter PC_BITS          = `PC_BITS,
-    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
+    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS,
+    parameter INST_ADDRS_BITS  = `INST_ADDRS_BITS
 )
 (
     input  wire clk,
@@ -17,8 +18,8 @@ module InstructionFetch
     input  wire                             i_write_inst_mem,
     input  wire [PC_BITS - 1 : 0]           i_inst_mem_addr,
     input  wire [INSTRUCTION_BITS - 1 : 0]  i_inst_mem_data,
-    output wire [PC_BITS - 1 : 0]          o_PCNext,
-    output wire [INSTRUCTION_BITS - 1 : 0] o_instruction
+    output wire [PC_BITS - 1 : 0]           o_PCNext,
+    output wire [INSTRUCTION_BITS - 1 : 0]  o_instruction
 );
 
     reg [PC_BITS - 1 : 0] pc;
@@ -42,12 +43,12 @@ module InstructionFetch
     end
 
     BRAM  #(
-        .ADDRESS_BITS(PC_BITS),
+        .ADDRESS_BITS(INST_ADDRS_BITS),
         .DATA_BITS(INSTRUCTION_BITS)
     ) instruction_memory (
         .clk(clk),
         .write_enable(i_write_inst_mem),
-        .i_address(mem_addr),
+        .i_address(mem_addr[INST_ADDRS_BITS - 1 : 0]),
         .i_data(i_inst_mem_data),
         .o_data(o_instruction)
     );
