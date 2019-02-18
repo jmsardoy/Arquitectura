@@ -5,10 +5,12 @@
 module IF_ID
 #(
     parameter PC_BITS          = `PC_BITS,
-    parameter INSTRUCTION_BITS = INSTRUCTION_BITS
+    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
 )
 (
     input clk,
+    input rst,
+    input enable,
     input                                  i_if_id_write,
     input wire [PC_BITS - 1 : 0]           i_PCNext,
     input wire [INSTRUCTION_BITS - 1 : 0]  i_instruction,
@@ -17,9 +19,15 @@ module IF_ID
 );
 
     always@(posedge clk) begin
-        if(i_if_id_write) begin
-            o_PCNext <= i_PCNext;
-            o_instruction <= i_instruction;
+        if (~rst) begin
+            o_PCNext <= 0;
+            o_instruction <= 0;
+        end
+        else begin
+            if(enable && i_if_id_write) begin
+                o_PCNext <= i_PCNext;
+                o_instruction <= i_instruction;
+            end
         end
     end
 
