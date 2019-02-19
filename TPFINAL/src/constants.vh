@@ -8,6 +8,7 @@
 `define INSTRUCTION_BITS 32
 `define FUNCT_BITS 6
 `define INST_ADDRS_BITS 8
+`define DATA_ADDRS_BITS 8
 
 
 //R-TYPE
