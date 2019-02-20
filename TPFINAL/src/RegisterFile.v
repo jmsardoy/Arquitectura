@@ -35,14 +35,37 @@ module RegisterFile
 	endgenerate
 
 	always@(posedge clk) begin
-		if (i_reg_write) begin
+        //register 0 alwats has a value of 0
+        registers[0] <= 0;
+
+        //register 0 shouldn't be overwritten
+		if (i_reg_write && (i_write_register != 0)) begin
 			registers[i_write_register] <= i_write_data;
 		end
 	end
 
     always@(negedge clk) begin
-		o_read_data_1 <= registers[i_read_register_1];
-		o_read_data_2 <= registers[i_read_register_2];
+        //check if write register is the same as read register so
+        //we always return the updated register value except in the case of
+        //reading register 0 so we don't return a value that is not 0
+        if ((i_read_register_1 == i_write_register) &&
+            (i_read_register_1 != 0)) begin
+            o_read_data_1 <= i_write_data;
+        end
+        else begin
+            o_read_data_1 <= registers[i_read_register_1];
+        end
+
+        //check if write register is the same as read register so
+        //we always return the updated register value except in the case of
+        //reading register 0 so we don't return a value that is not 0
+        if ((i_read_register_1 == i_write_register) &&
+            (i_read_register_1 != 0)) begin
+            o_read_data_2 <= i_write_data;
+        end
+        else begin
+            o_read_data_2 <= registers[i_read_register_2];
+        end
     end
 
 endmodule // RegisterFile

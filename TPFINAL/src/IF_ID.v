@@ -11,6 +11,7 @@ module IF_ID
     input clk,
     input rst,
     input enable,
+    input flush,
     input                                  i_if_id_write,
     input wire [PC_BITS - 1 : 0]           i_PCNext,
     input wire [INSTRUCTION_BITS - 1 : 0]  i_instruction,
@@ -19,7 +20,7 @@ module IF_ID
 );
 
     always@(posedge clk) begin
-        if (~rst) begin
+        if (~rst || flush) begin
             o_PCNext <= 0;
             o_instruction <= 0;
         end

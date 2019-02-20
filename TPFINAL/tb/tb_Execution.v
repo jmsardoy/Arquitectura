@@ -1155,6 +1155,7 @@ module tb_Execution();
         .i_rd(rd),
         .i_branch_enable(branch_enable),
         .i_RegDst(i_RegDst),
+        .i_RegWrite(i_RegWrite),
         .i_MemRead(i_MemRead),
         .i_MemWrite(i_MemWrite),
         .i_MemtoReg(i_MemtoReg),

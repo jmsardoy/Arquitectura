@@ -12,7 +12,6 @@ module InstructionDecoder
 )
 (
     input clk,
-    input rst,
 
     input wire [INSTRUCTION_BITS - 1 : 0] i_instruction,
     input wire [PC_BITS - 1 : 0]          i_PCNext,
@@ -40,7 +39,8 @@ module InstructionDecoder
     output wire [3:0] o_ALUOp,
     output wire       o_ALUSrc,
     output wire       o_Shamt,
-    output wire       o_ls_filter_op,
+    output wire [2:0] o_ls_filter_op,
+    output wire       o_branch_enable,
 
     //RegisterFile/Data output
     output wire [PROC_BITS - 1 : 0] o_read_data_1,
@@ -78,6 +78,7 @@ module InstructionDecoder
 
     //control mux from hazard to control unit
     wire control_mux;
+    assign o_branch_enable = control_mux;
 
     //sign extend
     assign o_immediate_data_ext = {{16{immediate_data[15]}}, immediate_data};
