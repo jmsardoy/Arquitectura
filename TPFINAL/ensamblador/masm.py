@@ -113,20 +113,38 @@ class Masm:
 
     @classmethod
     def assembly(cls, asm_lines):
+        asm_lines = cls._remove_comments(cls, asm_lines)
+        asm_lines, cls._labels = cls._process_labels(cls, asm_lines)
         bin_lines = []
-        for asm_line in asm_lines:
-            bin_lines.append(cls._parse(cls, asm_line))
+        for i, asm_line in enumerate(asm_lines):
+            bin_lines.append(cls._parse(cls, asm_line, line_number=i))
         return bin_lines
 
 
-    def _parse(self, asm_line):
-        asm_line = asm_line.lower()
+    def _remove_comments(self,  asm_lines):
+        asm_lines = filter(lambda x: x.strip() != '', asm_lines)
+        asm_lines = filter(lambda x: not x.startswith('//'), asm_lines)
+        asm_lines = map(lambda x: x[0: x.rfind('//')].strip(), asm_lines)
+        asm_lines = map(lambda x: x.lower(), asm_lines)
+        return list(asm_lines)
+
+
+    def _process_labels(self, asm_lines):
+        labels = filter(lambda x: x[1].endswith(':'), enumerate(asm_lines))
+        asm_lines = list(filter(lambda x: not x.endswith(':'), asm_lines))
+        labels = map(lambda x: x[::-1], labels)
+        labels = list(labels)
+        labels = map(lambda x, i: (x[0].replace(':', ''), x[1]-i), labels, range(len(labels)))
+        return asm_lines, dict(labels)
+
+
+    def _parse(self, asm_line, **kwargs):
         instruction = asm_line.split()[0]
         parser = getattr(self, '_parse_'+self.inst_type[instruction])
-        return parser(self, asm_line)
+        return parser(self, asm_line, **kwargs)
 
 
-    def _parse_r_type(self, asm_line):
+    def _parse_r_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
@@ -139,31 +157,47 @@ class Masm:
         return parsed_inst
         
     
-    def _parse_ls_type(self, asm_line):
+    def _parse_ls_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
         rt = format(int(asm_split[1].replace('$', '')), '05b')
         offset, rs = asm_split[2].replace(')','').split('(')
         rs = format(int(rs.replace('$', '')), '05b')
-        immediate = format(int(offset), '016b')
+        immediate_value = int(offset)
+        if immediate_value < 0:
+            immediate_value = (1<<16) + immediate_value
+        immediate = format(immediate_value, '016b')
         parsed_inst = opcode + rs + rt + immediate
         return parsed_inst
         
         
 
-    def _parse_immed_type(self, asm_line):
+    def _parse_immed_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
         rs = format(int(asm_split[2].replace('$', '')), '05b')
         rt = format(int(asm_split[1].replace('$', '')), '05b')
-        immediate = format(int(asm_split[3]), '016b')
+
+        immediate_value = asm_split[3]
+        if immediate_value in self._labels:
+            # if immediate value is a label, translate to relative address
+            line_number = kwargs['line_number']
+            immediate_value = self._labels[immediate_value] - (line_number + 1)
+        else:
+            immediate_value = int(immediate_value)
+        if immediate_value < 0:
+            # if immediate value is negative, translate to equivalent positive
+            # binary number
+            immediate_value = (1<<16) + immediate_value
+
+        immediate = format(immediate_value, '016b')
         parsed_inst = opcode + rs + rt + immediate
         return parsed_inst
 
     
-    def _parse_shamt_type(self, asm_line):
+    def _parse_shamt_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
@@ -176,26 +210,44 @@ class Masm:
         return parsed_inst
 
  
-    def _parse_lui_type(self, asm_line):
+    def _parse_lui_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
         rs = format(0, '05b')
         rt = format(int(asm_split[1].replace('$', '')), '05b')
-        immediate = format(int(asm_split[2]), '016b')
+        immediate_value = int(asm_split[2])
+        if immediate_value < 0:
+            # if immediate value is negative, translate to equivalent positive
+            # binary number
+            immediate_value = (1<<16) + immediate_value
+        immediate = format(immediate_value, '016b')
         parsed_inst = opcode + rs + rt + immediate
         return parsed_inst
         
 
-    def _parse_j_type(self, asm_line):
+    def _parse_j_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
-        immediate = format(int(asm_split[1]), '026b')
+
+        immediate_value = asm_split[1]
+        if immediate_value in self._labels:
+            # if immediate value is a label, translate to relative address
+            line_number = kwargs['line_number']
+            immediate_value = self._labels[immediate_value]
+        else:
+            immediate_value = int(immediate_value)
+        if immediate_value < 0:
+            # if immediate value is negative, translate to equivalent positive
+            # binary number
+            immediate_value = (1<<26) + immediate_value
+
+        immediate = format(immediate_value, '026b')
         parsed_inst = opcode + immediate
         return parsed_inst
 
-    def _parse_jr_type(self, asm_line):
+    def _parse_jr_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
@@ -207,7 +259,7 @@ class Masm:
         parsed_inst = opcode + rs + rt + rd + shamt + funct
         return parsed_inst
 
-    def _parse_jalr_type(self, asm_line):
+    def _parse_jalr_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
         asm_split = asm_line.split()
         opcode = format(self.opcodes[asm_split[0]], '06b')
