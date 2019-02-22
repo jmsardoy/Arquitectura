@@ -27,6 +27,9 @@ module MemoryStage
     input wire i_MemtoReg,
     input wire [2:0] i_ls_filter_op,
 
+    input i_debug_read_data,
+    input [DATA_ADDRS_BITS - 1 : 0] i_debug_read_address,
+
 
     output wire [PROC_BITS - 1 : 0]      o_alu_data,
     output wire [PROC_BITS - 1 : 0]      o_mem_data,
@@ -40,6 +43,14 @@ module MemoryStage
     output wire o_RegWrite,
     output wire o_MemtoReg
 );
+
+    //muxs for read from debug
+    wire [DATA_ADDRS_BITS - 1 : 0] mem_address;
+    assign mem_address = (i_debug_read_data) ? i_debug_read_address :
+                                               i_alu_data[DATA_ADDRS_BITS - 1 : 0];
+    //disable write while reading from debug
+    wire mem_write_enable;
+    assign mem_write_enable = (i_debug_read_data) ? 0 : i_MemWrite;
 
     //wires for Filter and BRAM connections
     wire [PROC_BITS - 1 : 0] mem_data_raw;
@@ -71,10 +82,10 @@ module MemoryStage
     BRAM  #(
         .ADDRESS_BITS(DATA_ADDRS_BITS),
         .DATA_BITS(PROC_BITS)
-    ) instruction_memory (
+    ) data_memory (
         .clk(clk),
-        .write_enable(i_MemWrite),
-        .i_address(i_alu_data[DATA_ADDRS_BITS - 1 : 0]),
+        .write_enable(mem_write_enable),
+        .i_address(mem_address),
         .i_data(store_data_filtered),
         .o_data(mem_data_raw)
     );

@@ -20,6 +20,8 @@ module tb_MemoryStage();
     reg MemWrite;
     reg i_MemtoReg;
     reg [2:0] ls_filter_op;
+    reg debug_read_data;
+    reg [DATA_ADDRS_BITS - 1 : 0] debug_read_address;
     
     wire [PROC_BITS - 1 : 0] o_alu_data;
     wire [REG_ADDRS_BITS - 1 : 0] o_rd;
@@ -34,6 +36,10 @@ module tb_MemoryStage();
 
     initial begin
         clk = 0;
+
+        //this test doesnt check debug read
+        debug_read_data = 0;
+        debug_read_address = 0;
 
         //this test doesn't check for load filter and store filters
         //cause reasons.
@@ -73,6 +79,8 @@ module tb_MemoryStage();
         .i_MemWrite(MemWrite),
         .i_MemtoReg(i_MemtoReg),
         .i_ls_filter_op(ls_filter_op),
+        .i_debug_read_data(debug_read_data),
+        .i_debug_read_address(debug_read_address),
         .o_alu_data(o_alu_data),
         .o_mem_data(mem_data),
         .o_rd(o_rd),

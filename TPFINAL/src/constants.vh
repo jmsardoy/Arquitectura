@@ -10,6 +10,12 @@
 `define INST_ADDRS_BITS 8
 `define DATA_ADDRS_BITS 8
 
+`define IF_ID_LEN  64
+`define ID_EX_LEN  196
+`define EX_MEM_LEN 142
+`define MEM_WB_LEN 104
+`define RF_REGS_LEN 32*32
+
 
 //R-TYPE
 `define ADD_OP  'b000000

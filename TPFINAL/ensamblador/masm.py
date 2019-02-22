@@ -107,7 +107,9 @@ class Masm:
                     'jal' : 'j_type',
 
                     'jr'  : 'jr_type',
-                    'jalr': 'jalr_type'
+                    'jalr': 'jalr_type',
+
+                    'hlt' : 'hlt_type'
     }
 
 
@@ -143,6 +145,10 @@ class Masm:
         parser = getattr(self, '_parse_'+self.inst_type[instruction])
         return parser(self, asm_line, **kwargs)
 
+    
+    def _parse_hlt_type(self, asm_line, **kwargs):
+        return format((1<<32)-1, '032b')
+        
 
     def _parse_r_type(self, asm_line, **kwargs):
         asm_line = asm_line.replace(',', '')
@@ -170,7 +176,6 @@ class Masm:
         immediate = format(immediate_value, '016b')
         parsed_inst = opcode + rs + rt + immediate
         return parsed_inst
-        
         
 
     def _parse_immed_type(self, asm_line, **kwargs):
@@ -233,7 +238,7 @@ class Masm:
 
         immediate_value = asm_split[1]
         if immediate_value in self._labels:
-            # if immediate value is a label, translate to relative address
+            # if immediate value is a label, translate to absolute address
             line_number = kwargs['line_number']
             immediate_value = self._labels[immediate_value]
         else:
