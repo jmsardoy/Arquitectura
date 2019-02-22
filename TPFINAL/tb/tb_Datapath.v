@@ -30,6 +30,7 @@ module tb_Datapath();
     wire [ID_EX_LEN - 1 : 0]    id_ex_signals;
     wire [EX_MEM_LEN - 1 : 0]   ex_mem_signals;
     wire [RF_REGS_LEN - 1 : 0 ] rf_regs;
+    wire [PROC_BITS - 1 : 0]    mem_data;
 
     initial begin
         clk = 1;
@@ -61,7 +62,8 @@ module tb_Datapath();
         .o_if_id_signals(if_id_signals),
         .o_id_ex_signals(id_ex_signals),
         .o_ex_mem_signals(ex_mem_signals),
-        .o_rf_regs(rf_regs)
+        .o_rf_regs(rf_regs),
+        .o_mem_data(mem_data)
     );
 
 endmodule

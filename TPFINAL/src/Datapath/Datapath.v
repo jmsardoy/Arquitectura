@@ -33,11 +33,11 @@ module Datapath
 
     //outputs for debug
     output wire [RF_REGS_LEN - 1 : 0] o_rf_regs,
-
-    output wire [IF_ID_LEN - 1 : 0]  o_if_id_signals,
-    output wire [ID_EX_LEN - 1 : 0]  o_id_ex_signals,
-    output wire [EX_MEM_LEN - 1 : 0] o_ex_mem_signals,
-    output wire [MEM_WB_LEN - 1 : 0] o_mem_wb_signals
+    output wire [IF_ID_LEN - 1 : 0]   o_if_id_signals,
+    output wire [ID_EX_LEN - 1 : 0]   o_id_ex_signals,
+    output wire [EX_MEM_LEN - 1 : 0]  o_ex_mem_signals,
+    output wire [MEM_WB_LEN - 1 : 0]  o_mem_wb_signals,
+    output wire [PROC_BITS - 1 : 0]   o_mem_data
 );
 
     //wires for InstructionFetch and IF_ID latch connection
@@ -164,6 +164,8 @@ module Datapath
     wire [PC_BITS - 1 : 0] mem_pc_return;
     wire mem_RegWrite;
     wire mem_MemtoReg;
+
+    assign o_mem_data = mem_mem_data;
 
     //wires for MEM_WB and WriteBack connection
     wire [PROC_BITS - 1 : 0]      mem_wb_alu_data;
