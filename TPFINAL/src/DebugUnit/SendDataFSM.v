@@ -13,7 +13,8 @@ module SendDataFSM
     parameter OPCODE_BITS      = `OPCODE_BITS,
     parameter DATA_ADDRS_BITS  = `DATA_ADDRS_BITS,
 
-
+    
+    parameter CLK_COUNTER_BITS = `CLK_COUNTER_BITS,
     parameter IF_ID_LEN  = `IF_ID_LEN,
     parameter ID_EX_LEN  = `ID_EX_LEN,
     parameter EX_MEM_LEN = `EX_MEM_LEN,
@@ -29,13 +30,13 @@ module SendDataFSM
     input i_tx_done,
 
     //inputs from datapath
-    input wire [RF_REGS_LEN - 1 : 0] i_rf_regs,
-    input wire [IF_ID_LEN - 1 : 0]   i_if_id_signals,
-    input wire [ID_EX_LEN - 1 : 0]   i_id_ex_signals,
-    input wire [EX_MEM_LEN - 1 : 0]  i_ex_mem_signals,
-    input wire [MEM_WB_LEN - 1 : 0]  i_mem_wb_signals,
-    input wire [PROC_BITS - 1 : 0]   i_mem_data,
-    input wire [7 : 0]               i_clk_count,
+    input wire [RF_REGS_LEN - 1 : 0]      i_rf_regs,
+    input wire [IF_ID_LEN - 1 : 0]        i_if_id_signals,
+    input wire [ID_EX_LEN - 1 : 0]        i_id_ex_signals,
+    input wire [EX_MEM_LEN - 1 : 0]       i_ex_mem_signals,
+    input wire [MEM_WB_LEN - 1 : 0]       i_mem_wb_signals,
+    input wire [PROC_BITS - 1 : 0]        i_mem_data,
+    input wire [CLK_COUNTER_BITS - 1 : 0] i_clk_count,
 
     //output to datapath
     output reg                            o_debug_read_data,
@@ -51,9 +52,8 @@ module SendDataFSM
     //offset is for making regs_len a multiple of 8 (UART_LEN)
     localparam OFFSET = 6;
 
-    //8 is the clock counter length
-    localparam ALL_REGS_LEN = RF_REGS_LEN + IF_ID_LEN + ID_EX_LEN + 
-                              EX_MEM_LEN + MEM_WB_LEN + OFFSET + 8;
+    localparam ALL_REGS_LEN = CLK_COUNTER_BITS + RF_REGS_LEN + IF_ID_LEN + 
+                              ID_EX_LEN + EX_MEM_LEN + MEM_WB_LEN + OFFSET;
 
     //amount of 8-bits regs to be sended
     localparam REGS_COUNT = ALL_REGS_LEN/UART_BITS;

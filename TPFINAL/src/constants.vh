@@ -2,6 +2,7 @@
 `define CONSTANTS_VH
 
 `define UART_BITS 8
+`define CLK_COUNTER_BITS 32
 
 
 `define PROC_BITS 32        // General processor bit size
