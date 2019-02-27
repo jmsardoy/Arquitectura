@@ -53,7 +53,7 @@ module tb_LoadInstFSM();
             rx_done = 1;
             #20
             rx_done = 0;
-            #60;
+            #100;
         end
 
     ;

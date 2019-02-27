@@ -45,6 +45,7 @@ module SendDataFSM
     //outputs to uart
     output reg o_tx_start,
     output reg [UART_BITS - 1 : 0] o_tx_data,
+    output wire [3:0] o_state,
 
     output reg o_done
 );
@@ -73,22 +74,24 @@ module SendDataFSM
 
 
 
-    localparam IDLE            = 0;
-    localparam LATCH_REG       = 1;
-    localparam WAIT_TX_1       = 2;
-    localparam SEND_REG        = 3;
-    localparam WAIT_TX_2       = 4;
-    localparam SET_MEM_ADDRESS = 5;
-    localparam LATCH_MEM_DATA  = 6;
-    localparam LATCH_MEM_BYTE  = 7;
-    localparam WAIT_TX_3       = 8;
-    localparam SEND_MEM_BYTE   = 9;
-    localparam WAIT_TX_4       = 10;
-    localparam FINISH          = 11;
+    localparam IDLE             = 0;
+    localparam LATCH_REG        = 1;
+    localparam WAIT_TX_1        = 2;
+    localparam SEND_REG         = 3;
+    localparam WAIT_TX_2        = 4;
+    localparam SET_MEM_ADDRESS  = 5;
+    localparam LATCH_MEM_DATA   = 6;
+    localparam HOLD_MEM_ADDRESS = 7;
+    localparam LATCH_MEM_BYTE   = 8;
+    localparam WAIT_TX_3        = 9;
+    localparam SEND_MEM_BYTE    = 10;
+    localparam WAIT_TX_4        = 11;
+    localparam FINISH           = 12;
 
 
     reg [3:0] state;
     reg [3:0] next_state;
+    assign o_state = state;
 
     //reg to keep count of how many regs are already sended
     reg [REG_COUNTER_LEN - 1 : 0] sended_regs_count;
@@ -104,6 +107,9 @@ module SendDataFSM
 
     //reg to latch mem data while sending it
     reg [PROC_BITS - 1 : 0] mem_data;
+
+    //reg to count tx_done up to 2 to ensure that is not sending
+    reg [1:0] tx_wait_count;
     
     always@(posedge clk) begin
         if (!rst) begin
@@ -129,29 +135,32 @@ module SendDataFSM
                     next_state = WAIT_TX_1;
                 end
                 WAIT_TX_1: begin
-                    if (i_tx_done) next_state = SEND_REG;
-                    else         next_state = WAIT_TX_1;
+                    if (tx_wait_count == 2) next_state = SEND_REG;
+                    else                    next_state = WAIT_TX_1;
                 end
                 SEND_REG: begin
                     if (sended_regs_count == 0) next_state = WAIT_TX_2;
                     else                        next_state = LATCH_REG;
                 end
                 WAIT_TX_2: begin
-                    if (i_tx_done) next_state =  SET_MEM_ADDRESS;
-                    else         next_state = WAIT_TX_2;
+                    if (tx_wait_count == 2) next_state =  SET_MEM_ADDRESS;
+                    else                    next_state = WAIT_TX_2;
                 end
                 SET_MEM_ADDRESS: begin
                     next_state = LATCH_MEM_DATA;
                 end
                 LATCH_MEM_DATA: begin
+                    next_state = HOLD_MEM_ADDRESS;
+                end
+                HOLD_MEM_ADDRESS: begin
                     next_state = LATCH_MEM_BYTE;
                 end
                 LATCH_MEM_BYTE: begin
                     next_state = WAIT_TX_3;
                 end
                 WAIT_TX_3: begin
-                    if (i_tx_done) next_state = SEND_MEM_BYTE;
-                    else         next_state = WAIT_TX_3;
+                    if (tx_wait_count == 2) next_state = SEND_MEM_BYTE;
+                    else                    next_state = WAIT_TX_3;
                 end
                 SEND_MEM_BYTE: begin
                     if (bytes_count == 4) begin
@@ -172,8 +181,8 @@ module SendDataFSM
                     end
                 end
                 WAIT_TX_4: begin
-                    if (i_tx_done) next_state = FINISH;
-                    else           next_state = WAIT_TX_4;
+                    if (tx_wait_count == 2) next_state = FINISH;
+                    else                    next_state = WAIT_TX_4;
                 end
                 FINISH: begin
                     next_state = IDLE;
@@ -202,6 +211,20 @@ module SendDataFSM
                 o_done = 0;
             end
             SET_MEM_ADDRESS: begin
+                o_debug_read_data = 1;
+                o_debug_read_address = mem_address;
+                o_tx_start = 0;
+                o_tx_data = 0;
+                o_done = 0;
+            end
+            LATCH_MEM_DATA: begin
+                o_debug_read_data = 1;
+                o_debug_read_address = mem_address;
+                o_tx_start = 0;
+                o_tx_data = 0;
+                o_done = 0;
+            end
+            HOLD_MEM_ADDRESS: begin
                 o_debug_read_data = 1;
                 o_debug_read_address = mem_address;
                 o_tx_start = 0;
@@ -240,6 +263,7 @@ module SendDataFSM
             sended_regs_count <= 0;
             mem_address <= 0;
             bytes_count <= 0;
+            tx_wait_count <= 0;
         end
         else begin
             case(state)
@@ -250,23 +274,50 @@ module SendDataFSM
                         sended_regs_count <= REGS_COUNT;
                         mem_address <= 0;
                         bytes_count <= 0;
+                        tx_wait_count <= 0;
                     end
+                end
+                WAIT_TX_1: begin
+                    if (i_tx_done == 0) tx_wait_count <= 0;
+                    else                tx_wait_count <= tx_wait_count + 1;
+                end
+                SEND_REG: begin
+                    tx_wait_count <= 0;
+                end
+                WAIT_TX_2: begin
+                    if (i_tx_done == 0) tx_wait_count <= 0;
+                    else                tx_wait_count <= tx_wait_count + 1;
                 end
                 LATCH_REG: begin
                     send_data <= all_regs_latch[ALL_REGS_LEN - 1 -: UART_BITS];
                     all_regs_latch <= all_regs_latch << UART_BITS;
                     sended_regs_count <= sended_regs_count - 1;
+                    tx_wait_count <= 0;
                 end
                 LATCH_MEM_DATA: begin
                     mem_data <= i_mem_data;
-                    mem_address <= mem_address + 1;
                     bytes_count <= 0;
+                end
+                HOLD_MEM_ADDRESS: begin
+                    mem_address <= mem_address + 1;
                 end
                 LATCH_MEM_BYTE: begin
                     //MSB should be send first
                     send_data <= mem_data[PROC_BITS - 1 -: UART_BITS];
                     mem_data  <= mem_data << UART_BITS;
                     bytes_count <= bytes_count+1;
+                    tx_wait_count <= 0;
+                end
+                WAIT_TX_3: begin
+                    if (i_tx_done == 0) tx_wait_count <= 0;
+                    else                tx_wait_count <= tx_wait_count + 1;
+                end
+                SEND_MEM_BYTE: begin
+                    tx_wait_count <= 0;
+                end
+                WAIT_TX_4: begin
+                    if (i_tx_done == 0) tx_wait_count <= 0;
+                    else                tx_wait_count <= tx_wait_count + 1;
                 end
             endcase
         end

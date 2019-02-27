@@ -36,7 +36,7 @@ module DebugUnit
     input wire [PROC_BITS - 1 : 0]   i_mem_data,
 
     //output to datapath
-    output reg                             o_enable,
+    output wire                            o_enable,
     output wire                            o_write_inst_mem,
     output wire [PC_BITS - 1 : 0]          o_inst_mem_addr,
     output wire [INSTRUCTION_BITS - 1 : 0] o_inst_mem_data,
@@ -44,7 +44,11 @@ module DebugUnit
     output wire [DATA_ADDRS_BITS - 1 : 0]  o_debug_read_address,
 
     //uart output
-    output wire o_tx
+    output wire o_tx,
+    output wire o_rx_done,
+    output wire [UART_BITS - 1 : 0] o_rx_data,
+
+    output wire [3:0] o_send_state
 
 );
 
@@ -54,6 +58,9 @@ module DebugUnit
     wire tx_start;
     wire tx_done;
     wire rx_done;
+
+    assign o_rx_done = rx_done;
+    assign o_rx_data = rx_data;
 
     DebugFSM debug_fsm(
         .clk(clk),
@@ -74,7 +81,8 @@ module DebugUnit
         .o_debug_read_data(o_debug_read_data),
         .o_debug_read_address(o_debug_read_address),
         .o_tx_start(tx_start),
-        .o_tx_data(o_tx_data)
+        .o_tx_data(tx_data),
+        .o_send_state(o_send_state)
     );
 
     UART uart_u(

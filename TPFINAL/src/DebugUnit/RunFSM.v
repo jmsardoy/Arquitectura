@@ -37,7 +37,8 @@ module RunFSM
     output reg o_send_start,
     output reg [CLK_COUNTER_BITS - 1 : 0] o_clk_count,
 
-    output reg o_done
+    output reg o_done,
+    output wire [2:0] o_state
     
 );
 
@@ -52,6 +53,8 @@ module RunFSM
 
     reg [2:0] state;
     reg [2:0] next_state;
+
+    assign o_state = state;
 
     reg [1:0] halt_counter;
 
@@ -94,6 +97,9 @@ module RunFSM
                     else             next_state = WAIT_SEND;
                 end
                 FINISH: begin
+                    next_state = IDLE;
+                end
+                default: begin
                     next_state = IDLE;
                 end
             endcase

@@ -25,7 +25,17 @@ FOR_LOOP:
     addi $3 $3 1        //increment data memory address
     bne  $1 $0 FOR_LOOP
 
+addi $4 $0 156
 
+lw $5 0($0)
+lw $6 1($0)
+lw $7 2($0)
+lw $8 3($0)
+lw $9 4($0)
+lw $10 5($0)
+lw $11 6($0)
+lw $12 7($0)
+lw $13 8($0)
 j FINISH
 
 

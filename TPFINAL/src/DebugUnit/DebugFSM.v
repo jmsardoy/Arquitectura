@@ -48,7 +48,9 @@ module DebugFSM
 
     //outputs to uart
     output wire o_tx_start,
-    output wire [UART_BITS - 1 : 0] o_tx_data
+    output wire [UART_BITS - 1 : 0] o_tx_data,
+    output wire [3:0] o_send_state
+
 
 
 );
@@ -68,6 +70,9 @@ module DebugFSM
 
     reg [2:0] state;
     reg [2:0] next_state;
+
+    wire [2:0] run_state;
+    assign o_send_state[2:0] = run_state;
 
 
     //reg for fsm starts signals
@@ -147,7 +152,6 @@ module DebugFSM
                 WAIT_RUN: begin
                     if (run_fsm_done) next_state = IDLE;
                     else              next_state = WAIT_RUN;
-                    
                 end
                 START_STEP: begin
                     next_state = WAIT_STEP;
@@ -156,6 +160,9 @@ module DebugFSM
                     if (step_fsm_done) next_state = IDLE;
                     else               next_state = WAIT_STEP;
                     
+                end
+                default: begin
+                    next_state = IDLE;
                 end
             endcase
         end
@@ -212,7 +219,7 @@ module DebugFSM
                 clk_count      = 0;
                 send_start     = 0;
             end
-            WAIT_RUN: begin
+            WAIT_STEP: begin
                 o_enable       = step_fsm_enable;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -253,7 +260,8 @@ module DebugFSM
         .o_enable(run_fsm_enable),
         .o_send_start(run_fsm_send_start),
         .o_clk_count(run_fsm_clk_count),
-        .o_done(run_fsm_done)
+        .o_done(run_fsm_done),
+        .o_state(run_state)
     );
 
     SendDataFSM send_data_fsm(

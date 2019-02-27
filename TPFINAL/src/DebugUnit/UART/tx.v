@@ -1,16 +1,21 @@
 `define NBITS 8
 
-module TX(
+module TX
+#(
+    parameter NBITS = `NBITS
+)
+(
     input clk,
     input rst,
     input i_baud_rate,
     input i_tx_start,
     input [`NBITS-1 : 0] i_data,
     output reg o_tx_done,
-    output reg o_tx);
+    output reg o_tx
+);
 
-    localparam NBITS = `NBITS;
-    localparam COUNTER_NBITS = $clog2(NBITS)+1;
+    //localparam COUNTER_NBITS = $clog2(NBITS)+1;
+    localparam COUNTER_NBITS = 8;
 
     localparam
         idle  = 'b00,
