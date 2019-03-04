@@ -42,13 +42,14 @@ module DebugUnit
     output wire [INSTRUCTION_BITS - 1 : 0] o_inst_mem_data,
     output wire                            o_debug_read_data,
     output wire [DATA_ADDRS_BITS - 1 : 0]  o_debug_read_address,
+    output wire                            o_rst_mips,
+
+    output [2:0] o_state,
 
     //uart output
     output wire o_tx,
     output wire o_rx_done,
-    output wire [UART_BITS - 1 : 0] o_rx_data,
-
-    output wire [3:0] o_send_state
+    output wire [UART_BITS - 1 : 0] o_rx_data
 
 );
 
@@ -80,9 +81,10 @@ module DebugUnit
         .o_inst_mem_data(o_inst_mem_data),
         .o_debug_read_data(o_debug_read_data),
         .o_debug_read_address(o_debug_read_address),
+        .o_rst_mips(o_rst_mips),
+        .o_state(o_state),
         .o_tx_start(tx_start),
-        .o_tx_data(tx_data),
-        .o_send_state(o_send_state)
+        .o_tx_data(tx_data)
     );
 
     UART uart_u(

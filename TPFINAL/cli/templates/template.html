@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block main_title %}
+
+    info
+
+{% endblock %}
+
+
+{% block main_content %}
+	<div class="form-group">
+		<form action="/load" method="post">
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-12">{{load_form.load(class_='form-control')}}</div>
+			</div>
+            {{load_form.hidden_tag()}}
+		</form>
+	</div>
+	<div class="form-group">
+		<form action="/run" method="post">
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-12">{{run_form.run(class_='form-control')}}</div>
+			</div>
+            {{run_form.hidden_tag()}}
+		</form>
+	</div>
+	<div class="form-group">
+		<form action="/step" method="post">
+			<div class="row" style="margin-top: 10px">
+				<div class="col-md-4">{{step_form.start(class_='form-control')}}</div>
+				<div class="col-md-4">{{step_form.step(class_='form-control')}}</div>
+				<div class="col-md-4">{{step_form.stop(class_='form-control')}}</div>
+			</div>
+            {{step_form.hidden_tag()}}
+		</form>
+	</div>
+
+    {% if mips_data %}
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>CLK Count</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>{{mips_data['clk_count']['signed_int']}}</td>
+                        <td>{{mips_data['clk_count']['unsigned_int']}}</td>
+                        <td>{{mips_data['clk_count']['binary']}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>Register File</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="container">
+            <div class="table_responsive" style="height: 350px; overflow:auto">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Register File</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for rfn, reg_data in mips_data['register_file'].items() %}
+                        <tr>
+                            <td>{{rfn}} </td>
+                            <td>{{reg_data['signed_int']}}</td>
+                            <td>{{reg_data['unsigned_int']}}</td>
+                            <td>{{reg_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>IF/ID Latch Info</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for latch_name, latch_data in mips_data['latchs_data']['IF_ID'].items() %}
+                        <tr>
+                            <td>{{latch_name}} </td>
+                            <td>{{latch_data['signed_int']}}</td>
+                            <td>{{latch_data['unsigned_int']}}</td>
+                            <td>{{latch_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>ID/EX Latch Info</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for latch_name, latch_data in mips_data['latchs_data']['ID_EX'].items() %}
+                        <tr>
+                            <td>{{latch_name}} </td>
+                            <td>{{latch_data['signed_int']}}</td>
+                            <td>{{latch_data['unsigned_int']}}</td>
+                            <td>{{latch_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>EX/MEM Latch Info</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for latch_name, latch_data in mips_data['latchs_data']['EX_MEM'].items() %}
+                        <tr>
+                            <td>{{latch_name}} </td>
+                            <td>{{latch_data['signed_int']}}</td>
+                            <td>{{latch_data['unsigned_int']}}</td>
+                            <td>{{latch_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>MEM_WB Latch Info</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for latch_name, latch_data in mips_data['latchs_data']['MEM_WB'].items() %}
+                        <tr>
+                            <td>{{latch_name}} </td>
+                            <td>{{latch_data['signed_int']}}</td>
+                            <td>{{latch_data['unsigned_int']}}</td>
+                            <td>{{latch_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="table_responsive">
+                <table class="table table-striped" style="margin-top: 20px">
+                    <tr>
+                        <th>Memory Data</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="container">
+            <div class="table_responsive" style="height: 350px; overflow:auto">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Memory Data</th>
+                        <th>Signed INT</th>
+                        <th>Unsigned INT</th>
+                        <th>Binary</th>
+                    </tr>
+                    {% for mem_address, mem_data in mips_data['memory_data'].items() %}
+                        <tr>
+                            <td>{{mem_address}} </td>
+                            <td>{{mem_data['signed_int']}}</td>
+                            <td>{{mem_data['unsigned_int']}}</td>
+                            <td>{{mem_data['binary']}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock %}

@@ -45,13 +45,13 @@ module DebugFSM
     output wire [INSTRUCTION_BITS - 1 : 0] o_inst_mem_data,
     output wire                            o_debug_read_data,
     output wire [DATA_ADDRS_BITS - 1 : 0]  o_debug_read_address,
+    output reg                             o_rst_mips,
+    
+    output [2:0] o_state,
 
     //outputs to uart
     output wire o_tx_start,
-    output wire [UART_BITS - 1 : 0] o_tx_data,
-    output wire [3:0] o_send_state
-
-
+    output wire [UART_BITS - 1 : 0] o_tx_data
 
 );
 
@@ -71,9 +71,7 @@ module DebugFSM
     reg [2:0] state;
     reg [2:0] next_state;
 
-    wire [2:0] run_state;
-    assign o_send_state[2:0] = run_state;
-
+    assign o_state = state;
 
     //reg for fsm starts signals
     reg load_fsm_start;
@@ -172,6 +170,7 @@ module DebugFSM
     always@* begin
         case (state)
             IDLE: begin
+                o_rst_mips     = 0;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -180,6 +179,7 @@ module DebugFSM
                 send_start     = 0;
             end
             START_LOAD: begin
+                o_rst_mips     = 1;
                 o_enable       = 0;
                 load_fsm_start = 1;
                 run_fsm_start  = 0;
@@ -188,6 +188,7 @@ module DebugFSM
                 send_start     = 0;
             end
             WAIT_LOAD: begin
+                o_rst_mips     = 1;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -196,6 +197,7 @@ module DebugFSM
                 send_start     = 0;
             end
             START_RUN: begin
+                o_rst_mips     = 1;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 1;
@@ -204,6 +206,7 @@ module DebugFSM
                 send_start     = 0;
             end
             WAIT_RUN: begin
+                o_rst_mips     = 1;
                 o_enable       = run_fsm_enable;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -212,6 +215,7 @@ module DebugFSM
                 send_start     = run_fsm_send_start;
             end
             START_STEP: begin
+                o_rst_mips     = 1;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -220,6 +224,7 @@ module DebugFSM
                 send_start     = 0;
             end
             WAIT_STEP: begin
+                o_rst_mips     = 1;
                 o_enable       = step_fsm_enable;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -228,6 +233,7 @@ module DebugFSM
                 send_start     = step_fsm_send_start;
             end
             default: begin
+                o_rst_mips     = 0;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
@@ -260,8 +266,7 @@ module DebugFSM
         .o_enable(run_fsm_enable),
         .o_send_start(run_fsm_send_start),
         .o_clk_count(run_fsm_clk_count),
-        .o_done(run_fsm_done),
-        .o_state(run_state)
+        .o_done(run_fsm_done)
     );
 
     SendDataFSM send_data_fsm(
@@ -283,19 +288,18 @@ module DebugFSM
         .o_done(send_done)
     );
 
-    /*
     StepFSM step_fsm (
         .clk(clk),
         .rst(rst),
         .i_start(step_fsm_start),
+        .i_rx_done(i_rx_done),
+        .i_rx_data(i_rx_data),
         .i_send_done(send_done),
-        .i_instruction(instruction),
         .o_enable(step_fsm_enable),
         .o_send_start(step_fsm_send_start),
         .o_clk_count(step_fsm_clk_count),
         .o_done(step_fsm_done)
     );
-    */
     
 
 

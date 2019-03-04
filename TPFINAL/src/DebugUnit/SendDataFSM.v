@@ -45,7 +45,6 @@ module SendDataFSM
     //outputs to uart
     output reg o_tx_start,
     output reg [UART_BITS - 1 : 0] o_tx_data,
-    output wire [3:0] o_state,
 
     output reg o_done
 );
@@ -91,7 +90,6 @@ module SendDataFSM
 
     reg [3:0] state;
     reg [3:0] next_state;
-    assign o_state = state;
 
     //reg to keep count of how many regs are already sended
     reg [REG_COUNTER_LEN - 1 : 0] sended_regs_count;

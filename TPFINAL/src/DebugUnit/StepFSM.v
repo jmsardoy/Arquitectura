@@ -2,7 +2,7 @@
 
 `include "constants.vh"
 
-module RunFSM
+module StepFSM
 #(
     parameter UART_BITS = `UART_BITS,
 
@@ -26,9 +26,9 @@ module RunFSM
     input rst,
 
     input i_start,
+    input i_rx_done,
+    input [UART_BITS - 1 : 0] i_rx_data,
     input i_send_done,
-    //instruction is needed to check for halt
-    input [PROC_BITS - 1 : 0] i_instruction,
 
     //output to datapath
     output reg o_enable,
@@ -38,22 +38,22 @@ module RunFSM
     output reg [CLK_COUNTER_BITS - 1 : 0] o_clk_count,
 
     output reg o_done
-    
 );
 
-    localparam HLT = 32'hffffffff;
+    localparam OP_STEP = 4;
+    localparam OP_STOP = 5;
 
-    localparam IDLE      = 0;
-    localparam RUNNING   = 1;
-    localparam CHECK_HLT = 2;
-    localparam SEND_DATA = 3;
-    localparam WAIT_SEND = 4;
-    localparam FINISH    = 5;
+    localparam IDLE            = 0;
+    localparam FIRST_SEND      = 1;
+    localparam WAIT_FIRST_SEND = 2;
+    localparam WAIT_STEP       = 3;
+    localparam ENABLE          = 4;
+    localparam SEND_DATA       = 5;
+    localparam WAIT_SEND       = 6;
+    localparam FINISH          = 7;
 
     reg [2:0] state;
     reg [2:0] next_state;
-
-    reg [1:0] halt_counter;
 
     always@(posedge clk) begin
         if (!rst) begin
@@ -72,25 +72,34 @@ module RunFSM
         else begin
             case(state)
                 IDLE: begin
-                    if (i_start) next_state = RUNNING;
+                    if (i_start) next_state = FIRST_SEND;
                     else         next_state = IDLE;
                 end
-                RUNNING: begin
-                    if (i_instruction == HLT) next_state = CHECK_HLT;
-                    else                      next_state = RUNNING;
+                FIRST_SEND: begin
+                    next_state = WAIT_FIRST_SEND;
                 end
-                CHECK_HLT: begin
-                    if (i_instruction == HLT) begin
-                        if (halt_counter == 2) next_state = SEND_DATA;
-                        else                   next_state = CHECK_HLT;
+                WAIT_FIRST_SEND: begin
+                    if (i_send_done) next_state = WAIT_STEP;
+                    else             next_state = WAIT_FIRST_SEND;
+                end
+                WAIT_STEP: begin
+                    if (i_rx_done) begin
+                       if      (i_rx_data == OP_STEP) next_state = ENABLE; 
+                       else if (i_rx_data == OP_STOP) next_state = FINISH;
+                       else                           next_state = WAIT_STEP;
                     end
-                    else next_state = RUNNING;
+                    else begin
+                        next_state = WAIT_STEP;
+                    end
+                end
+                ENABLE: begin
+                    next_state = SEND_DATA;
                 end
                 SEND_DATA: begin
                     next_state = WAIT_SEND;
                 end
                 WAIT_SEND: begin
-                    if (i_send_done) next_state = FINISH;
+                    if (i_send_done) next_state = WAIT_STEP;
                     else             next_state = WAIT_SEND;
                 end
                 FINISH: begin
@@ -112,12 +121,22 @@ module RunFSM
                 o_send_start = 0;
                 o_done       = 0;
             end
-            RUNNING: begin
-                o_enable     = 1;
+            FIRST_SEND: begin
+                o_enable     = 0;
+                o_send_start = 1;
+                o_done       = 0;
+            end
+            WAIT_FIRST_SEND: begin
+                o_enable     = 0;
                 o_send_start = 0;
                 o_done       = 0;
             end
-            CHECK_HLT: begin
+            WAIT_STEP: begin
+                o_enable     = 0;
+                o_send_start = 0;
+                o_done       = 0;
+            end
+            ENABLE: begin
                 o_enable     = 1;
                 o_send_start = 0;
                 o_done       = 0;
@@ -150,25 +169,14 @@ module RunFSM
     //inner logic
     always@(posedge clk) begin
         if (!rst) begin
-            halt_counter <= 0;
             o_clk_count <= 0;
         end
         else begin
             case (state)
                 IDLE: begin
-                    halt_counter <= 0;
                     o_clk_count <= 0;
                 end
-                RUNNING: begin
-                    if (i_instruction == HLT) begin
-                        halt_counter <= halt_counter + 1;
-                    end
-                    o_clk_count <= o_clk_count + 1;
-                end
-                CHECK_HLT: begin
-                    if (i_instruction == HLT) begin
-                        halt_counter <= halt_counter + 1;
-                    end
+                ENABLE: begin
                     o_clk_count <= o_clk_count + 1;
                 end
             endcase

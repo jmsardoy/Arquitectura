@@ -191,6 +191,7 @@ def load_memory(ser, mem_path):
     ser.write(chr(instructions_count)); sleep(0.2)
     print "inst count: ", instructions_count
     for inst in instructions_bytes:
+        import ipdb; ipdb.set_trace()
         ser.write(chr(inst))
         print inst, bin(inst)
         sleep(0.2)

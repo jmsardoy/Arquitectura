@@ -27,22 +27,19 @@ module TopLevel
     input RsRx,
     output RsTx,
 
-    output [15:0] led
+    output [15:0] led,
+    output [6:0] seg
 );
 
+    wire o_tx;
+    wire i_rx;
+    wire rst;
     assign i_rx = RsRx;
     assign RsTx = o_tx;
     assign rst = ~btnC;
     wire rx_done;
 
     wire [UART_BITS - 1 : 0] rx_data;
-
-    wire [3:0]  send_state;
-
-    //assign led[15:12] = send_state;
-    //assign led[11:8] = 0;
-    assign led[15:8] = inst_mem_data[7:0];
-    assign led[UART_BITS - 1 : 0] = rx_data;
 
 
     //output from datapath, inputs to debug
@@ -60,10 +57,18 @@ module TopLevel
     wire [INSTRUCTION_BITS - 1 : 0] inst_mem_data;
     wire                            debug_read_data;
     wire [DATA_ADDRS_BITS - 1 : 0]  debug_read_address;
+    wire                            rst_mips;
+
+    //assign led[15:12] = send_state;
+    //assign led[11:8] = 0;
+    assign led[15:8] = inst_mem_data[7:0];
+    assign led[UART_BITS - 1 : 0] = rx_data;
+
+    wire [2:0] debug_state;
 
     Datapath datapath_u(
         .clk(clk),
-        .rst(rst),
+        .rst(rst_mips),
         .enable(enable_datapath),
         .i_write_inst_mem(write_inst_mem),
         .i_inst_mem_addr(inst_mem_addr),
@@ -94,10 +99,16 @@ module TopLevel
         .o_inst_mem_data(inst_mem_data),
         .o_debug_read_data(debug_read_data),
         .o_debug_read_address(debug_read_address),
+        .o_rst_mips(rst_mips),
+        .o_state(debug_state),
         .o_tx(o_tx),
         .o_rx_done(rx_done),
-        .o_rx_data(rx_data),
-        .o_send_state(send_state)
+        .o_rx_data(rx_data)
+    );
+
+    SevenSegmentDecoder seg_decod_u(
+        .i_debug_state(debug_state),
+        .o_seg(seg)
     );
 
 endmodule
