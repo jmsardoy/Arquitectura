@@ -11,7 +11,7 @@ app = Flask(__name__)
 Bootstrap(app)
 app.config['SECRET_KEY'] = 'asdasdasfg123'
 
-port = '/dev/ttyUSB2'
+port = '/dev/ttyUSB1'
 cli = MipsCLI(port)
 
 class LoadForm(FlaskForm):
