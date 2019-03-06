@@ -9,9 +9,11 @@
 
 {% block main_content %}
 	<div class="form-group">
-		<form action="/load" method="post">
+		<form action="/load" method="post" enctype="multipart/form-data">
 			<div class="row" style="margin-top: 10px">
-				<div class="col-md-12">{{load_form.load(class_='form-control')}}</div>
+				<div class="col-md-6">{{load_form.asmfile(class_='form-control')}}</div>
+				<div class="col-md-6">{{load_form.load(class_='form-control')}}</div>
+
 			</div>
             {{load_form.hidden_tag()}}
 		</form>
@@ -27,9 +29,10 @@
 	<div class="form-group">
 		<form action="/step" method="post">
 			<div class="row" style="margin-top: 10px">
-				<div class="col-md-4">{{step_form.start(class_='form-control')}}</div>
-				<div class="col-md-4">{{step_form.step(class_='form-control')}}</div>
-				<div class="col-md-4">{{step_form.stop(class_='form-control')}}</div>
+				<div class="col-md-3">{{step_form.start(class_='form-control')}}</div>
+				<div class="col-md-3">{{step_form.nsteps(class_='form-control')}}</div>
+				<div class="col-md-3">{{step_form.step(class_='form-control')}}</div>
+				<div class="col-md-3">{{step_form.stop(class_='form-control')}}</div>
 			</div>
             {{step_form.hidden_tag()}}
 		</form>
@@ -56,19 +59,7 @@
         </div>
 
         <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>Register File</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="container">
-            <div class="table_responsive" style="height: 350px; overflow:auto">
+            <div class="table_responsive" style="height: 350px; overflow:auto; margin-top: 20px">
                 <table class="table table-striped">
                     <tr>
                         <th>Register File</th>
@@ -173,19 +164,7 @@
         </div>
 
         <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>Memory Data</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="container">
-            <div class="table_responsive" style="height: 350px; overflow:auto">
+            <div class="table_responsive" style="height: 350px; overflow:auto; margin-top:20px">
                 <table class="table table-striped">
                     <tr>
                         <th>Memory Data</th>

@@ -212,12 +212,13 @@ class MipsCLI:
         self.mips_data = mips_data
         return mips_data
 
-    def send_step(self):
-        self._uart.send_byte(self.SEND_STEP)
-        mips_data_raw = self._uart.read(self.DATA_READ_LEN)
-        mips_data = self._parse_mips_data(mips_data_raw)
-        self.mips_data = mips_data
-        return mips_data
+    def send_step(self, nsteps=1):
+        for i in range(nsteps):
+            self._uart.send_byte(self.SEND_STEP)
+            mips_data_raw = self._uart.read(self.DATA_READ_LEN)
+            mips_data = self._parse_mips_data(mips_data_raw)
+            self.mips_data = mips_data
+        return self.mips_data
 
     def stop_step(self):
         self._uart.send_byte(self.STOP_STEP)
