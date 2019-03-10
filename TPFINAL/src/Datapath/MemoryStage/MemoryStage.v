@@ -11,6 +11,7 @@ module MemoryStage
 )
 (
     input wire clk,
+    input wire enable,
 
     input wire [PROC_BITS - 1 : 0]      i_alu_data,
     input wire [PROC_BITS - 1 : 0]      i_store_data,
@@ -46,11 +47,13 @@ module MemoryStage
 
     //muxs for read from debug
     wire [DATA_ADDRS_BITS - 1 : 0] mem_address;
-    assign mem_address = (i_debug_read_data) ? i_debug_read_address :
-                                               i_alu_data[DATA_ADDRS_BITS - 1 : 0];
+    //assign mem_address = (i_debug_read_data) ? i_debug_read_address :
+    //                                           i_alu_data[DATA_ADDRS_BITS - 1 : 0];
+    assign mem_address = (enable) ? i_alu_data[DATA_ADDRS_BITS - 1 : 0] : i_debug_read_address;
     //disable write while reading from debug
     wire mem_write_enable;
-    assign mem_write_enable = (i_debug_read_data) ? 0 : i_MemWrite;
+    //assign mem_write_enable = (i_debug_read_data) ? 0 : i_MemWrite;
+    assign mem_write_enable = (enable) ?  i_MemWrite : 0;
 
     //wires for Filter and BRAM connections
     wire [PROC_BITS - 1 : 0] mem_data_raw;
