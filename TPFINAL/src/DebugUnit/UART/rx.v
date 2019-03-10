@@ -1,6 +1,10 @@
 `define NBITS 8
 
-module RX(
+module RX
+#(
+    parameter NBITS = `NBITS
+)
+(
     input clk,
     input rst,
     input i_baud_rate,
@@ -9,7 +13,6 @@ module RX(
     output reg [`NBITS-1 : 0] o_data
 );
 
-    localparam NBITS = `NBITS;
     localparam COUNTER_NBITS = $clog2(NBITS)+1;
     
     localparam

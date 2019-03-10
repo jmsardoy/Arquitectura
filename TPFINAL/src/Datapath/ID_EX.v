@@ -64,7 +64,7 @@ module ID_EX
 
     always@(posedge clk) begin
 
-        if (~rst || flush) begin
+        if (~rst) begin
             o_PCNext             <= 0;
             o_opcode             <= 0;
             o_read_data_1        <= 0;
@@ -88,26 +88,50 @@ module ID_EX
         end
         else begin
             if (enable) begin
-                o_PCNext             <= i_PCNext;
-                o_opcode             <= i_opcode;
-                o_read_data_1        <= i_read_data_1;
-                o_read_data_2        <= i_read_data_2;
-                o_immediate_data_ext <= i_immediate_data_ext;
-                o_jump_address       <= i_jump_address;
-                o_rs                 <= i_rs;
-                o_rt                 <= i_rt;
-                o_rd                 <= i_rd;
+                if (flush) begin
+                    o_PCNext             <= 0;
+                    o_opcode             <= 0;
+                    o_read_data_1        <= 0;
+                    o_read_data_2        <= 0;
+                    o_immediate_data_ext <= 0;
+                    o_jump_address       <= 0;
+                    o_rs                 <= 0;
+                    o_rt                 <= 0;
+                    o_rd                 <= 0;
 
-                o_RegDst        <= i_RegDst;
-                o_RegWrite      <= i_RegWrite;
-                o_MemRead       <= i_MemRead;
-                o_MemWrite      <= i_MemWrite;
-                o_MemtoReg      <= i_MemtoReg;
-                o_ALUOp         <= i_ALUOp;
-                o_ALUSrc        <= i_ALUSrc;
-                o_Shamt         <= i_Shamt;
-                o_ls_filter_op  <= i_ls_filter_op;
-                o_branch_enable <= i_branch_enable;
+                    o_RegDst        <= 0;
+                    o_RegWrite      <= 0;
+                    o_MemRead       <= 0;
+                    o_MemWrite      <= 0;
+                    o_MemtoReg      <= 0;
+                    o_ALUOp         <= 0;
+                    o_ALUSrc        <= 0;
+                    o_Shamt         <= 0;
+                    o_ls_filter_op  <= 0;
+                    o_branch_enable <= 0;
+                end
+                else begin
+                    o_PCNext             <= i_PCNext;
+                    o_opcode             <= i_opcode;
+                    o_read_data_1        <= i_read_data_1;
+                    o_read_data_2        <= i_read_data_2;
+                    o_immediate_data_ext <= i_immediate_data_ext;
+                    o_jump_address       <= i_jump_address;
+                    o_rs                 <= i_rs;
+                    o_rt                 <= i_rt;
+                    o_rd                 <= i_rd;
+
+                    o_RegDst        <= i_RegDst;
+                    o_RegWrite      <= i_RegWrite;
+                    o_MemRead       <= i_MemRead;
+                    o_MemWrite      <= i_MemWrite;
+                    o_MemtoReg      <= i_MemtoReg;
+                    o_ALUOp         <= i_ALUOp;
+                    o_ALUSrc        <= i_ALUSrc;
+                    o_Shamt         <= i_Shamt;
+                    o_ls_filter_op  <= i_ls_filter_op;
+                    o_branch_enable <= i_branch_enable;
+                end
             end
         end
     end

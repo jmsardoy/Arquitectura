@@ -25,7 +25,6 @@ FOR_LOOP:
     addi $3 $3 1        //increment data memory address
     bne  $1 $0 FOR_LOOP
 
-
 j FINISH
 
 

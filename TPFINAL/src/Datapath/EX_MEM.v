@@ -54,7 +54,7 @@ module EX_MEM
 );
 
     always@(posedge clk) begin
-        if (~rst || flush) begin
+        if (~rst) begin
             o_alu_result <= 0;
             o_rt_data    <= 0;
             o_rd         <= 0;
@@ -72,20 +72,38 @@ module EX_MEM
         end
         else begin
             if (enable) begin
-                o_alu_result <= i_alu_result;
-                o_rt_data    <= i_rt_data;
-                o_rd         <= i_rd;
-                
-                o_RegWrite     <= i_RegWrite;
-                o_MemRead      <= i_MemRead;
-                o_MemWrite     <= i_MemWrite;
-                o_MemtoReg     <= i_MemtoReg;
-                o_ls_filter_op <= i_ls_filter_op;
+                if (flush) begin
+                    o_alu_result <= 0;
+                    o_rt_data    <= 0;
+                    o_rd         <= 0;
+                    
+                    o_RegWrite     <= 0;
+                    o_MemRead      <= 0;
+                    o_MemWrite     <= 0;
+                    o_MemtoReg     <= 0;
+                    o_ls_filter_op <= 0;
 
-                o_taken        <= i_taken;
-                o_pc_to_reg    <= i_pc_to_reg;
-                o_jump_address <= i_jump_address;
-                o_pc_return    <= i_pc_return;
+                    o_taken        <= 0;
+                    o_pc_to_reg    <= 0;
+                    o_jump_address <= 0;
+                    o_pc_return    <= 0;
+                end
+                else begin
+                    o_alu_result <= i_alu_result;
+                    o_rt_data    <= i_rt_data;
+                    o_rd         <= i_rd;
+                    
+                    o_RegWrite     <= i_RegWrite;
+                    o_MemRead      <= i_MemRead;
+                    o_MemWrite     <= i_MemWrite;
+                    o_MemtoReg     <= i_MemtoReg;
+                    o_ls_filter_op <= i_ls_filter_op;
+
+                    o_taken        <= i_taken;
+                    o_pc_to_reg    <= i_pc_to_reg;
+                    o_jump_address <= i_jump_address;
+                    o_pc_return    <= i_pc_return;
+                end
             end
         end
     end

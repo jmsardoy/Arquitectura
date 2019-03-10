@@ -6,6 +6,7 @@ module LoadInstFSM
 #(
     parameter UART_BITS = `UART_BITS,
 
+    parameter PC_BITS  = `PC_BITS,
     parameter INST_ADDRS_BITS   = `INST_ADDRS_BITS,
     parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
 )
@@ -17,7 +18,7 @@ module LoadInstFSM
     input wire [UART_BITS - 1 : 0] i_rx_data,
     
     output reg                            o_write_inst_mem,
-    output reg [INST_ADDRS_BITS - 1 : 0]  o_inst_mem_addr,
+    output reg [PC_BITS - 1 : 0]          o_inst_mem_addr,
     output reg [INSTRUCTION_BITS - 1 : 0] o_inst_mem_data,
     output reg                            o_done
 );
@@ -26,8 +27,10 @@ module LoadInstFSM
     localparam IDLE           = 0;
     localparam GET_INST_COUNT = 1;
     localparam GET_DATA       = 2;
-    localparam WRITE_DATA     = 3;
-    localparam FINISH         = 4;
+    localparam SET_DATA       = 3;
+    localparam WRITE_DATA     = 4;
+    localparam HOLD_DATA      = 5;
+    localparam FINISH         = 6;
 
     reg [2:0] state;
     reg [2:0] next_state;
@@ -36,7 +39,7 @@ module LoadInstFSM
     //fsm inner logic regs
     reg [2:0]                      bytes_count;
     reg [INST_ADDRS_BITS - 1 : 0]  inst_count;
-    reg [INST_ADDRS_BITS - 1 : 0]  inst_addr;
+    reg [PC_BITS - 1 : 0]          inst_addr;
     reg [INSTRUCTION_BITS - 1 : 0] inst_data;
 
     always@(posedge clk) begin
@@ -66,14 +69,23 @@ module LoadInstFSM
                 end
                 GET_DATA: begin
                     //assumes INSTRUCTION_BITS = 32 and UART_BITS = 8
-                    if (bytes_count == 4) next_state = WRITE_DATA;
+                    if (bytes_count == 4) next_state = SET_DATA;
                     else                  next_state = GET_DATA;
                 end
+                SET_DATA: begin
+                    next_state = WRITE_DATA;
+                end
                 WRITE_DATA: begin
+                    next_state = HOLD_DATA;
+                end
+                HOLD_DATA: begin
                     if (inst_count == 0) next_state = FINISH;
                     else                 next_state = GET_DATA;
                 end
                 FINISH: begin
+                    next_state = IDLE;
+                end
+                default: begin
                     next_state = IDLE;
                 end
             endcase
@@ -101,8 +113,20 @@ module LoadInstFSM
                 o_inst_mem_data  = 0;
                 o_done           = 0;
             end
+            SET_DATA: begin
+                o_write_inst_mem = 0;
+                o_inst_mem_addr  = inst_addr;
+                o_inst_mem_data  = inst_data;
+                o_done           = 0;
+            end
             WRITE_DATA: begin
                 o_write_inst_mem = 1;
+                o_inst_mem_addr  = inst_addr;
+                o_inst_mem_data  = inst_data;
+                o_done           = 0;
+            end
+            HOLD_DATA: begin
+                o_write_inst_mem = 0;
                 o_inst_mem_addr  = inst_addr;
                 o_inst_mem_data  = inst_data;
                 o_done           = 0;
@@ -112,6 +136,12 @@ module LoadInstFSM
                 o_inst_mem_addr  = 0;
                 o_inst_mem_data  = 0;
                 o_done           = 1;
+            end
+            default: begin
+                o_write_inst_mem = 0;
+                o_inst_mem_addr  = 0;
+                o_inst_mem_data  = 0;
+                o_done           = 0;
             end
         endcase
     end
@@ -141,10 +171,12 @@ module LoadInstFSM
                         inst_data    <= {inst_data[INSTRUCTION_BITS - UART_BITS - 1 : 0],
                                          i_rx_data};
                     end
+                    if (bytes_count == 4) begin
+                        inst_count <= inst_count - 1;
+                    end
                 end
-                WRITE_DATA: begin
+                HOLD_DATA: begin
                     bytes_count <= 0;
-                    inst_count  <= inst_count - 1;
                     inst_addr   <= inst_addr + 1;
                 end
             endcase

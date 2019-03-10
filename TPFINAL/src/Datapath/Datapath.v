@@ -387,6 +387,27 @@ module Datapath
         .o_MemtoReg(mem_MemtoReg)
     );
 
+    /*
+    MEM_WB mem_wb_latch(
+        .clk(clk),
+        .rst(rst),
+        .enable(enable),
+        .i_alu_data(mem_alu_data),
+        .i_mem_data(mem_mem_data),
+        .i_rd(mem_rd),
+        .i_RegWrite(ex_mem_RegWrite),   //bypass mem stage for better timming
+        .i_MemtoReg(mem_MemtoReg),
+        .i_pc_to_reg(mem_pc_to_reg),
+        .i_pc_return(mem_pc_return),
+        .o_alu_data(mem_wb_alu_data),
+        .o_mem_data(mem_wb_mem_data),
+        .o_rd(ex_mem_wb_rd),            //bypass mem stage for better timming
+        .o_RegWrite(mem_wb_RegWrite),
+        .o_MemtoReg(mem_wb_MemtoReg),
+        .o_pc_to_reg(mem_wb_pc_to_reg),
+        .o_pc_return(mem_wb_pc_return)
+    );
+    */
     MEM_WB mem_wb_latch(
         .clk(clk),
         .rst(rst),

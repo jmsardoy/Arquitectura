@@ -114,8 +114,7 @@ module Execution
     //immediate mux
     assign alu_input_2 = (i_ALUSrc) ? i_immediate_data_ext : foward_data_b;
 
-
-
+    
     //rt data output for store operation
     assign o_rt_data = foward_data_b;
 

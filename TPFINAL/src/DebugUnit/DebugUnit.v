@@ -24,8 +24,8 @@ module DebugUnit
     input clk,
     input rst,
 
-    //uart input
-    input i_rx,
+    //uart inputs
+    input wire i_rx,
 
     //inputs from datapath
     input wire [RF_REGS_LEN - 1 : 0] i_rf_regs,
@@ -42,82 +42,50 @@ module DebugUnit
     output wire [INSTRUCTION_BITS - 1 : 0] o_inst_mem_data,
     output wire                            o_debug_read_data,
     output wire [DATA_ADDRS_BITS - 1 : 0]  o_debug_read_address,
+    output wire                            o_rst_mips,
+
+    output [2:0] o_state,
 
     //uart output
-    output o_tx
-
+    output wire o_tx,
+    output wire o_rx_done,
+    output wire [UART_BITS - 1 : 0] o_rx_data
 
 );
-    
-    //uart inputs
-    wire tx_start;
-    wire [UART_BITS - 1 : 0] tx_data;
 
-    //uart outputs
+    //wires for connection between debugFSM and UART
     wire [UART_BITS - 1 : 0] rx_data;
+    wire [UART_BITS - 1 : 0] tx_data;
+    wire tx_start;
     wire tx_done;
     wire rx_done;
 
+    assign o_rx_done = rx_done;
+    assign o_rx_data = rx_data;
 
-    localparam IDLE = 0;
-    localparam LOAD = 1;
-    localparam RUN  = 2;
-    localparam STEP = 3;
-
-    localparam OP_LOAD_INST = 1;
-    localparam OP_RUN       = 2;
-    localparam OP_RUN_STEP  = 3;
-
-
-    reg [1:0] state;
-    reg [1:0] next_state;
-
-
-    always@(posedge clk) begin
-        if (!rst) begin
-            state <= IDLE;
-        end
-        else begin
-            state <= next_state;
-        end
-    end
-
-    //state change logic
-    always@* begin
-        if (!rst) begin
-            next_state = IDLE;
-        end
-        else begin
-            case(state)
-                IDLE: begin
-                    if (rx_done) begin
-                        case(rx_data)
-                            OP_LOAD_INST: next_state = LOAD;
-                            OP_RUN:       next_state = RUN;
-                            OP_RUN_STEP:  next_state = STEP;
-                            default:      next_state = IDLE;
-                        endcase
-                    end
-                    else begin
-                        next_state = IDLE;
-                    end
-                end
-            endcase
-        end
-    end
-
-    LoadInstFSM load_fsm(
+    DebugFSM debug_fsm(
         .clk(clk),
         .rst(rst),
-        .i_start(start),
-        .i_rx_done(rx_done),
         .i_rx_data(rx_data),
+        .i_tx_done(tx_done),
+        .i_rx_done(rx_done),
+        .i_rf_regs(i_rf_regs),
+        .i_if_id_signals(i_if_id_signals),
+        .i_id_ex_signals(i_id_ex_signals),
+        .i_ex_mem_signals(i_ex_mem_signals),
+        .i_mem_wb_signals(i_mem_wb_signals),
+        .i_mem_data(i_mem_data),
+        .o_enable(o_enable),
         .o_write_inst_mem(o_write_inst_mem),
         .o_inst_mem_addr(o_inst_mem_addr),
         .o_inst_mem_data(o_inst_mem_data),
-        .o_done(load_fsm_done)
+        .o_debug_read_data(o_debug_read_data),
+        .o_debug_read_address(o_debug_read_address),
+        .o_rst_mips(o_rst_mips),
+        .o_state(o_state),
+        .o_tx_start(tx_start),
+        .o_tx_data(tx_data)
     );
-
 
     UART uart_u(
         .clk(clk),

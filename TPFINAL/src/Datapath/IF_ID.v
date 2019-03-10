@@ -20,14 +20,20 @@ module IF_ID
 );
 
     always@(posedge clk) begin
-        if (~rst || flush) begin
+        if (~rst) begin
             o_PCNext <= 0;
             o_instruction <= 0;
         end
         else begin
-            if(enable && i_if_id_write) begin
-                o_PCNext <= i_PCNext;
-                o_instruction <= i_instruction;
+            if(enable) begin
+                if (flush) begin
+                    o_PCNext <= 0;
+                    o_instruction <= 0;
+                end
+                else if (i_if_id_write) begin
+                    o_PCNext <= i_PCNext;
+                    o_instruction <= i_instruction;
+                end
             end
         end
     end
