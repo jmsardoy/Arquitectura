@@ -59,8 +59,8 @@ module RegisterFile
         //check if write register is the same as read register so
         //we always return the updated register value except in the case of
         //reading register 0 so we don't return a value that is not 0
-        if ((i_read_register_1 == i_write_register) &&
-            (i_read_register_1 != 0)) begin
+        if ((i_read_register_2 == i_write_register) &&
+            (i_read_register_2 != 0)) begin
             o_read_data_2 <= i_write_data;
         end
         else begin

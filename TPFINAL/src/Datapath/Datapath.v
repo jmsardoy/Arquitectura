@@ -366,6 +366,7 @@ module Datapath
 
     MemoryStage mem_stage_u(
         .clk(clk),
+        .enable(enable),
         .i_alu_data(ex_mem_alu_result),
         .i_store_data(ex_mem_rt_data),
         .i_rd(ex_mem_rd),

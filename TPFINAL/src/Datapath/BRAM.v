@@ -20,11 +20,13 @@ module BRAM
 
 	reg [DATA_BITS-1:0] mem [0:MEM_SIZE-1];
 
-    /*
+    integer i;
     initial begin
-        $readmemb("testasm.mem", mem);
+        //$readmemb("testasm.mem", mem);
+        for(i=0; i<MEM_SIZE; i=i+1) begin
+            mem[i] <= i;
+        end
     end
-    */
 
 	always@(posedge clk)
 	begin

@@ -179,7 +179,7 @@ module DebugFSM
                 send_start     = 0;
             end
             START_LOAD: begin
-                o_rst_mips     = 1;
+                o_rst_mips     = 0;
                 o_enable       = 0;
                 load_fsm_start = 1;
                 run_fsm_start  = 0;
@@ -188,7 +188,7 @@ module DebugFSM
                 send_start     = 0;
             end
             WAIT_LOAD: begin
-                o_rst_mips     = 1;
+                o_rst_mips     = 0;
                 o_enable       = 0;
                 load_fsm_start = 0;
                 run_fsm_start  = 0;
