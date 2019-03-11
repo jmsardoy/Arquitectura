@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.24)  11 MAR 2019 00:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.24)  11 MAR 2019 01:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -493,7 +493,7 @@ Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
 Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
-)
+) (./mips.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
@@ -508,19 +508,19 @@ LaTeX Info: Redefining \% on input line 6.
 )
 \openout1 = `tpfinal.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
-LaTeX Font Info:    ... okay on input line 43.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 43.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 72.
+LaTeX Font Info:    ... okay on input line 72.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 72.
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
@@ -623,57 +623,57 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \. on input line 43.
-LaTeX Info: Redefining \% on input line 43.
+LaTeX Info: Redefining \. on input line 72.
+LaTeX Info: Redefining \% on input line 72.
 \c@lstlisting=\count108
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <16> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 45.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 74.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 45.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 45.
+(Font)              <12> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 45.
+(Font)              <8> on input line 74.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 45.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 45.
+(Font)              <6> on input line 74.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 74.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
 LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 47.
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 76.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 86.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 109--111
+Underfull \hbox (badness 10000) in paragraph at lines 138--140
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 109--111
+Underfull \hbox (badness 10000) in paragraph at lines 138--140
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 116--117
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 118--119
+Underfull \hbox (badness 10000) in paragraph at lines 147--148
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 122--123
+Underfull \hbox (badness 10000) in paragraph at lines 151--152
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 125--126
+Underfull \hbox (badness 10000) in paragraph at lines 154--155
 
  []
 
@@ -681,41 +681,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 125--126
 <imagenes/esquema_pipeline.jpeg, id=18, 739.26187pt x 515.67656pt>
 File: imagenes/esquema_pipeline.jpeg Graphic file (type jpg)
 <use imagenes/esquema_pipeline.jpeg>
-Package pdftex.def Info: imagenes/esquema_pipeline.jpeg  used on input line 138
+Package pdftex.def Info: imagenes/esquema_pipeline.jpeg  used on input line 167
 .
 (pdftex.def)             Requested size: 469.47308pt x 327.48245pt.
 
-Overfull \hbox (16.50902pt too wide) in paragraph at lines 137--139
+Overfull \hbox (16.50902pt too wide) in paragraph at lines 166--168
  []|  [] 
  []
 
-LaTeX Font Info:    Try loading font information for OT1+phv on input line 139.
+LaTeX Font Info:    Try loading font information for OT1+phv on input line 168.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1phv.fd
 File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 )
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 139.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 168.
  [4 <./imagenes/esquema_pipeline.jpeg>]
 <imagenes/esquema_pipeline_completo.jpeg, id=23, 851.43094pt x 526.21594pt>
 File: imagenes/esquema_pipeline_completo.jpeg Graphic file (type jpg)
 <use imagenes/esquema_pipeline_completo.jpeg>
 Package pdftex.def Info: imagenes/esquema_pipeline_completo.jpeg  used on input
- line 173.
+ line 202.
 (pdftex.def)             Requested size: 384.1096pt x 237.39719pt.
  [5]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 222.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 222.
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 226.
  [6 <./imagenes/esquema_pipeline_completo.jpeg>]
-Underfull \hbox (badness 2521) in paragraph at lines 232--233
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 261.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 261.
+
+Underfull \hbox (badness 2521) in paragraph at lines 271--272
 []\OT1/ptm/m/n/12 Refer[]encias bi-bliogr[]afi-cas de-vem ser uti-li-za-das den
 -tro de um es-ti-lo uni-
  []
 
 
-Underfull \hbox (badness 2828) in paragraph at lines 232--233
+Underfull \hbox (badness 2828) in paragraph at lines 271--272
 \OT1/ptm/m/n/12 for-me e n[]ao amb[]^^Pguo. A SBC su-ge-re os se-guin-tes for-m
 a-tos pa-ra re-fer[]encias:
  []
@@ -725,26 +728,27 @@ LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 6230 strings out of 494284
- 82562 string characters out of 6162693
- 191922 words of memory out of 5000000
- 9478 multiletter control sequences out of 15000+600000
- 22111 words of font info for 45 fonts, out of 8000000 for 9000
+ 6271 strings out of 494284
+ 83060 string characters out of 6162693
+ 204012 words of memory out of 5000000
+ 9514 multiletter control sequences out of 15000+600000
+ 23349 words of font info for 49 fonts, out of 8000000 for 9000
  376 hyphenation exceptions out of 8191
- 41i,10n,40p,877b,1787s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,10n,40p,877b,1278s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helv
-etic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tpfinal.pdf (7 pages, 267295 bytes).
+ype1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/cour
+ier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/urw/times/utmri8a.pfb>
+Output written on tpfinal.pdf (7 pages, 274572 bytes).
 PDF statistics:
- 67 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 71 PDF objects out of 1000 (max. 8388607)
+ 49 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

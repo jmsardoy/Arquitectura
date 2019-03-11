@@ -1,11 +1,10 @@
 # Fdb version 3
-["bibtex tpfinal"] 1552273215 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552274355
+["bibtex tpfinal"] 1552275431 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552278185
   "./sbc.bst" 1460739440 21864 a668496cca21cfdd211f7fb5f0d57565 ""
   "sbc-template.bib" 1552253325 312 8f2fd3f52d7d30c13b57e920e052f859 ""
-  "tpfinal.aux" 1552274355 2311 4c5a46c38d9052ca521039241864af25 ""
+  "tpfinal.aux" 1552278184 2395 a87aa1bd92944d5152e246f3dac3701c ""
   "tpfinal.bcf" 0 -1 0 ""
   (generated)
-  "tpfinal.blg"
   "tpfinal.bbl"
 ["latex"] 1551029288 "tpfinal.tex" "tpfinal.dvi" "tpfinal" 1551029288
   "/etc/texmf/web2c/texmf.cnf" 1551025866 475 c0e671620eb5563b2130f56340a5fde8 ""
@@ -32,10 +31,12 @@
   (generated)
   "tpfinal.dvi"
   "tpfinal.log"
-["pdflatex"] 1552274355 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552274355
+["pdflatex"] 1552278184 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552278185
   "/etc/texmf/web2c/texmf.cnf" 1551025866 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb7t.tfm" 1480098688 960 4ab65358b8406f30ef5496c8c096d22b ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrb8r.tfm" 1480098688 1292 3059476c50a24578715759f22652f3d0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1480098688 960 379cc0019370a9e0208a0a3f949f847a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm" 1480098688 1292 bd42be2f344128bff6d35d98474adfe3 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/helvetic/phvb7t.tfm" 1480098688 2240 eb56c13537f4d8a0bd3fafc25572b1bd ""
@@ -61,12 +62,14 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1480098733 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1480098733 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1480098733 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb" 1480098746 50493 4ed1f7e9eba8f1f3e1ec25195460190d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb" 1480098746 45758 19968a0990191524e34e1994d4a31cb6 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb" 1480098746 35941 f27169cc74234d5bd5e4cca5abafaabb ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1480098746 44729 811d6c62865936705a31c797a1d5dada ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb" 1480098746 44656 0cbca70e0534538582128f6b54593cca ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb" 1480098746 46026 6dab18b61c907687b520c72847215a68 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb" 1480098746 45458 a3faba884469519614ca56ba5f6b1de1 ""
+  "/usr/share/texlive/texmf-dist/fonts/vf/adobe/courier/pcrb7t.vf" 1480098757 1344 c590fc3b8640445e169e64e330afb3d5 ""
   "/usr/share/texlive/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf" 1480098757 1344 6ff472164bf9de0fb2e864b28ac156d9 ""
   "/usr/share/texlive/texmf-dist/fonts/vf/adobe/helvetic/phvb7t.vf" 1480098757 1372 1c26b449eb4a1a0bcf6ac7cfe376d450 ""
   "/usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf" 1480098758 1372 788387fea833ef5963f4c5bffe33eb89 ""
@@ -129,11 +132,13 @@
   "caption2.sty" 1460739440 15190 35c3352faab63b28086162350d49d218 ""
   "imagenes/esquema_pipeline.jpeg" 1552252533 57689 50a350af3415a80bdf31673c36c335f4 ""
   "imagenes/esquema_pipeline_completo.jpeg" 1552272210 88323 3867c4a5e517cf4e89584c9650c8fc5b ""
+  "mips.sty" 1552278184 3284 546cd63fd452ba8dc014bb1eea0c39a7 ""
   "sbc-template.sty" 1551039792 5287 33c2e008a609d0270ad2df7ac28c66a2 ""
-  "tpfinal.aux" 1552274355 2311 4c5a46c38d9052ca521039241864af25 ""
-  "tpfinal.bbl" 1552273215 336 607aee83baf6f66716f7312e9c59865a "bibtex tpfinal"
-  "tpfinal.tex" 1552274353 15964 f7c472468a4dc15d0eec34c089b7ca34 ""
+  "tpfinal.aux" 1552278184 2395 a87aa1bd92944d5152e246f3dac3701c ""
+  "tpfinal.bbl" 1552275431 336 607aee83baf6f66716f7312e9c59865a "bibtex tpfinal"
+  "tpfinal.tex" 1552278071 18096 ab119be3d8f6ff0def3169e5aec7128a ""
   (generated)
   "tpfinal.aux"
+  "tpfinal.out"
   "tpfinal.pdf"
   "tpfinal.log"
