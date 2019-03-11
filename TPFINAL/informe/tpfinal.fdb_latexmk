@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex tpfinal"] 1552247790 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552247976
+["bibtex tpfinal"] 1552273215 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552274355
   "./sbc.bst" 1460739440 21864 a668496cca21cfdd211f7fb5f0d57565 ""
-  "sbc-template.bib" 1551045841 192 cd9149bcbf31ac7498507f0acc32ba55 ""
-  "tpfinal.aux" 1552247975 1461 42e509880496838485527d13fef79637 ""
+  "sbc-template.bib" 1552253325 312 8f2fd3f52d7d30c13b57e920e052f859 ""
+  "tpfinal.aux" 1552274355 2311 4c5a46c38d9052ca521039241864af25 ""
   "tpfinal.bcf" 0 -1 0 ""
   (generated)
-  "tpfinal.bbl"
   "tpfinal.blg"
+  "tpfinal.bbl"
 ["latex"] 1551029288 "tpfinal.tex" "tpfinal.dvi" "tpfinal" 1551029288
   "/etc/texmf/web2c/texmf.cnf" 1551025866 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty" 1518644053 15861 065fe343082d0cd2428cf984d6b2ef66 ""
@@ -30,9 +30,9 @@
   "tpfinal.aux" 1551029288 8 a94a2480d3289e625eea47cd1b285758 ""
   "tpfinal.tex" 1551029024 20312 910115c20ab4b9e9df50fd40a10c38af ""
   (generated)
-  "tpfinal.log"
   "tpfinal.dvi"
-["pdflatex"] 1552247975 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552247976
+  "tpfinal.log"
+["pdflatex"] 1552274355 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552274355
   "/etc/texmf/web2c/texmf.cnf" 1551025866 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
@@ -127,13 +127,13 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1551030564 130860 491496bf66b03e26e3ccc0efc930ad31 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1551029566 2420409 e610a29c607617dee428e805c7677b21 ""
   "caption2.sty" 1460739440 15190 35c3352faab63b28086162350d49d218 ""
-  "fig1.jpg" 1460739440 39933 79da1f77b4599c71378d76c4aec374c6 ""
-  "fig2.jpg" 1460739440 22945 a28e60c395d91384d9e32be051b6cd94 ""
+  "imagenes/esquema_pipeline.jpeg" 1552252533 57689 50a350af3415a80bdf31673c36c335f4 ""
+  "imagenes/esquema_pipeline_completo.jpeg" 1552272210 88323 3867c4a5e517cf4e89584c9650c8fc5b ""
   "sbc-template.sty" 1551039792 5287 33c2e008a609d0270ad2df7ac28c66a2 ""
-  "tpfinal.aux" 1552247975 1461 42e509880496838485527d13fef79637 ""
-  "tpfinal.bbl" 1552247790 221 e455f5d36ee5657a3d5696e740cc6124 "bibtex tpfinal"
-  "tpfinal.tex" 1552247974 8919 0a25df5326cabb0944c3adf92828ffec ""
+  "tpfinal.aux" 1552274355 2311 4c5a46c38d9052ca521039241864af25 ""
+  "tpfinal.bbl" 1552273215 336 607aee83baf6f66716f7312e9c59865a "bibtex tpfinal"
+  "tpfinal.tex" 1552274353 15964 f7c472468a4dc15d0eec34c089b7ca34 ""
   (generated)
-  "tpfinal.pdf"
   "tpfinal.aux"
+  "tpfinal.pdf"
   "tpfinal.log"

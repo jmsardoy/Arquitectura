@@ -1,8 +1,12 @@
 \begin{thebibliography}{}
 
-\bibitem[David A.~Patterson 2009]{knuth:84}
+\bibitem[David A.~Patterson 2009]{patterson}
 David A.~Patterson, J. L.~H. (2009).
 \newblock {\em Computer Organization and Design}.
 \newblock Morgan-Kaufmann, 4th edition.
+
+\bibitem[Systems 1985]{instructionset}
+Systems, M.~C. (1985).
+\newblock {\em MIPS IV Instruction Set reference}.
 
 \end{thebibliography}
