@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.2.24)  11 MAR 2019 01:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2018.10.16)  11 MAR 2019 16:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **tpfinal.tex
 (./tpfinal.tex
 LaTeX2e <2017-04-15>
-Babel <3.18> and hyphenation patterns for 32 language(s) loaded.
+Babel <3.18> and hyphenation patterns for 6 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
@@ -68,7 +68,7 @@ Package: times 2005/04/12 PSNFSS-v9.2a (SPQR)
 )
 \c@instn=\count90
 
-(/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty
+(/home/eclpsm/texmf/tex/latex/titlesec/titlesec.sty
 Package: titlesec 2016/03/21 v2.10.2 Sectioning titles
 \ttl@box=\box26
 \beforetitleunit=\skip43
@@ -702,53 +702,81 @@ File: imagenes/esquema_pipeline_completo.jpeg Graphic file (type jpg)
 <use imagenes/esquema_pipeline_completo.jpeg>
 Package pdftex.def Info: imagenes/esquema_pipeline_completo.jpeg  used on input
  line 202.
-(pdftex.def)             Requested size: 384.1096pt x 237.39719pt.
+(pdftex.def)             Requested size: 426.79135pt x 263.77376pt.
  [5]
 LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 226.
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 217.
  [6 <./imagenes/esquema_pipeline_completo.jpeg>]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 261.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 261.
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
 
-Underfull \hbox (badness 2521) in paragraph at lines 271--272
-[]\OT1/ptm/m/n/12 Refer[]encias bi-bliogr[]afi-cas de-vem ser uti-li-za-das den
--tro de um es-ti-lo uni-
  []
 
+[7]
+! Undefined control sequence.
+l.276 ..., mas especificamente, son las de \textif
+                                                  {branching} o de salto. Cu...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-Underfull \hbox (badness 2828) in paragraph at lines 271--272
-\OT1/ptm/m/n/12 for-me e n[]ao amb[]^^Pguo. A SBC su-ge-re os se-guin-tes for-m
-a-tos pa-ra re-fer[]encias:
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 298.
+[8]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 327.
+
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 327.
+<imagenes/estructura_instrucciones.jpeg, id=39, 330.48468pt x 182.18062pt>
+File: imagenes/estructura_instrucciones.jpeg Graphic file (type jpg)
+<use imagenes/estructura_instrucciones.jpeg>
+Package pdftex.def Info: imagenes/estructura_instrucciones.jpeg  used on input 
+line 341.
+(pdftex.def)             Requested size: 213.39568pt x 117.63763pt.
+ [9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10 <./imagenes/estructura_instrucciones.jpeg>]
+LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <10> not available
+(Font)              Font shape `OT1/phv/b/it' tried instead on input line 434.
+LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <10> not available
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 434.
+
+Overfull \hbox (15.12971pt too wide) in paragraph at lines 437--466
+ [][] 
  []
 
-(./tpfinal.bbl) [7] (./tpfinal.aux
+[11] [12] (./tpfinal.bbl) [13] (./tpfinal.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 ) ) 
 Here is how much of TeX's memory you used:
- 6271 strings out of 494284
- 83060 string characters out of 6162693
- 204012 words of memory out of 5000000
- 9514 multiletter control sequences out of 15000+600000
- 23349 words of font info for 49 fonts, out of 8000000 for 9000
- 376 hyphenation exceptions out of 8191
- 41i,10n,40p,877b,1278s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 6339 strings out of 494861
+ 84310 string characters out of 6178803
+ 273652 words of memory out of 5000000
+ 9540 multiletter control sequences out of 15000+600000
+ 25725 words of font info for 53 fonts, out of 8000000 for 9000
+ 40 hyphenation exceptions out of 8191
+ 41i,9n,40p,1073b,1834s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/cour
-ier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.p
-fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/
-texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/urw/times/utmri8a.pfb>
-Output written on tpfinal.pdf (7 pages, 274572 bytes).
+fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/uc
+rro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr
+i8a.pfb>
+Output written on tpfinal.pdf (13 pages, 330007 bytes).
 PDF statistics:
- 71 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 95 PDF objects out of 1000 (max. 8388607)
+ 65 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

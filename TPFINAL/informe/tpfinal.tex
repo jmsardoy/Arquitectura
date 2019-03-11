@@ -3,20 +3,20 @@
 
 \usepackage{sbc-template}
 \usepackage{graphicx,url}
-\usepackage[spanish]{babel}   
-\usepackage[utf8]{inputenc}  
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
 \usepackage{verbatim}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{mips}
-\usepackage{color}  
+\usepackage{color}
 
 \lstset{ %
   language=[mips]Assembler,       % the language of the code
   basicstyle=\footnotesize,       % the size of the fonts that are used for the code
   numbers=left,                   % where to put the line-numbers
   numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
-  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line 
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line
                                   % will be numbered
   numbersep=5pt,                  % how far the line-numbers are from the code
   backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
@@ -24,7 +24,7 @@
   showstringspaces=false,         % underline spaces within strings
   showtabs=false,                 % show tabs within strings adding particular underscores
   frame=single,                   % adds a frame around the code
-  rulecolor=\color{black},       
+  rulecolor=\color{black},
   tabsize=4,                      % sets default tabsize to 2 spaces
   captionpos=b,                   % sets the caption-position to bottom
   breaklines=true,                % sets automatic line breaking
@@ -69,7 +69,7 @@
   \email{jmsardoy@gmail.com, 0xfede07c8@gmail.com}
 }
 
-\begin{document} 
+\begin{document}
 
 \maketitle
 
@@ -85,11 +85,11 @@
 
 \section{Introducción}
 
-El trabajo, se encuentra dentro del marco de la asignatura de Arquitectura de Computadoras, de la FCEFyN de la Universidad Nacional de Córdoba, Argentina. Corresponde al trabajo final de la misma, el cual es requerimiento para su aprobación. 
+El trabajo, se encuentra dentro del marco de la asignatura de Arquitectura de Computadoras, de la FCEFyN de la Universidad Nacional de Córdoba, Argentina. Corresponde al trabajo final de la misma, el cual es requerimiento para su aprobación.
 
-Además de la implementación del procesador en sí, se mostrará como implementar los elementos auxiliares requeridos para su funcionamiento y programación, entre otras utilidades. El hardware utilizado será un dispositivo FPGA, de la marca Xilinx, al ser de esta empresa, con los que cuentan los autores del trabajo. 
+Además de la implementación del procesador en sí, se mostrará como implementar los elementos auxiliares requeridos para su funcionamiento y programación, entre otras utilidades. El hardware utilizado será un dispositivo FPGA, de la marca Xilinx, al ser de esta empresa, con los que cuentan los autores del trabajo.
 
-Dentro de los elementos auxiliares, encontraremos el desarrollo de un sistema de comunicación directo con el procesador, mediante el protocolo UART. Además de éste, un mecanismo para cargar un programa en la RAM del procesador, como asi también funcionalidad de debugging (ejecución paso a paso y salída de valores de registros internos). También se mostrará la implementación y uso de software auxiliar para el ensamblado de los programas a ejecutar. 
+Dentro de los elementos auxiliares, encontraremos el desarrollo de un sistema de comunicación directo con el procesador, mediante el protocolo UART. Además de éste, un mecanismo para cargar un programa en la RAM del procesador, como asi también funcionalidad de debugging (ejecución paso a paso y salída de valores de registros internos). También se mostrará la implementación y uso de software auxiliar para el ensamblado de los programas a ejecutar.
 
 Todo esto compondrá una suite básica de desarrollo de software de propósito general, cuyo entendimiento es el objetivo principal del trabajo y la materia.
 
@@ -98,7 +98,7 @@ Todo esto compondrá una suite básica de desarrollo de software de propósito g
 
 La técnica de \textit{pipeline} es la más común utilizada para la implementación de procesadores modernos de diferentes arquitecturas, dado el gran aumento de \textit{IPC} (instrucciones por ciclo) que éste provee.
 
-MIPS son las siglas de /textit{Microprocessor without interlocked pipeline stages}. Es una arquitectura RISC (\textit{reduced instruction set computer} desarrollada por MIPS Computer Systems. Existen versiones de 32 y 64 bits de dicha arquitectura. La primera versión de fue desarrollada en la Universidad de Stanford en 1981 por un equipo liderado por John. L. Hennesy. La idea era diseñar un procesador segmentado (idea ya muy conocida en esos momentos) pero sin interbloqueo entre capas. En esa época eran comunes los procesadores donde cada instrucción iba ejecutandose por cada capaz, mientras las otras permanecian inactivas. Esto llevaba a que el tiempo que demora en ejecutar la instrucción fuera el del tiempo en el que tarda en pasar por todas las capas, en contraste con el tiempo del camino crítico, como ocurre sin interbloqueo. 
+MIPS son las siglas de /textit{Microprocessor without interlocked pipeline stages}. Es una arquitectura RISC (\textit{reduced instruction set computer} desarrollada por MIPS Computer Systems. Existen versiones de 32 y 64 bits de dicha arquitectura. La primera versión de fue desarrollada en la Universidad de Stanford en 1981 por un equipo liderado por John. L. Hennesy. La idea era diseñar un procesador segmentado (idea ya muy conocida en esos momentos) pero sin interbloqueo entre capas. En esa época eran comunes los procesadores donde cada instrucción iba ejecutandose por cada capaz, mientras las otras permanecian inactivas. Esto llevaba a que el tiempo que demora en ejecutar la instrucción fuera el del tiempo en el que tarda en pasar por todas las capas, en contraste con el tiempo del camino crítico, como ocurre sin interbloqueo.
 
 Por estos motivos este trabajo tendrá como cuerpo principal, la aplicación de dicha técnica, para lo cual, a modo de guía, se seguirá la bibliografía de \textit{Patterson y Hennesy}, dado que expone y soluciona los problemas más comunes a la hora de la creación de un \textit{pipeline} genérico. Sin embargo, muchas partes de la implementación, quedan a cargo, y serán solucionadas por los autores, lo cual lo hace una implementación única de la arquitectura.
 
@@ -128,11 +128,11 @@ Los requerimientos provistos por la cátedra fueron los siguientes:
   \item Debe poseer soporte (detección y manejo) de los siguientes tipos de riesgos:
   \begin{enumerate}
     \item \textbf{Estructurales}: Cuando dos o más instrucciones tratan de utilizar el mismo recurso en el mismo ciclo.
-    \item \textbf{Datos}: Una etapa desea utilizar un dato antes de que esté listo. Se debe mantener el orden estricto de las lecturas y escrituras. 
+    \item \textbf{Datos}: Una etapa desea utilizar un dato antes de que esté listo. Se debe mantener el orden estricto de las lecturas y escrituras.
     \item \textbf{Control}: Capacidad para tomar una decición sobre una condicion no evaluada. \\
     Para esto debe implementar:
     \item \textbf{Unidad de detección} riesgos: Detecta los posibles riesgos de cada tipo, y efectua los controles necesarios.
-    \item \textbf{Unidad de cortocircuitos}: Ayuda en el transpaso de datos de una etapa a otra, de ser requeridos inmediatamente. Elimina la necesidad de que los datos lleguen a la última etapa de escritura de registros para que estos sean usados por otros. 
+    \item \textbf{Unidad de cortocircuitos}: Ayuda en el transpaso de datos de una etapa a otra, de ser requeridos inmediatamente. Elimina la necesidad de que los datos lleguen a la última etapa de escritura de registros para que estos sean usados por otros.
   \end{enumerate}
       \item \textbf{Ensablador:} Debe implementarse un programa ensamblador, en el cual dado una entrada en assembler de MIPS, se obtenga una salida de código máquina, apto para ser ejecutado.
       \item \textbf{Unidad de Debug:} Administra y monitorea la ejecución del procesador mediante una interfaz UART. Debe ser capaz de cargar un programa en memoria, correrlo en varios modos, y mostrar el estado del procesador. \\ \\
@@ -154,7 +154,7 @@ Los requerimientos provistos por la cátedra fueron los siguientes:
       Además de estos requerimientos, los autores, a modo de mejoras, incluyen los siguientes: \\
 
       \item \textbf{Interfaz gráfica WEB para el debugger:} Desde esta interfaz se puede cargar un programa, ejecutarlo e inspeccionar los resultados.
-      \item \textbf{Tests automatizados}: Capacidad de correr una tanda de tests sobre la implementación del MIPS y obtener un resumen de los resultados obtenidos. Esto sirve para corroborar el funcionamiento del procesador, y también que los cambios aplicados no modifiquen el comportamiento correcto comportamiento del mismo. Nótese que estos test no son lo mismo que un \textit{test bench} de Verilog. La diferencia entre ambos es que unos son simulaciones del diseño, y el otro sobre el procesador ya sintetizado. 
+      \item \textbf{Tests automatizados}: Capacidad de correr una tanda de tests sobre la implementación del MIPS y obtener un resumen de los resultados obtenidos. Esto sirve para corroborar el funcionamiento del procesador, y también que los cambios aplicados no modifiquen el comportamiento correcto comportamiento del mismo. Nótese que estos test no son lo mismo que un \textit{test bench} de Verilog. La diferencia entre ambos es que unos son simulaciones del diseño, y el otro sobre el procesador ya sintetizado.
 \end{enumerate}
 
 \section{Pipeline de cinco etapas: Descripción general}
@@ -163,13 +163,13 @@ En la (Figura~\ref{fig:pipeline}) se puede apreciar un diagrama simplificado y g
 
 \begin{figure}[ht]
 \centering
-\hspace*{-1cm} 
+\hspace*{-1cm}
 \includegraphics[width=1.1\textwidth]{imagenes/esquema_pipeline.jpeg}
 \caption{Pipeline de cinco etapas: Diagrama \cite{patterson}}
 \label{fig:pipeline}
 \end{figure}
 
-\subsection{\textit{IF o Instruction Fetch}} 
+\subsection{\textit{IF o Instruction Fetch}}
 Es la primer etapa del pipeline. Se busca la siguiente instrucción a ejecutar en la memoria de programa. En ésta etapa se ubica el contador de programa o /textit{Program Counter}, mejor conocido como PC, el cual es un registro que contiene la dirección actual en la memoria de programa en la que se encuentra el programa en ejecución. La siguiente instrucción a ejecutar antes del ciclo es PC + WORD\_SIZE (4 para un procesador de 32bits), en caso que no haya un salto. Para mejor claridad, los pasos que ocurren en el ciclo son:
 
 \begin{enumerate}
@@ -177,33 +177,32 @@ Es la primer etapa del pipeline. Se busca la siguiente instrucción a ejecutar e
     \item Con el valor del PC se accede a la memoria de programa, se obtiene el valor en dicha dirección, y se entrega a la siguiente etapa.
 \end{enumerate}
 
-\subsection{\textit{ID o Instruction Decode}} 
-Etapa en donde se decodifica la instrucción y se cargan los registros correspondientes. Aqui tiene lugar el File Register, el módulo encargado de contener los 32 registros de 32bits del MIPS. Cada instrucción se transforma en sus correspondientes señales en la Unidad de Control, el cual comanda todo el procesador, según que instrucción se esté ejecutando. 
+\subsection{\textit{ID o Instruction Decode}}
+Etapa en donde se decodifica la instrucción y se cargan los registros correspondientes. Aqui tiene lugar el File Register, el módulo encargado de contener los 32 registros de 32bits del MIPS. Cada instrucción se transforma en sus correspondientes señales en la Unidad de Control, el cual comanda todo el procesador, según que instrucción se esté ejecutando.
 
-\subsection{\textit{EX o Excecute}} 
+\subsection{\textit{EX o Excecute}}
 Unidad que ejecuta la instrucción, osea, que efectua el cálculo aritmético, lógico, o de resolución de dirección de offset. Vemos que una entrada de la ALU de propósito general puede ser un valor inmediato, con el signo extendido, o un registro, mientras que la otra entrada es siempre un registro. Existe otra ALU que unicamente suma, la cual cálcula nuevas direcciones para el PC, el cual le suma a éste un valor inmediato, el cual corresponde al salto a efectuar.
 
-\subsection{\textit{MEM o Memory Access}} 
+\subsection{\textit{MEM o Memory Access}}
 Unidad de lectura o escritura desde/hacia la memoria de datos. En ésta etapa se lee o escribe un dato de la memoria de acuerdo a la instrucción ejecutada. Si la instrucción no es de acceso a memoria, se hace un bypass de ésta etapa hacia la siguiente.
 
-\subsection{\textit{WB o Write back}} 
+\subsection{\textit{WB o Write back}}
 Escritura de resultados en los registros. Los registros pueden ser escritos desde un dato en memoria, si la instrucción era de acceso a memoria, o desde la ALU si no lo eran. Se llama Write Back porque escriben sobre una etapa anterior del pipeline.
 
-\section{Pipeline de cinco etapas: Problema completo}
+\section{Pipeline de cinco etapas: Problema completo y solución}
 
 El primer pipeline presentado, es simple, funciona y expone correctamente la teória básica de la segmentación en el diseño de un procesador, lo cual es necesario para el marco de éste trabajo, pero presenta problemas muy grandes, que de no ser solucionados, prácticamente elimina las ventajas del pipeline debido a su ineficiencia a la hora de enfrentar ciertos casos comunes.
 
-El presente trabajo no planea ser una explicación teórica de todas las técnicas utilizadas y los problemas resueltos, por eso se irá al grano de la implementación completa, pero dejando al lector la posibilidad de consultar la bibliografía en el caso de ser necesario. Sin embargo, se explicará brevemente el motivo de cada uno de los elementos incluidos en el mismo.
+El presente trabajo no planea ser una explicación teórica de todas las técnicas utilizadas y los problemas resueltos, por eso se irá al grano de la implementación completa, pero dejando al lector la posibilidad de consultar la bibliografía en el caso de ser necesario. Sin embargo, se explicará brevemente el motivo de cada uno de los elementos incluidos en el mismo y luego se discutirá la implementación desarrollada. No se incluirán en el informe todos los detalles implementativos, dado que estos pueden consultarse en el código del proyecto anexo, pero se mostraran ejemplos variados y detalles a tener en cuenta.
 
 Un esquema aproximado de la implementación completa del pipeline es el de la (Figura~\ref{fig:pipelinecompleto}).
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=.9\textwidth]{imagenes/esquema_pipeline_completo.jpeg}
+\includegraphics[width=1\textwidth]{imagenes/esquema_pipeline_completo.jpeg}
 \caption{Pipeline de cinco etapas completo \cite{patterson}}
 \label{fig:pipelinecompleto}
 \end{figure}
-
 
 Podemos ver como se agregan diferentes unidades y complejidad que resuelven problemas determinados. Los mas significativos son los latches intermedios \textit{etapa-1/etapa}, la unidad de detección de riesgos o \textit{hazard detection unit}, la unidad de control, la unidad de forwarding, y en nuestro caso, la unidad de saltos o \textit{branching unit}. A continuación se hablara de cada una de esas unidades, explicando brevemente el funcionamiento de las mismas.
 
@@ -211,64 +210,315 @@ Podemos ver como se agregan diferentes unidades y complejidad que resuelven prob
 
 Las etapas deben pasarse datos unas a las otras, y mas de una vez, una etapa debe obtener datos de mas de una etapa anterior a ella misma. Si una etapa deseara hacer esto, sin interbloqueo, le resultaría imposible, dado que el estado de una etapa anterior ya ha cambiado con respecto a la instrucción que le corresponde. Por este motivo se incluyen registros o latches intermedios entre cada etapa, que almacenan los datos necesarios para el flujo del pipeline. Sirven de buffer general a las señales que se deseen conservar.
 
-Estos latches se nombran de acuerdo a las etapas que unen. Por ejemplo, el registro que une la etapa IF con la etapa ID se llama IF/ID.
+Estos latches se nombran de acuerdo a las etapas que unen. Por ejemplo, el registro que une la etapa IF con la etapa ID se llama IF/ID. Veamos la implementación del \textit{latch} IF/ID:
+
+\noindent \textit{IF\_ID.v}
+\begin{lstlisting}[language=verilog]
+module IF_ID
+#(
+    parameter PC_BITS          = `PC_BITS,
+    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS
+)
+(
+    input clk,
+    input rst,
+    input enable,
+    input flush,
+    input                                  i_if_id_write,
+    input wire [PC_BITS - 1 : 0]           i_PCNext,
+    input wire [INSTRUCTION_BITS - 1 : 0]  i_instruction,
+    output reg [PC_BITS - 1 : 0]           o_PCNext,
+    output reg [INSTRUCTION_BITS - 1 : 0]  o_instruction
+);
+
+    always@(posedge clk) begin
+        if (~rst) begin
+            o_PCNext <= 0;
+            o_instruction <= 0;
+        end
+        else begin
+            if(enable) begin
+                if (flush) begin
+                    o_PCNext <= 0;
+                    o_instruction <= 0;
+                end
+                else if (i_if_id_write) begin
+                    o_PCNext <= i_PCNext;
+                    o_instruction <= i_instruction;
+                end
+            end
+        end
+    end
+
+endmodule
+
+\end{lstlisting}
+
+Todos los \textit{latches} simplemente pone a su salida los registros de entrada luego de un ciclo de clock, si esta el \textit{write enable} activado. Tambien tienen capacidad de flush
 
 \subsection{Hazard detection unit}
 
-Para explicar qué hace esta unidad tenemos que analizar algunos conceptos teóricos:
+Para explicar qué hace esta unidad tenemos que analizar algunos conceptos teóricos. El más importante es el de \textit{hazard}, o riesgo. Un riesgo ocurre cuando una instrucción no se puede ejecutar inmediatamente despues que otra, debido a dependencias no resueltas que existen entre ambas. Existen varios tipos de riesgos, los cuales se explicaran a continuacion:
 
-\subsubsection{Dependencias}
+\subsubsection{Tipos de riesgos}
 
-Veamos que ocurre cuando una instrucción necesita un dato de una instrucción inmediatamente anterior:
+\begin{enumerate}
+    \item \textbf{Riesgo estructural:} Este tipo de riesgo ocurre cuando el hardware no puede ejecutar la combinacion de instrucciones que tenemos en el pipeline en un ciclo de reloj. Por ejemplo en el caso que en dos etapas diferentes se utilice un mismo recurso de hardware. Estos casos no se presentan a menudo dado que la idea primordial del MIPS es que sea segmentado y se eviten los riesgos estructurales.
+    \item \textbf{Riesgo de datos:} Ocurren cuando el pipeline debe ser detenido porque una etapa debe esperar a que otra etapa termine. \\
 
-\begin{lstlisting}
-sub   $2, $1,$3
-and   $12,$2,$5
-or    $13,$6,$2
-add   $14,$2,$2
-sw    $15,100($2)
+    Por ejemplo:
+    \begin{lstlisting}
+    sub   $2, $1,$3
+    and   $12,$2,$5
+    \end{lstlisting}
+
+    La instruccion \textit{sub} no escribe su resultado hasta la quinta etapa (WB), entonces se deberia detener el pipeline durante tres ciclos hasta que termine, para luego ejecutar la \textit{and}, dañando severamente la performance. El compilador podria mitigar mucho este problema, pero ocurre demasiado a menudo y no se puede confiar en que lo resuelva siempre. Existen dos maneras de solucionar este problema, haciendo una parada del pipeline (poco eficiente) o implementando una \textit{forwarding unit}. Ésta es la técnica utilizada en éste trabajo, de la cual se hablara más adelante.
+    \item \textbf{Riesgo de control:} Se basa en la necesidad de tomar una desicion sin conocer el resultado de una instruccion que esta ejecutandose. Estas instrucciones, mas especificamente, son las de \textif{branching} o de salto. Cuando entra una instruccion de salto al pipeline, dependiendo de si ese salto es tomado o no, la etapa IF debe cargar nuevas instrucciones de un lado de la memoria u otro. Para resolver este problema se usan predictores de salto, que tratan de adivinar cual sera el resultado del salto. En el caso de adivinar correctamente, la performance no se ve afectada, si no es asi, deben desecharse las instrucciones que habia en el pipeline hasta ese momento, y comenzar a cargar las nuevas. Los tipos de predictores no seran explicados aqui, salvo el elegido por los autores, el cual es llamado \textit{branch not taken}. Éste tipo de predictor siempre supone que el branch no es tomado. Es menos eficiente que soluciones más complejas, pero es simple de implementar y en bajo en consumo de recursos de hardware.
+\end{enumerate}
+
+\noindent En vista de los tipos de riesgos que hay, y sus necesidades, nuestra \textit{hazard detection unit} se ubicará en la etapa de ID, y solo contendrá lógica para la detección y salida de control de los riesgos de datos:
+
+\noindent \textit{HazardDetector.v}
+\begin{lstlisting}[language=verilog]
+module HazardDetector
+#(
+    parameter INSTRUCTION_BITS = `INSTRUCTION_BITS,
+    parameter REG_ADDRS_BITS   = `REG_ADDRS_BITS
+)
+(
+    input wire [REG_ADDRS_BITS - 1 : 0] i_instruction_rs,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_instruction_rt,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_id_ex_rt,
+    input wire                          i_id_ex_MemRead,
+    output reg                          o_PCWrite,
+    output reg                          o_if_id_write,
+    output reg                          o_control_mux
+);
+
+    //control_mux = 0 when we want to set all control lines to 0 and
+    //control mux = 1 when we want all control lines from the control unit
+    always@* begin
+        if  (
+                i_id_ex_MemRead &&
+                (
+                    (i_id_ex_rt == i_instruction_rs) ||
+                    (i_id_ex_rt == i_instruction_rt)
+                )
+            )
+        begin
+            o_PCWrite     = 0;
+            o_if_id_write = 0;
+            o_control_mux = 0;
+        end
+        else begin
+            o_PCWrite     = 1;
+            o_if_id_write = 1;
+            o_control_mux = 1;
+        end
+    end
+endmodule
+
 \end{lstlisting}
 
+\noindent Se evalúan las situaciones peligrosas:
+\begin{itemize}
+  \item Si la instrucción anterior quiere leer (\textit{i\_id\_ex\_MemRead}) y:
+  \begin{itemize}
+    \item Si el registro RT de la instruccion anterior (\textit{i\_id\_ex\_rt}) es igual al RS de la actual (\textit{i\_instruction\_rs}) o...
+    \item Si el registro RT de la instruccion anterior (\textit{i\_id\_ex\_rt}) es igual al RT de la actual (\textit{i\_instruction\_rt}).
+  \end{itemize}
+\end{itemize}
 
+\noindent Si se cumple alguno de esos casos el riesgo fue detectado y se toman las medidas correspondientes.
+
+\subsection{Control Unit}
+
+Para explicar la Unidad de Control, debemos abordar un enfoque de más pequeño a más grande. Existe una Unidad de Control principal y una Unidad de Control de ALU (no representada en el diagrama general) pero sobre la cual se hablará a continuación. Para tener un mejor entendimiento del tema, es bueno entender como se componen binariamente las instrucciones del set de instrucciones MIPS de 32 bits, según el tipo de instrucción que sean. La (Figura~\ref{fig:instrucciones}) detalla esta estructura. Prestar atencion al campo \textit{op}, \textit{shamt}, y \textit{funct}, dado que son campos de los que no se ha hablado hasta ahora.
+
+\begin{figure}[ht]
+\centering
+\hspace*{-1cm}
+\includegraphics[width=.5\textwidth]{imagenes/estructura_instrucciones.jpeg}
+\caption{Estructura binaria de cada tipo de instruccion \cite{patterson}}
+\label{fig:instrucciones}
+\end{figure}
+
+\subsubsection{ALU Control}
+
+Dependiendo del tipo de instrucción a ejecutar, la ALU deberá efectuar una de ciertas operaciones definidas. Éstas operaciones se seleccionan mediante lineas de control de la ALU. La tabla (Cuadro~\ref{tab:alucontrol}) las define, según el standard MIPS.
+
+La implementación es extensa debido a las definiciones requeridas, por eso se omiten algunas partes del código:
+
+\noindent \textit{ALUControl.v}
+\begin{lstlisting}[language=verilog]
+module ALUControl
+(
+    input wire [3 : 0] i_ALUOp,
+    input wire [5 : 0] i_funct,
+
+    output reg [3 : 0] o_operation
+);
+    localparam ALU_ADD  = 'b0000;
+    localparam ALU_SUB  = 'b0001;
+    // ... resto de AluOP
+    localparam FUNCT_ADD  = 'b100000;
+    localparam FUNCT_ADDU = 'b100001;
+    // ... resto de Functs
+    localparam INMED_ADD  = 'b000;
+    localparam INMED_AND  = 'b100;
+    // ... resto de AluOp
+
+    always@* begin
+        if (i_ALUOp == 'b0000) begin
+            case (i_funct)
+                FUNCT_ADD:  o_operation = ALU_ADD;
+                FUNCT_ADDU: o_operation = ALU_ADD;
+                // ... resto del mapeo
+                default:    o_operation = 0;
+            endcase
+        end
+
+        else if (i_ALUOp == 'b0001) begin
+            o_operation = ALU_ADD;
+        end
+
+        else if (i_ALUOp[3] == 1) begin
+            case (i_ALUOp[2:0])
+                INMED_ADD: o_operation = ALU_ADD;
+                INMED_AND: o_operation = ALU_AND;
+                // ... resto del mapeo
+                default:   o_operation = 0;
+            endcase
+        end
+        else o_operation = 0;
+   end
+endmodule
+\end{lstlisting}
+
+\subsubsection{Main Control Unit}
+
+Que familias de instrucciones mapeen a las mismas operaciones de ALU nos permite generar otro nivel de abstracción para el control de la ALU y las instrucciones a ejecutar. Con una señal de dos bits llamada \textit{ALUOp} podemos mapear a dichas operaciones. La tabla (Cuadro~\ref{tab:alucontrolops}) muestra este nuevo mapeo. También se intruduce el concepto de Funct Field, el cual es un campo de cada instrucción de MIPS el cual, junto con el Opcode, definen la instrucción a ejecutar.
 
 \begin{table}[!ht]
 \centering
-\caption{Exemplo de tabela de 3 colunas e 2 linhas}
-\label{tab:exTable1}
+\caption{Combinación de entradas de control de ALU y funciones a las que mapean}
+\label{tab:alucontrol}
 \smallskip
 \begin{tabular}{l c c}
 \hline
-& Value 1 & Value 2\\[0.5ex]
+Control ALU & Función \\[0.5ex]
 \hline
 &&\\[-2ex]
-Case 1 & 1.0 $\pm$ 0.1 & 1.75$\times$10$^{-5}$ $\pm$ 5$\times$10$^{-7}$\\[0.5ex]
+0000 & AND \\[0.5ex]
 \hline
 &&\\[-2ex]
-Case 2 & 0.003(1) & 100.0\\[0.5ex]
+0001 & OR\\[0.5ex]
+\hline
+&&\\[-2ex]
+0010 & add\\[0.5ex]
+\hline
+&&\\[-2ex]
+0110 & substract\\[0.5ex]
+\hline
+&&\\[-2ex]
+0111 & set on less than\\[0.5ex]
+\hline
+&&\\[-2ex]
+1100 & NOR\\[0.5ex]
 \hline
 \end{tabular}
 \end{table}
 
-\subsection{Código fonte}
-A inserção de código fonte deve ser por meio
+\begin{table}[!ht]
+\centering
+\caption{Mapeo \textit{ALUOps} a Funct field y entradas de control de ALU}
+\label{tab:alucontrolops}
+\smallskip
+\begin{tabular}{l c c c c c}
+\hline
+Opcode & ALUOp & Operación & Funct field & Operación ALU & Control ALU\\[0.5ex]
+\hline
+&&\\[-2ex]
+LW & 00 & load word & XXXXXX & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+SW & 00 & store word & XXXXXX & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+Branch equal & 01 & branch equal & XXXXXX & substract & 0110\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & add & 100000 & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & substract & 100010 & substract & 0110\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & AND & 100100 & AND & 0000\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & OR & 100101 & OR & 0001\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & set on less than & 101010 & set on less than & 0111\\[0.5ex]
+\hline
+\end{tabular}
+\end{table}
 
+\subsection{Forwarding Unit}
+
+Como se mencionó anteriormente, existen dos maneras de lidiar con los riesgos de datos. Parar el pipeline hasta que se resuelvan las dependencias al escribirse nuevamente en la etapa WB, o implementar una \textit{forwarding unit}. Lo que hace éste modulo es detectar si alguna instrucción que se encuentre en el pipeline va a necesitar un dato que este ya esté en EX o WB, y lo envía directamente, sin necesidad de que éste haya sido escrito todavia en un registro. Nótese que existe el caso donde el dato requerido por la instrucción siguiente viene a partir de un load. Los load se procesan en la etapa siguiente a EX, en MEM, lo que pone dos etapas de distancia entre la instrucción que requiere el dato, y el dato en sí. Esto obliga a que haya una parada de un ciclo, hasta que se resuelve el load, y pueda ser forwardeado a la etapa de ejecución.
+
+\noindent \textit{ForwardingUnit.v}
 \begin{lstlisting}
+module FowardingUnit
+#(
+    parameter REG_ADDRS_BITS = `REG_ADDRS_BITS
+)
+(
+    input wire i_ex_mem_RegWrite,
+    input wire i_mem_wb_RegWrite,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_id_ex_rs,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_id_ex_rt,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_ex_mem_rd,
+    input wire [REG_ADDRS_BITS - 1 : 0] i_mem_wb_rd,
 
-int main(){
-  int a,b,c;
-  float x;
-  printf("informe o tamanho do lado do quadrado");
-  scanf("%d", &a);
-  printf("A area do quadrado %d", b=area(a));
-  printf("Duas vezes o valor do lado do quadrado %d", c=aumenta(a));
+    output reg [1:0] o_foward_A,
+    output reg [1:0] o_foward_B
+);
 
+    reg mem_foward_a;
+    reg mem_foward_b;
+    reg wb_foward_a;
+    reg wb_foward_b;
+
+    always@* begin
+
+        mem_foward_a = i_ex_mem_RegWrite && (i_ex_mem_rd != 0) &&
+                       (i_ex_mem_rd == i_id_ex_rs);
+        mem_foward_b = i_ex_mem_RegWrite && (i_ex_mem_rd != 0) &&
+                       (i_ex_mem_rd == i_id_ex_rt);
+        wb_foward_a  = i_mem_wb_RegWrite && (i_mem_wb_rd != 0) &&
+                       (i_mem_wb_rd == i_id_ex_rs);
+        wb_foward_b  = i_mem_wb_RegWrite && (i_mem_wb_rd != 0) &&
+                       (i_mem_wb_rd == i_id_ex_rt);
+
+        if (mem_foward_a)     o_foward_A = 'b10;
+        else if (wb_foward_a) o_foward_A = 'b01;
+        else                  o_foward_A = 'b00;
+
+        if (mem_foward_b)     o_foward_B = 'b10;
+        else if (wb_foward_b) o_foward_B = 'b01;
+        else                  o_foward_B = 'b00;
+    end
+endmodule
 \end{lstlisting}
 
+\noindent Como se explicó el módulo analiza las necesidades de las etapas anteriores en busqueda de una dependencia que puede ser cumplida inmediatamente. De ser así, envía ese dato a la entrada de la ALU correspondiente.
+
+\subsection{Branching Unit}
 
 
-\section{Considerações Finais}
-
-Referências bibliográficas devem ser utilizadas dentro de um estilo uniforme e não ambíguo. A SBC sugere os seguintes formatos para referências: \cite{patterson} \cite{instructionset}.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
