@@ -59,128 +59,129 @@
         </div>
 
         <div class="container">
-            <div class="table_responsive" style="height: 350px; overflow:auto; margin-top: 20px">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Register File</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for rfn, reg_data in mips_data['register_file'].items() %}
+            <div class="col-md-6">
+                <div class="table_responsive" style="height: 350px; overflow:auto; margin-top: 20px">
+                    <table class="table table-striped">
                         <tr>
-                            <td>{{rfn}} </td>
-                            <td>{{reg_data['signed_int']}}</td>
-                            <td>{{reg_data['unsigned_int']}}</td>
-                            <td>{{reg_data['binary']}}</td>
+                            <th>Register File</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for rfn, reg_data in mips_data['register_file'].items() %}
+                            <tr>
+                                <td>{{rfn}} </td>
+                                <td>{{reg_data['signed_int']}}</td>
+                                <td>{{reg_data['unsigned_int']}}</td>
+                                <td>{{reg_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="table_responsive" style="height: 350px; overflow:auto; margin-top:20px">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Memory Data</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
+                        </tr>
+                        {% for mem_address, mem_data in mips_data['memory_data'].items() %}
+                            <tr>
+                                <td>{{mem_address}} </td>
+                                <td>{{mem_data['signed_int']}}</td>
+                                <td>{{mem_data['unsigned_int']}}</td>
+                                <td>{{mem_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
-
         <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>IF/ID Latch Info</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for latch_name, latch_data in mips_data['latchs_data']['IF_ID'].items() %}
+            <div class="col-md-6">
+                <div class="table_responsive">
+                    <table class="table table-striped" style="margin-top: 20px">
                         <tr>
-                            <td>{{latch_name}} </td>
-                            <td>{{latch_data['signed_int']}}</td>
-                            <td>{{latch_data['unsigned_int']}}</td>
-                            <td>{{latch_data['binary']}}</td>
+                            <th>IF/ID Latch Info</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for latch_name, latch_data in mips_data['latchs_data']['IF_ID'].items() %}
+                            <tr>
+                                <td>{{latch_name.replace("_", " ")}} </td>
+                                <td>{{latch_data['signed_int']}}</td>
+                                <td>{{latch_data['unsigned_int']}}</td>
+                                <td>{{latch_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="table_responsive">
+                    <table class="table table-striped" style="margin-top: 20px">
+                        <tr>
+                            <th>ID/EX Latch Info</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
+                        </tr>
+                        {% for latch_name, latch_data in mips_data['latchs_data']['ID_EX'].items() %}
+                            <tr>
+                                <td>{{latch_name.replace("_"," ")}} </td>
+                                <td>{{latch_data['signed_int']}}</td>
+                                <td>{{latch_data['unsigned_int']}}</td>
+                                <td>{{latch_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                
+
             </div>
-        </div>
 
-        <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>ID/EX Latch Info</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for latch_name, latch_data in mips_data['latchs_data']['ID_EX'].items() %}
+            <div class="col-md-6">
+                <div class="table_responsive">
+                    <table class="table table-striped" style="margin-top: 20px">
                         <tr>
-                            <td>{{latch_name}} </td>
-                            <td>{{latch_data['signed_int']}}</td>
-                            <td>{{latch_data['unsigned_int']}}</td>
-                            <td>{{latch_data['binary']}}</td>
+                            <th>EX/MEM Latch Info</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
                         </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+                        {% for latch_name, latch_data in mips_data['latchs_data']['EX_MEM'].items() %}
+                            <tr>
+                                <td>{{latch_name.replace("_", " ")}} </td>
+                                <td>{{latch_data['signed_int']}}</td>
+                                <td>{{latch_data['unsigned_int']}}</td>
+                                <td>{{latch_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
 
-        <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>EX/MEM Latch Info</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for latch_name, latch_data in mips_data['latchs_data']['EX_MEM'].items() %}
+                <div class="table_responsive">
+                    <table class="table table-striped" style="margin-top: 20px">
                         <tr>
-                            <td>{{latch_name}} </td>
-                            <td>{{latch_data['signed_int']}}</td>
-                            <td>{{latch_data['unsigned_int']}}</td>
-                            <td>{{latch_data['binary']}}</td>
+                            <th>MEM_WB Latch Info</th>
+                            <th>Signed INT</th>
+                            <th>Unsigned INT</th>
+                            <th>Binary</th>
                         </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="table_responsive">
-                <table class="table table-striped" style="margin-top: 20px">
-                    <tr>
-                        <th>MEM_WB Latch Info</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for latch_name, latch_data in mips_data['latchs_data']['MEM_WB'].items() %}
-                        <tr>
-                            <td>{{latch_name}} </td>
-                            <td>{{latch_data['signed_int']}}</td>
-                            <td>{{latch_data['unsigned_int']}}</td>
-                            <td>{{latch_data['binary']}}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="table_responsive" style="height: 350px; overflow:auto; margin-top:20px">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Memory Data</th>
-                        <th>Signed INT</th>
-                        <th>Unsigned INT</th>
-                        <th>Binary</th>
-                    </tr>
-                    {% for mem_address, mem_data in mips_data['memory_data'].items() %}
-                        <tr>
-                            <td>{{mem_address}} </td>
-                            <td>{{mem_data['signed_int']}}</td>
-                            <td>{{mem_data['unsigned_int']}}</td>
-                            <td>{{mem_data['binary']}}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                        {% for latch_name, latch_data in mips_data['latchs_data']['MEM_WB'].items() %}
+                            <tr>
+                                <td>{{latch_name.replace("_", " ")}} </td>
+                                <td>{{latch_data['signed_int']}}</td>
+                                <td>{{latch_data['unsigned_int']}}</td>
+                                <td>{{latch_data['binary']}}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
     {% endif %}

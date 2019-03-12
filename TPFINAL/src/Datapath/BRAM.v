@@ -23,9 +23,11 @@ module BRAM
     integer i;
     initial begin
         //$readmemb("testasm.mem", mem);
+        /*
         for(i=0; i<MEM_SIZE; i=i+1) begin
             mem[i] <= i;
         end
+        */
     end
 
 	always@(posedge clk)
