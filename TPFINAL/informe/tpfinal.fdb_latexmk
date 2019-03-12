@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex tpfinal"] 1552331378 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552331425
+["bibtex tpfinal"] 1552401734 "tpfinal.aux" "tpfinal.bbl" "tpfinal" 1552401973
   "./sbc.bst" 1552313470 21864 a668496cca21cfdd211f7fb5f0d57565 ""
   "sbc-template.bib" 1552313470 312 8f2fd3f52d7d30c13b57e920e052f859 ""
-  "tpfinal.aux" 1552331413 3007 19dcceda93ec7a4bf52dbd778041d053 ""
+  "tpfinal.aux" 1552401939 3455 7b6a88b3764114e7fd8b4991c9219a38 ""
   "tpfinal.bcf" 0 -1 0 ""
   (generated)
-  "tpfinal.blg"
   "tpfinal.bbl"
+  "tpfinal.blg"
 ["latex"] 1552313976 "tpfinal.tex" "tpfinal.dvi" "tpfinal" 1552313976
   "/etc/texmf/web2c/texmf.cnf" 1538577831 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm" 1480098701 1288 655e228510b4c2a1abe905c368440826 ""
@@ -27,9 +27,9 @@
   "tpfinal.aux" 1552313470 2395 a87aa1bd92944d5152e246f3dac3701c ""
   "tpfinal.tex" 1552313470 18096 ab119be3d8f6ff0def3169e5aec7128a ""
   (generated)
-  "tpfinal.log"
   "tpfinal.dvi"
-["pdflatex"] 1552331425 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552331425
+  "tpfinal.log"
+["pdflatex"] 1552401973 "tpfinal.tex" "tpfinal.pdf" "tpfinal" 1552401973
   "/etc/texmf/web2c/texmf.cnf" 1538577831 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/eclpsm/texmf/tex/latex/titlesec/titlesec.sty" 1480098841 37387 afa86533e532701faf233f3f592c61e0 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1480098666 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -104,6 +104,7 @@
   "/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo" 1480098821 8303 1d67e16498f00f63da792fab169302fc ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.dfu" 1487721667 11255 9d97362866549d3d3c994b5f28d1b9b5 ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def" 1487721667 7784 325a2a09984cb5c4ff230f9867145ad3 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/float/float.sty" 1480098828 6749 16d2656a1984957e674b149555f1ea1d ""
   "/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty" 1480098829 40502 e003406220954b0716679d7928aedd8a ""
   "/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1480098830 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1480098830 1224 978390e9c2234eab29404bc21b268d1e ""
@@ -135,15 +136,16 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1538577839 125883 5a8e8cee8831b673b8567a1d9242290b ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1539698349 787582 16fc1ce98727e13edc6645a537dd1d8d ""
   "caption2.sty" 1552313470 15190 35c3352faab63b28086162350d49d218 ""
+  "imagenes/controlsig.jpeg" 1552334568 57654 4bf93d282deea57f6729fa736eb4411f ""
   "imagenes/esquema_pipeline.jpeg" 1552313470 57689 50a350af3415a80bdf31673c36c335f4 ""
   "imagenes/esquema_pipeline_completo.jpeg" 1552313470 88323 3867c4a5e517cf4e89584c9650c8fc5b ""
   "imagenes/estructura_instrucciones.jpeg" 1552326708 25547 4664fda086e07741fe0627fcb8b339ee ""
   "mips.sty" 1552313470 3288 4a27bfee7499ec8b8c13ce59b8ede31e ""
   "sbc-template.sty" 1552313470 5287 33c2e008a609d0270ad2df7ac28c66a2 ""
-  "tpfinal.aux" 1552331413 3007 19dcceda93ec7a4bf52dbd778041d053 ""
-  "tpfinal.bbl" 1552331378 222 5386052ccc1bdb2d6d798bf0f6420d17 "bibtex tpfinal"
-  "tpfinal.tex" 1552331425 30154 fda740412ab047daf2def167079700bf ""
+  "tpfinal.aux" 1552401939 3455 7b6a88b3764114e7fd8b4991c9219a38 ""
+  "tpfinal.bbl" 1552401734 222 5386052ccc1bdb2d6d798bf0f6420d17 "bibtex tpfinal"
+  "tpfinal.tex" 1552401972 41154 bddaf112a33d2340bbb4f2fe84c81566 ""
   (generated)
-  "tpfinal.pdf"
   "tpfinal.log"
+  "tpfinal.pdf"
   "tpfinal.aux"

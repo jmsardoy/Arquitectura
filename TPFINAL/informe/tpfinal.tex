@@ -10,6 +10,7 @@
 \usepackage{xcolor}
 \usepackage{mips}
 \usepackage{color}
+\usepackage{float}
 
 \lstset{ %
   language=[mips]Assembler,       % the language of the code
@@ -98,7 +99,7 @@ Todo esto compondrá una suite básica de desarrollo de software de propósito g
 
 La técnica de \textit{pipeline} es la más común utilizada para la implementación de procesadores modernos de diferentes arquitecturas, dado el gran aumento de \textit{IPC} (instrucciones por ciclo) que éste provee.
 
-MIPS son las siglas de /textit{Microprocessor without interlocked pipeline stages}. Es una arquitectura RISC (\textit{reduced instruction set computer} desarrollada por MIPS Computer Systems. Existen versiones de 32 y 64 bits de dicha arquitectura. La primera versión de fue desarrollada en la Universidad de Stanford en 1981 por un equipo liderado por John. L. Hennesy. La idea era diseñar un procesador segmentado (idea ya muy conocida en esos momentos) pero sin interbloqueo entre capas. En esa época eran comunes los procesadores donde cada instrucción iba ejecutandose por cada capaz, mientras las otras permanecian inactivas. Esto llevaba a que el tiempo que demora en ejecutar la instrucción fuera el del tiempo en el que tarda en pasar por todas las capas, en contraste con el tiempo del camino crítico, como ocurre sin interbloqueo.
+MIPS son las siglas de \textit{Microprocessor without interlocked pipeline stages}. Es una arquitectura RISC (\textit{reduced instruction set computer} desarrollada por MIPS Computer Systems. Existen versiones de 32 y 64 bits de dicha arquitectura. La primera versión de fue desarrollada en la Universidad de Stanford en 1981 por un equipo liderado por John. L. Hennesy. La idea era diseñar un procesador segmentado (idea ya muy conocida en esos momentos) pero sin interbloqueo entre capas. En esa época eran comunes los procesadores donde cada instrucción iba ejecutandose por cada capaz, mientras las otras permanecian inactivas. Esto llevaba a que el tiempo que demora en ejecutar la instrucción fuera el del tiempo en el que tarda en pasar por todas las capas, en contraste con el tiempo del camino crítico, como ocurre sin interbloqueo.
 
 Por estos motivos este trabajo tendrá como cuerpo principal, la aplicación de dicha técnica, para lo cual, a modo de guía, se seguirá la bibliografía de \textit{Patterson y Hennesy}, dado que expone y soluciona los problemas más comunes a la hora de la creación de un \textit{pipeline} genérico. Sin embargo, muchas partes de la implementación, quedan a cargo, y serán solucionadas por los autores, lo cual lo hace una implementación única de la arquitectura.
 
@@ -170,7 +171,7 @@ En la (Figura~\ref{fig:pipeline}) se puede apreciar un diagrama simplificado y g
 \end{figure}
 
 \subsection{\textit{IF o Instruction Fetch}}
-Es la primer etapa del pipeline. Se busca la siguiente instrucción a ejecutar en la memoria de programa. En ésta etapa se ubica el contador de programa o /textit{Program Counter}, mejor conocido como PC, el cual es un registro que contiene la dirección actual en la memoria de programa en la que se encuentra el programa en ejecución. La siguiente instrucción a ejecutar antes del ciclo es PC + WORD\_SIZE (4 para un procesador de 32bits), en caso que no haya un salto. Para mejor claridad, los pasos que ocurren en el ciclo son:
+Es la primer etapa del pipeline. Se busca la siguiente instrucción a ejecutar en la memoria de programa. En ésta etapa se ubica el contador de programa o \textit{Program Counter}, mejor conocido como PC, el cual es un registro que contiene la dirección actual en la memoria de programa en la que se encuentra el programa en ejecución. La siguiente instrucción a ejecutar antes del ciclo es PC + WORD\_SIZE (4 para un procesador de 32bits), en caso que no haya un salto. Para mejor claridad, los pasos que ocurren en el ciclo son:
 
 \begin{enumerate}
     \item Se calcula el nuevo valor de PC. Para eso existe un multiplexor a la entrada del PC que toma el valor desde dos fuentes. La primera es el módulo sumador, que simplemente devuelve la siguiente instrucción, y la otra fuente es una dirección arbitraria que viene desde la etapa de ejecución, producto de una instrucción de salto, condicional o absoluta.
@@ -345,7 +346,75 @@ Para explicar la Unidad de Control, debemos abordar un enfoque de más pequeño 
 
 \subsubsection{ALU Control}
 
-Dependiendo del tipo de instrucción a ejecutar, la ALU deberá efectuar una de ciertas operaciones definidas. Éstas operaciones se seleccionan mediante lineas de control de la ALU. La tabla (Cuadro~\ref{tab:alucontrol}) las define, según el standard MIPS.
+Dependiendo del tipo de instrucción a ejecutar, la ALU deberá efectuar una de ciertas operaciones definidas. Éstas operaciones se seleccionan mediante lineas de control de la ALU. El (Cuadro~\ref{tab:alucontrol}) las define, según el standard MIPS.
+
+\begin{table}[!ht]
+\centering
+\caption{Combinación de entradas de control de ALU y funciones a las que mapean}
+\label{tab:alucontrol}
+\smallskip
+\begin{tabular}{l c c}
+\hline
+Control ALU & Función \\[0.5ex]
+\hline
+&&\\[-2ex]
+0000 & AND \\[0.5ex]
+\hline
+&&\\[-2ex]
+0001 & OR\\[0.5ex]
+\hline
+&&\\[-2ex]
+0010 & add\\[0.5ex]
+\hline
+&&\\[-2ex]
+0110 & substract\\[0.5ex]
+\hline
+&&\\[-2ex]
+0111 & set on less than\\[0.5ex]
+\hline
+&&\\[-2ex]
+1100 & NOR\\[0.5ex]
+\hline
+\end{tabular}
+\end{table}
+
+Que familias de instrucciones mapeen a las mismas operaciones de ALU nos permite generar otro nivel de abstracción para el control de la ALU y las instrucciones a ejecutar. Con una señal de dos bits llamada \textit{ALUOp} podemos mapear a dichas operaciones. La tabla (Cuadro~\ref{tab:alucontrolops}) muestra este nuevo concepto. También se intruduce el concepto de Funct Field, el cual es un campo de cada instrucción de MIPS el cual, junto con el Opcode, definen la instrucción a ejecutar.
+
+\begin{table}[!ht]
+\centering
+\caption{Mapeo \textit{ALUOps} a Funct field y entradas de control de ALU}
+\label{tab:alucontrolops}
+\smallskip
+\begin{tabular}{l c c c c c}
+\hline
+Opcode & ALUOp & Operación & Funct field & Operación ALU & Control ALU\\[0.5ex]
+\hline
+&&\\[-2ex]
+LW & 00 & load word & XXXXXX & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+SW & 00 & store word & XXXXXX & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+Branch equal & 01 & branch equal & XXXXXX & substract & 0110\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & add & 100000 & add & 0010\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & substract & 100010 & substract & 0110\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & AND & 100100 & AND & 0000\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & OR & 100101 & OR & 0001\\[0.5ex]
+\hline
+&&\\[-2ex]
+Tipo R & 10 & set on less than & 101010 & set on less than & 0111\\[0.5ex]
+\hline
+\end{tabular}
+\end{table}
 
 La implementación es extensa debido a las definiciones requeridas, por eso se omiten algunas partes del código:
 
@@ -395,75 +464,149 @@ module ALUControl
 endmodule
 \end{lstlisting}
 
+\noindent Se ve como se hace un mapeo, teniendo en cuenta las diferentes variaciones que hay en el set de instrucciones, ALUOps, Functs y controles de la ALU.
+
 \subsubsection{Main Control Unit}
 
-Que familias de instrucciones mapeen a las mismas operaciones de ALU nos permite generar otro nivel de abstracción para el control de la ALU y las instrucciones a ejecutar. Con una señal de dos bits llamada \textit{ALUOp} podemos mapear a dichas operaciones. La tabla (Cuadro~\ref{tab:alucontrolops}) muestra este nuevo mapeo. También se intruduce el concepto de Funct Field, el cual es un campo de cada instrucción de MIPS el cual, junto con el Opcode, definen la instrucción a ejecutar.
+Ahora que ya definimos los controles de la ALU, y como interpretarlos a partir de los bits de la instruccion, debemos definir como se controlan todas las otras partes del datapath. En la (Figura~\ref{fig:controlsig}) se observan en celeste, cuales son las principales señales de control de los diferentes elementos del pipeline.
 
-\begin{table}[!ht]
+\begin{figure}[ht]
 \centering
-\caption{Combinación de entradas de control de ALU y funciones a las que mapean}
-\label{tab:alucontrol}
+\hspace*{-1cm}
+\includegraphics[width=1.1\textwidth]{imagenes/controlsig.jpeg}
+\caption{Señales de control del pipeline \cite{patterson}}
+\label{fig:controlsig}
+\end{figure}
+
+Éstas siete señales tienen diferentes efectos, los cuales se explican en el (Cuadro~\ref{tab:controlsigcuadro}).
+
+\begin{table}[!ht][H]
+\centering
+\caption{Señales de control de la \textit{Main Control Unit}}
+\label{tab:controlsigcuadro}
 \smallskip
 \begin{tabular}{l c c}
 \hline
-Control ALU & Función \\[0.5ex]
+Nombre de la señal & Efecto en bajo & Efecto en alto\\[0.5ex]
 \hline
 &&\\[-2ex]
-0000 & AND \\[0.5ex]
+RegDst & El número del registro de destino & Idem RD \\& viene del campo RT\\[0.5ex]
 \hline
 &&\\[-2ex]
-0001 & OR\\[0.5ex]
+RegWrite & Nada & El registro en la entrada \\&&es escrito con el valor del dato \\[0.5ex]
 \hline
 &&\\[-2ex]
-0010 & add\\[0.5ex]
+ALUSrc & El segundo operando & Idem del extensor de signo \\&de la ALU viene de la segunda \\&salida de los registros \\[0.5ex]
 \hline
 &&\\[-2ex]
-0110 & substract\\[0.5ex]
+PCSrc & El PC es reemplazado con & Idem con el objetivo del salto \\&la salida del sumador PC+4  \\[0.5ex]
 \hline
 &&\\[-2ex]
-0111 & set on less than\\[0.5ex]
+MemRead & Nada & Se lee la memoria \\&&a partir de sus entradas \\[0.5ex]
 \hline
 &&\\[-2ex]
-1100 & NOR\\[0.5ex]
+MemWrite & Nada & Se escribe la memoria \\&& a partir de sus entradas \\[0.5ex]
+\hline
+&&\\[-2ex]
+MemToReg & El valor entregado & Idem memoria de datos\\& a los datos de escritura del registro \\&vienen de la ALU \\[0.5ex]
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}[!ht]
-\centering
-\caption{Mapeo \textit{ALUOps} a Funct field y entradas de control de ALU}
-\label{tab:alucontrolops}
-\smallskip
-\begin{tabular}{l c c c c c}
-\hline
-Opcode & ALUOp & Operación & Funct field & Operación ALU & Control ALU\\[0.5ex]
-\hline
-&&\\[-2ex]
-LW & 00 & load word & XXXXXX & add & 0010\\[0.5ex]
-\hline
-&&\\[-2ex]
-SW & 00 & store word & XXXXXX & add & 0010\\[0.5ex]
-\hline
-&&\\[-2ex]
-Branch equal & 01 & branch equal & XXXXXX & substract & 0110\\[0.5ex]
-\hline
-&&\\[-2ex]
-Tipo R & 10 & add & 100000 & add & 0010\\[0.5ex]
-\hline
-&&\\[-2ex]
-Tipo R & 10 & substract & 100010 & substract & 0110\\[0.5ex]
-\hline
-&&\\[-2ex]
-Tipo R & 10 & AND & 100100 & AND & 0000\\[0.5ex]
-\hline
-&&\\[-2ex]
-Tipo R & 10 & OR & 100101 & OR & 0001\\[0.5ex]
-\hline
-&&\\[-2ex]
-Tipo R & 10 & set on less than & 101010 & set on less than & 0111\\[0.5ex]
-\hline
-\end{tabular}
-\end{table}
+Habiendo entendido cuales son las entradas y salidas que gobiernan el módulo de control, veremos la implementación del mismo. Tener en cuenta que tambien se producen truncaciones en el código (no sin comentarlas y no sin que ya haya sido explicada como completarlo) para brevedad.
+
+\noindent \textit{Control.v}
+\begin{lstlisting}[language=verilog]
+`include "constants.vh"
+
+module Control
+#(
+    parameter OPCODE_BITS = `OPCODE_BITS
+)
+(
+    input wire [OPCODE_BITS - 1 : 0] i_opcode,
+    input wire [5: 0]                i_funct,
+    input wire                       i_control_mux,
+    output reg                       o_RegDst,
+    output reg                       o_RegWrite,
+    output reg                       o_MemRead,
+    output reg                       o_MemWrite,
+    output reg                       o_MemtoReg,
+    output reg [3:0]                 o_ALUOp,
+    output reg                       o_ALUSrc,
+    output reg                       o_Shamt,
+    output reg [2:0]                 o_ls_filter_op
+);
+
+    localparam LW      = 'b100;
+    localparam SW      = 'b101;
+    localparam INMED   = 'b001;
+    localparam OTHER   = 'b000;
+
+    always@* begin
+        o_ls_filter_op  = i_opcode[2:0];
+
+        if (i_control_mux) begin
+            case (i_opcode[5:3])
+                LW: begin
+                    // El primero se expone para claridad
+                    // Los otros casos se colapsan
+                    o_RegDst   = 0;
+                    o_RegWrite = 1;
+                    o_MemRead  = 1;
+                    o_MemWrite = 0;
+                    o_MemtoReg = 1;
+                    o_ALUOp    = 'b0001;
+                    o_ALUSrc   = 1;
+                    o_Shamt    = 0;
+                end
+
+                SW: begin
+                    // Caso de instruccion SW
+                end
+
+                INMED: begin
+                    // Caso de instruccion inmediata
+                end
+
+                OTHER: begin
+                    if (i_opcode[2]) begin
+                        // Caso de branch
+                    end
+
+                    else if (i_opcode[1]) begin
+                      //Caso de J-JAL
+                    end
+
+                    else if (i_opcode == 0) begin
+                        if (i_funct[5:1] == 'b00100) begin
+                           // Caso de JR-JRAL
+                        end
+
+                        else begin
+                          // Caso de RTYPE
+                        end
+                    end
+                    else begin
+                        // Caso ninguna instruccion. Stall
+                    end
+                end
+
+                default: begin
+                    // Caso ninguna instruccion. Stall
+                end
+            endcase
+        end
+
+        else begin
+            // Caso ninguna instruccion. Stall
+        end
+
+    end
+
+endmodule
+
+\end{lstlisting}
 
 \subsection{Forwarding Unit}
 
@@ -518,6 +661,194 @@ endmodule
 
 \subsection{Branching Unit}
 
+Esta unidad es una solución propia para resolver el control de saltos. Interpreta los \textit{opcodes} de cada instrucción y controla las señales correspondientes. Esto alivia trabajo de la Unidad de Control. Además contiene la lógica del predictor de saltos. Decide si se va a interpretar como \textit{taken} o \textit{not taken}.
+
+\noindent \textit{BranchUnit.v}
+\begin{lstlisting}[language=verilog]
+`include "constants.vh"
+
+module BranchUnit
+#(
+    parameter OPCODE_BITS = `OPCODE_BITS,
+    parameter PROC_BITS   = `PROC_BITS,
+    parameter PC_BITS     = `PC_BITS,
+    parameter FUNCT_BITS  = `FUNCT_BITS
+)
+(
+    input wire                       i_branch_enable,
+    input wire [OPCODE_BITS - 1 : 0] i_opcode,
+    input wire [FUNCT_BITS - 1 : 0]  i_funct,
+    input wire [PC_BITS - 1 : 0]     i_pc_next,
+    input wire [PROC_BITS - 1 : 0]   i_immediate,
+    input wire [PROC_BITS - 1 : 0]   i_jump_address,
+    input wire [PROC_BITS - 1 : 0]   i_data_rs,
+    input wire [PROC_BITS - 1 : 0]   i_data_rt,
+
+    output reg o_taken,
+    output reg o_pc_to_reg,
+    output reg [PC_BITS - 1 : 0] o_jump_address,
+    output reg [PC_BITS - 1 : 0] o_pc_return,
+    output reg o_pc_reg_sel
+
+);
+
+    localparam BEQ     = 'b000100;
+    localparam BNE     = 'b000101;
+    localparam J       = 'b000010;
+    localparam JAL     = 'b000011;
+    localparam JR_JALR = 'b000000;
+
+    always@* begin
+        o_pc_return = i_pc_next;
+        if (i_branch_enable) begin
+            case (i_opcode)
+                BEQ: begin
+                    o_taken = i_data_rs == i_data_rt;
+                    o_pc_to_reg = 0;
+                    o_jump_address = (i_pc_next + i_immediate);
+                    o_pc_reg_sel = 0;
+                end
+                BNE: begin
+                    o_taken = i_data_rs != i_data_rt;
+                    o_pc_to_reg = 0;
+                    o_jump_address = (i_pc_next + i_immediate);
+                    o_pc_reg_sel = 0;
+                end
+                J: begin
+                    o_taken = 1;
+                    o_pc_to_reg = 0;
+                    o_jump_address = i_jump_address;
+                    o_pc_reg_sel = 0;
+                end
+                JAL: begin
+                    o_taken = 1;
+                    o_pc_to_reg = 1;
+                    o_jump_address = i_jump_address;
+                    o_pc_reg_sel = 1;
+                end
+                JR_JALR: begin
+                    //JR
+                    if (i_funct == 'b001000) begin
+                        o_taken = 1;
+                        o_pc_to_reg = 0;
+                        o_jump_address = i_data_rs;
+                        o_pc_reg_sel = 0;
+                    end
+                    //JALR
+                    else if (i_funct == 'b001001) begin
+                        o_taken = 1;
+                        o_pc_to_reg = 1;
+                        o_jump_address = i_data_rs;
+                        o_pc_reg_sel = 0;
+                    end
+                    //NO JUMP
+                    else begin
+                        o_taken = 0;
+                        o_pc_to_reg = 0;
+                        o_jump_address = 0;
+                        o_pc_reg_sel = 0;
+                    end
+                end
+                //NO JUMP
+                default: begin
+                    o_taken = 0;
+                    o_pc_to_reg = 0;
+                    o_jump_address = 0;
+                    o_pc_reg_sel = 0;
+
+                end
+            endcase
+        end
+        else begin
+            o_taken = 0;
+            o_pc_to_reg = 0;
+            o_jump_address = 0;
+            o_pc_reg_sel = 0;
+        end
+    end
+endmodule
+\end{lstlisting}
+
+\section{Test Benches}
+
+\noindent Los \textif{test benches} son una parte fundamental de cada diseño en cualquier HDL. Estos componen el primer paso en la validacion del sistema, y deben ser pasados para continuar a cualquier etapa posterior. Consisten en una representación lógica de cada módulo, a la cual luego se lo ataca con señales de entrada simuladas, pensadas para que contemplar la mayor cantidad de casos posibles. El resultado de la prueba es exitoso si la salída esperada se corresponde con la salída real.
+
+La suite de desarrollo que utilizamos cuenta con herramientas de simulación, muy utiles para ésta tarea.
+
+En el marco de éste trabajo se generaron \textif{test benches} para cada uno de los módulos utilizados. A continuación se muestra un ejemplo de estos tests, quedando a disposición el resto en el código fuente anexo.
+
+
+\noindent \textit{tb\_HazardDetector.v}
+\begin{lstlisting}[language=verilog]
+module tb_HazardDetector();
+
+    reg [4:0] rs;
+    reg [4:0] rt;
+    reg [4:0] id_ex_rt;
+    reg id_ex_MemRead;
+    wire PCWrite;
+    wire if_id_write;
+    wire control_mux;
+
+    initial begin
+        //testing MemRead == 0
+        id_ex_MemRead = 0;
+        rs = 0;
+        rt = 0;
+        id_ex_rt = 0;
+
+        //testing all posibilities
+
+        //all register diferent
+        #20
+        id_ex_MemRead = 1;
+        rs = 1;
+        rt = 2;
+        id_ex_rt = 3;
+
+        //rs == id_ex_rt
+        #20
+        id_ex_MemRead = 1;
+        rs = 10;
+        rt = 2;
+        id_ex_rt = 10;
+
+        //rt == id_ex_rt
+        #20
+        id_ex_MemRead = 1;
+        rs = 10;
+        rt = 25;
+        id_ex_rt = 25;
+
+        //rs == rt == id_ex_rt
+        #20
+        id_ex_MemRead = 1;
+        rs = 15;
+        rt = 15;
+        id_ex_rt = 15;
+
+        //rs == rt == id_ex_rt and MemRead == 0
+        #20
+        id_ex_MemRead = 0;
+        rs = 15;
+        rt = 15;
+        id_ex_rt = 15;
+    end
+
+    HazardDetector hazard_detector_u(
+        .i_instruction_rs(rs),
+        .i_instruction_rt(rt),
+        .i_id_ex_rt(id_ex_rt),
+        .i_id_ex_MemRead(id_ex_MemRead),
+        .o_PCWrite(PCWrite),
+        .o_if_id_write(if_id_write),
+        .o_control_mux(control_mux)
+    );
+endmodule
+\end{lstlisting}
+
+Se ve a simple vista como las entradas del modulo son confeccionadas para probar cada caso de interés.
+Nótese como en éstas simulaciones se pueden realizar cosas imposibles en módulos que planeen ser sintetizados. Por ejemplo, incluir delays de tiempo (con \textit{\#xx}) no es sintetizable en hardware.
 
 
 \bibliographystyle{sbc}
