@@ -11,6 +11,7 @@
 \usepackage{mips}
 \usepackage{color}
 \usepackage{float}
+\usepackage{tikz}
 
 \lstset{ %
   language=[mips]Assembler,       % the language of the code
@@ -90,14 +91,14 @@ El trabajo, se encuentra dentro del marco de la asignatura de Arquitectura de Co
 
 Además de la implementación del procesador en sí, se mostrará como implementar los elementos auxiliares requeridos para su funcionamiento y programación, entre otras utilidades. El hardware utilizado será un dispositivo FPGA, de la marca Xilinx, al ser de esta empresa, con los que cuentan los autores del trabajo.
 
-Dentro de los elementos auxiliares, encontraremos el desarrollo de un sistema de comunicación directo con el procesador, mediante el protocolo UART. Además de éste, un mecanismo para cargar un programa en la RAM del procesador, como asi también funcionalidad de debugging (ejecución paso a paso y salída de valores de registros internos). También se mostrará la implementación y uso de software auxiliar para el ensamblado de los programas a ejecutar.
+Dentro de los elementos auxiliares, encontraremos el desarrollo de un sistema de comunicación directo con el procesador, mediante el protocolo UART. Además de este, un mecanismo para cargar un programa en la RAM del procesador, como asi también funcionalidad de debugging (ejecución paso a paso y salída de valores de registros internos). También se mostrará la implementación y uso de software auxiliar para el ensamblado de los programas a ejecutar.
 
 Todo esto compondrá una suite básica de desarrollo de software de propósito general, cuyo entendimiento es el objetivo principal del trabajo y la materia.
 
 
 \section{Referencias Teóricas} \label{sec:firstpage}
 
-La técnica de \textit{pipeline} es la más común utilizada para la implementación de procesadores modernos de diferentes arquitecturas, dado el gran aumento de \textit{IPC} (instrucciones por ciclo) que éste provee.
+La técnica de \textit{pipeline} es la más común utilizada para la implementación de procesadores modernos de diferentes arquitecturas, dado el gran aumento de \textit{IPC} (instrucciones por ciclo) que este provee.
 
 MIPS son las siglas de \textit{Microprocessor without interlocked pipeline stages}. Es una arquitectura RISC (\textit{reduced instruction set computer} desarrollada por MIPS Computer Systems. Existen versiones de 32 y 64 bits de dicha arquitectura. La primera versión de fue desarrollada en la Universidad de Stanford en 1981 por un equipo liderado por John. L. Hennesy. La idea era diseñar un procesador segmentado (idea ya muy conocida en esos momentos) pero sin interbloqueo entre capas. En esa época eran comunes los procesadores donde cada instrucción iba ejecutandose por cada capaz, mientras las otras permanecian inactivas. Esto llevaba a que el tiempo que demora en ejecutar la instrucción fuera el del tiempo en el que tarda en pasar por todas las capas, en contraste con el tiempo del camino crítico, como ocurre sin interbloqueo.
 
@@ -160,7 +161,7 @@ Los requerimientos provistos por la cátedra fueron los siguientes:
 
 \section{Pipeline de cinco etapas: Descripción general}
 
-En la (Figura~\ref{fig:pipeline}) se puede apreciar un diagrama simplificado y general del sistema que compone a un procesador segmentado en cinco etapas. En las siguientes sub-secciones se explicará cada una de ellas. Más adelante se agregará complejidad a éste diagrama, dado los problemas que irán surgiendo y su solución.
+En la (Figura~\ref{fig:pipeline}) se puede apreciar un diagrama simplificado y general del sistema que compone a un procesador segmentado en cinco etapas. En las siguientes sub-secciones se explicará cada una de ellas. Más adelante se agregará complejidad a este diagrama, dado los problemas que irán surgiendo y su solución.
 
 \begin{figure}[ht]
 \centering
@@ -182,7 +183,7 @@ Es la primer etapa del pipeline. Se busca la siguiente instrucción a ejecutar e
 Etapa en donde se decodifica la instrucción y se cargan los registros correspondientes. Aqui tiene lugar el File Register, el módulo encargado de contener los 32 registros de 32bits del MIPS. Cada instrucción se transforma en sus correspondientes señales en la Unidad de Control, el cual comanda todo el procesador, según que instrucción se esté ejecutando.
 
 \subsection{\textit{EX o Excecute}}
-Unidad que ejecuta la instrucción, osea, que efectua el cálculo aritmético, lógico, o de resolución de dirección de offset. Vemos que una entrada de la ALU de propósito general puede ser un valor inmediato, con el signo extendido, o un registro, mientras que la otra entrada es siempre un registro. Existe otra ALU que unicamente suma, la cual cálcula nuevas direcciones para el PC, el cual le suma a éste un valor inmediato, el cual corresponde al salto a efectuar.
+Unidad que ejecuta la instrucción, osea, que efectua el cálculo aritmético, lógico, o de resolución de dirección de offset. Vemos que una entrada de la ALU de propósito general puede ser un valor inmediato, con el signo extendido, o un registro, mientras que la otra entrada es siempre un registro. Existe otra ALU que unicamente suma, la cual cálcula nuevas direcciones para el PC, el cual le suma a este un valor inmediato, el cual corresponde al salto a efectuar.
 
 \subsection{\textit{MEM o Memory Access}}
 Unidad de lectura o escritura desde/hacia la memoria de datos. En ésta etapa se lee o escribe un dato de la memoria de acuerdo a la instrucción ejecutada. Si la instrucción no es de acceso a memoria, se hace un bypass de ésta etapa hacia la siguiente.
@@ -192,7 +193,7 @@ Escritura de resultados en los registros. Los registros pueden ser escritos desd
 
 \section{Pipeline de cinco etapas: Problema completo y solución}
 
-El primer pipeline presentado, es simple, funciona y expone correctamente la teória básica de la segmentación en el diseño de un procesador, lo cual es necesario para el marco de éste trabajo, pero presenta problemas muy grandes, que de no ser solucionados, prácticamente elimina las ventajas del pipeline debido a su ineficiencia a la hora de enfrentar ciertos casos comunes.
+El primer pipeline presentado, es simple, funciona y expone correctamente la teória básica de la segmentación en el diseño de un procesador, lo cual es necesario para el marco de este trabajo, pero presenta problemas muy grandes, que de no ser solucionados, prácticamente elimina las ventajas del pipeline debido a su ineficiencia a la hora de enfrentar ciertos casos comunes.
 
 El presente trabajo no planea ser una explicación teórica de todas las técnicas utilizadas y los problemas resueltos, por eso se irá al grano de la implementación completa, pero dejando al lector la posibilidad de consultar la bibliografía en el caso de ser necesario. Sin embargo, se explicará brevemente el motivo de cada uno de los elementos incluidos en el mismo y luego se discutirá la implementación desarrollada. No se incluirán en el informe todos los detalles implementativos, dado que estos pueden consultarse en el código del proyecto anexo, pero se mostraran ejemplos variados y detalles a tener en cuenta.
 
@@ -273,8 +274,8 @@ Para explicar qué hace esta unidad tenemos que analizar algunos conceptos teór
     and   $12,$2,$5
     \end{lstlisting}
 
-    La instruccion \textit{sub} no escribe su resultado hasta la quinta etapa (WB), entonces se deberia detener el pipeline durante tres ciclos hasta que termine, para luego ejecutar la \textit{and}, dañando severamente la performance. El compilador podria mitigar mucho este problema, pero ocurre demasiado a menudo y no se puede confiar en que lo resuelva siempre. Existen dos maneras de solucionar este problema, haciendo una parada del pipeline (poco eficiente) o implementando una \textit{forwarding unit}. Ésta es la técnica utilizada en éste trabajo, de la cual se hablara más adelante.
-    \item \textbf{Riesgo de control:} Se basa en la necesidad de tomar una desicion sin conocer el resultado de una instruccion que esta ejecutandose. Estas instrucciones, mas especificamente, son las de \textif{branching} o de salto. Cuando entra una instruccion de salto al pipeline, dependiendo de si ese salto es tomado o no, la etapa IF debe cargar nuevas instrucciones de un lado de la memoria u otro. Para resolver este problema se usan predictores de salto, que tratan de adivinar cual sera el resultado del salto. En el caso de adivinar correctamente, la performance no se ve afectada, si no es asi, deben desecharse las instrucciones que habia en el pipeline hasta ese momento, y comenzar a cargar las nuevas. Los tipos de predictores no seran explicados aqui, salvo el elegido por los autores, el cual es llamado \textit{branch not taken}. Éste tipo de predictor siempre supone que el branch no es tomado. Es menos eficiente que soluciones más complejas, pero es simple de implementar y en bajo en consumo de recursos de hardware.
+    La instruccion \textit{sub} no escribe su resultado hasta la quinta etapa (WB), entonces se deberia detener el pipeline durante tres ciclos hasta que termine, para luego ejecutar la \textit{and}, dañando severamente la performance. El compilador podria mitigar mucho este problema, pero ocurre demasiado a menudo y no se puede confiar en que lo resuelva siempre. Existen dos maneras de solucionar este problema, haciendo una parada del pipeline (poco eficiente) o implementando una \textit{forwarding unit}. Ésta es la técnica utilizada en este trabajo, de la cual se hablara más adelante.
+    \item \textbf{Riesgo de control:} Se basa en la necesidad de tomar una desicion sin conocer el resultado de una instruccion que esta ejecutandose. Estas instrucciones, mas especificamente, son las de \textif{branching} o de salto. Cuando entra una instruccion de salto al pipeline, dependiendo de si ese salto es tomado o no, la etapa IF debe cargar nuevas instrucciones de un lado de la memoria u otro. Para resolver este problema se usan predictores de salto, que tratan de adivinar cual sera el resultado del salto. En el caso de adivinar correctamente, la performance no se ve afectada, si no es asi, deben desecharse las instrucciones que habia en el pipeline hasta ese momento, y comenzar a cargar las nuevas. Los tipos de predictores no seran explicados aqui, salvo el elegido por los autores, el cual es llamado \textit{branch not taken}. este tipo de predictor siempre supone que el branch no es tomado. Es menos eficiente que soluciones más complejas, pero es simple de implementar y en bajo en consumo de recursos de hardware.
 \end{enumerate}
 
 \noindent En vista de los tipos de riesgos que hay, y sus necesidades, nuestra \textit{hazard detection unit} se ubicará en la etapa de ID, y solo contendrá lógica para la detección y salida de control de los riesgos de datos:
@@ -340,7 +341,7 @@ Para explicar la Unidad de Control, debemos abordar un enfoque de más pequeño 
 \centering
 \hspace*{-1cm}
 \includegraphics[width=.5\textwidth]{imagenes/estructura_instrucciones.jpeg}
-\caption{Estructura binaria de cada tipo de instruccion \cite{patterson}}
+\caption{Estructura binaria de cada tipo de instruccion}
 \label{fig:instrucciones}
 \end{figure}
 
@@ -610,7 +611,7 @@ endmodule
 
 \subsection{Forwarding Unit}
 
-Como se mencionó anteriormente, existen dos maneras de lidiar con los riesgos de datos. Parar el pipeline hasta que se resuelvan las dependencias al escribirse nuevamente en la etapa WB, o implementar una \textit{forwarding unit}. Lo que hace éste modulo es detectar si alguna instrucción que se encuentre en el pipeline va a necesitar un dato que este ya esté en EX o WB, y lo envía directamente, sin necesidad de que éste haya sido escrito todavia en un registro. Nótese que existe el caso donde el dato requerido por la instrucción siguiente viene a partir de un load. Los load se procesan en la etapa siguiente a EX, en MEM, lo que pone dos etapas de distancia entre la instrucción que requiere el dato, y el dato en sí. Esto obliga a que haya una parada de un ciclo, hasta que se resuelve el load, y pueda ser forwardeado a la etapa de ejecución.
+Como se mencionó anteriormente, existen dos maneras de lidiar con los riesgos de datos. Parar el pipeline hasta que se resuelvan las dependencias al escribirse nuevamente en la etapa WB, o implementar una \textit{forwarding unit}. Lo que hace este modulo es detectar si alguna instrucción que se encuentre en el pipeline va a necesitar un dato que este ya esté en EX o WB, y lo envía directamente, sin necesidad de que este haya sido escrito todavia en un registro. Nótese que existe el caso donde el dato requerido por la instrucción siguiente viene a partir de un load. Los load se procesan en la etapa siguiente a EX, en MEM, lo que pone dos etapas de distancia entre la instrucción que requiere el dato, y el dato en sí. Esto obliga a que haya una parada de un ciclo, hasta que se resuelve el load, y pueda ser forwardeado a la etapa de ejecución.
 
 \noindent \textit{ForwardingUnit.v}
 \begin{lstlisting}
@@ -769,13 +770,80 @@ module BranchUnit
 endmodule
 \end{lstlisting}
 
+\section{Debug Unit}
+
+Como se comento anteriormente, la Debug Unit es fundamental para el analísis y utilización del pipeline sintetizado. Sin este, es un proyecto inerte e inutilizable.
+
+Dicha unidad se conecta, en el módulo principal, a las lineas del Datapath que existen para este propósito. El Datapath debió ser modificado de manera importante para la inclusión de ésta unidad, dado que los datos que se desean extraer de la misma son de variada indole y procedencia.
+
+La Debug Unit esta modelada como una máquina de estados finita, cuyo diagrama se presenta en el (Diagrama~\ref{fig:fsm}).
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (43.7,-23.8) circle (3);
+\draw (43.7,-23.8) node {$IDLE$};
+\draw [black] (64.8,-10.3) circle (3);
+\draw (64.8,-10.3) node {$START\_LOAD$};
+\draw [black] (22.3,-48.3) circle (3);
+\draw (22.3,-48.3) node {$START\_RUN$};
+\draw [black] (12.4,-14.5) circle (3);
+\draw (12.4,-14.5) node {$START\_STEP$};
+\draw [black] (67.4,-34.6) circle (3);
+\draw (67.4,-34.6) node {$WAIT\_LOAD$};
+\draw [black] (42.4,-45.9) circle (3);
+\draw (42.4,-45.9) node {$WAIT\_RUN$};
+\draw [black] (11.8,-29.1) circle (3);
+\draw (11.8,-29.1) node {$WAIT\_STEP$};
+\draw [black] (44.467,-20.904) arc (160.09544:85.12763:16.955);
+\fill [black] (61.85,-9.78) -- (61.09,-9.22) -- (61.01,-10.21);
+\draw (41.55,-11.89) node [above] {$i\_rx\_data=LOAD\_INS$};
+\draw [black] (41.73,-26.06) -- (24.27,-46.04);
+\fill [black] (24.27,-46.04) -- (25.18,-45.77) -- (24.42,-45.11);
+\draw (32.46,-34.6) node [left] {$i\_rx\_data=RUN\_STEP$};
+\draw [black] (15.375,-14.119) arc (94.97419:51.92985:37.025);
+\fill [black] (15.37,-14.12) -- (16.22,-14.55) -- (16.13,-13.55);
+\draw (34.91,-14.66) node [above] {$i\_rx\_data=RUN$};
+\draw [black] (45.396,-21.34) arc (173.14616:-114.85384:2.25);
+\draw (50.26,-19.31) node [right] {$else$};
+\fill [black] (46.68,-23.65) -- (47.42,-24.24) -- (47.54,-23.25);
+\draw [black] (66.28,-12.908) arc (26.41577:-14.20142:27.281);
+\fill [black] (68.29,-31.74) -- (68.98,-31.09) -- (68.01,-30.84);
+\draw [black] (46.55,-24.737) arc (70.98121:60.02164:105.143);
+\fill [black] (46.55,-24.74) -- (47.14,-25.47) -- (47.47,-24.53);
+\draw (62.42,-27.91) node [above] {$load\_fsm\_done$};
+\draw [black] (68.171,-37.487) arc (42.69007:-245.30993:2.25);
+\draw (62.15,-42.33) node [below] {$!load\_fsm\_done$};
+\fill [black] (65.58,-36.97) -- (64.65,-37.14) -- (65.33,-37.88);
+\draw [black] (44.313,-26.736) arc (9.45568:-16.1886:36.833);
+\fill [black] (44.31,-26.74) -- (43.95,-27.61) -- (44.94,-27.44);
+\draw (45.34,-34.98) node [right] {$run\_fsm\_done$};
+\draw [black] (44.241,-48.254) arc (65.76829:-222.23171:2.25);
+\draw (47.68,-53.57) node [below] {$!run\_fsm\_done$};
+\fill [black] (41.65,-48.79) -- (40.87,-49.32) -- (41.78,-49.73);
+\draw [black] (11.369,-26.132) arc (-174.44864:-190.25795:31.693);
+\fill [black] (11.37,-26.13) -- (11.79,-25.29) -- (10.79,-25.38);
+\draw [black] (40.841,-24.708) arc (-73.2083:-87.92531:103.058);
+\fill [black] (40.84,-24.71) -- (39.93,-24.46) -- (40.22,-25.42);
+\draw (30.81,-28.82) node [below] {$step\_fsm\_done$};
+\draw [black] (11.536,-32.077) arc (22.67131:-265.32869:2.25);
+\fill [black] (9.28,-30.7) -- (8.35,-30.55) -- (8.73,-31.47);
+\draw [black] (40.568,-48.267) arc (-44.43571:-121.94619:12.815);
+\fill [black] (40.57,-48.27) -- (39.65,-48.49) -- (40.37,-49.19);
+\end{tikzpicture}
+\caption{Diagrama de la FSM de la DebugUnit}
+\label{fig:fsm}
+\end{center}
+
+\noindent Esta máquina de estados modela el comportamiento de la unidad, pero luego existen módulos que entran en acción según en que estado se encuentre la misma. Por ejemplo, enviar datos por UART, cargar un programa, ejecutar el programa, son todas tareas comandadas por la máquina de estados general. Para conocer más sobre los detalles de la implementación, consultar el código anexo.
+
 \section{Test Benches}
 
-\noindent Los \textif{test benches} son una parte fundamental de cada diseño en cualquier HDL. Estos componen el primer paso en la validacion del sistema, y deben ser pasados para continuar a cualquier etapa posterior. Consisten en una representación lógica de cada módulo, a la cual luego se lo ataca con señales de entrada simuladas, pensadas para que contemplar la mayor cantidad de casos posibles. El resultado de la prueba es exitoso si la salída esperada se corresponde con la salída real.
+\noindent Los \textif{test benches} son una parte fundamental de cada diseño en cualquier HDL. Estos componen el primer paso en la validacion del sistema, y deben ser pasados para continuar a cualquier etapa posterior. Consisten en una representación lógica de cada módulo, a la cual luego se lo ataca con señales de entrada simuladas, pensadas para contemplar la mayor cantidad de casos posibles. El resultado de la prueba es exitoso si la salída esperada se corresponde con la salída real. La suite de desarrollo que utilizamos cuenta con herramientas de simulación, muy utiles para ésta tarea.
 
-La suite de desarrollo que utilizamos cuenta con herramientas de simulación, muy utiles para ésta tarea.
+Debe tenerse en cuenta que un \textif{test bench} exitoso no corresponde a una implementación sintetizada exitosa. Existen problemas de hardware (timing, conexiones, constraints, espacio) que no son contemplados en la simulación.
 
-En el marco de éste trabajo se generaron \textif{test benches} para cada uno de los módulos utilizados. A continuación se muestra un ejemplo de estos tests, quedando a disposición el resto en el código fuente anexo.
+En el marco de este trabajo se generaron \textif{test benches} para cada uno de los módulos utilizados. A continuación se muestra un ejemplo de estos tests, quedando a disposición el resto en el código fuente anexo.
 
 
 \noindent \textit{tb\_HazardDetector.v}
@@ -847,9 +915,71 @@ module tb_HazardDetector();
 endmodule
 \end{lstlisting}
 
-Se ve a simple vista como las entradas del modulo son confeccionadas para probar cada caso de interés.
-Nótese como en éstas simulaciones se pueden realizar cosas imposibles en módulos que planeen ser sintetizados. Por ejemplo, incluir delays de tiempo (con \textit{\#xx}) no es sintetizable en hardware.
+Se ve a simple vista como las entradas del modulo son confeccionadas para probar cada caso de interés. En la (Figura~\ref{fig:simulacion}) vemos la salída gráfica que nos provee la herramienta de simulación para analizar los resultados obtenidos. También existen formas de incluir asserts para generar tests automatizados de los módulos y no tener que analizar las gráficas todo el tiempo, pero en el módulo mostrado en este informe no se utilizan por conveniencia.
 
+\begin{figure}[ht]
+\centering
+\hspace*{-1cm}
+\includegraphics[width=1\textwidth]{imagenes/simulacion.jpeg}
+\caption{Simulación módulo HazardDetector.v [Xilinx Vivado]}
+\label{fig:simulacion}
+\end{figure}
+
+Nótese también, como en éstas simulaciones se pueden realizar cosas imposibles en módulos que planeen ser sintetizados. Por ejemplo, incluir delays de tiempo (con \textit{\#xx}) no es sintetizable en hardware.
+
+\section{Tests sobre el modelo sintetizado}
+
+Una vez sintetizado y cargado en el embebido FPGA, es necesario comprobar el correcto funcionamiento del pipeline. Una buena forma de realizar esto es automatizar la tarea utilizando los datos obtenidos de la Debug Unit mediante UART. Pudiendo cargar un programa, y obtener resultados, es totalmente posible generar un pequeño programa controlador y comparador. Creando un script en Python y utilizando una librería de test genéricos llamada \textit{pytest} se creó esta utilidad.
+
+Los resultados de la herramienta son de muy simple lectura, como se puede ver en la (Figura~\ref{fig:test}), lo que facilita la tarea del desarrollador a la hora de aplicar cambios, y comprobar que estos no afecten el comportamiento del procesador.
+
+\begin{figure}[ht]
+\centering
+\hspace*{-1cm}
+\includegraphics[width=0.95\textwidth]{imagenes/test.jpeg}
+\caption{Tests automatizados sobre el hardware sintetizado}
+\label{fig:test}
+\end{figure}
+
+\section{Ensamblador}
+
+Crear programas en código máquina es una tarea muy engorrosa, dado el manejo de bits que esto conlleva. Por ésto es que existen abstracciones que van de menor a mayor en nivel, siendo el lenguaje ensamblador la siguiente en la escala a partir del lenguaje de máquina. El lenguaje ensamblador consiste en la resolución de los símbolos mnemonicos de las instrucciones y los operandos de las mismas a una línea de lenguaje máquina. En la (Figura~\ref{fig:asm}) vemos como luce una sección de código en ensamblador, y como se traduce a lenguaje máquina.
+\\
+\begin{figure}[ht]
+\centering
+
+\textit{Assembler:}
+\begin{lstlisting}
+                        addi   $a0,   $a0,   -1
+                        addi   $a1,   $zero,   1
+\end{lstlisting}
+\textit{Lenguaje Máquina:}
+\begin{lstlisting}
+                        2084ffff
+                        20050001
+\end{lstlisting}
+\caption{Paso de ensamblador a lenguaje máquina}
+\label{fig:asm}
+\end{figure}
+
+Para resolver esta tarea se generó, también con el lenguaje Python, una utilidad ensambladora básica. Hay herramientas existentes muchos más poderosas para ésta tarea, pero para este trabajo se pedía que la misma fuera generada en su marco. La implementación también se encuentra anexa en el código fuente del trabajo.
+
+\section{Interfaz Gráfica}
+Con los elementos presentados hasta el momento ya se cuenta con una implementación totalmente funcional de un pipeline de MIPS para la cual es posible debuggear y desarrollar. Para facilitar este proceso se decidió mejorar la experiencia del usuario en la parte del debugging. En una primer versión, los datos del estado interno se mostraban por terminal. Esta solución parece ineficiente desde el punto de vista del usuario, dado el poco atractivo grafico, y la dificultad de leer texto tan condensado.
+
+Por esto se decidió crear una aplicación WEB, que soporte la misma funcionalidad que la Debug Unit y sirva de interfaz para la misma. Las herramientas utilizadas fueron de nuevo Python, agregando Flask para el desarrollo web. En la (Figura~\ref{fig:interfaz}) se puede ver el aspecto de dicha interfaz, en pleno proceso de debugging paso a paso sobre un programa.
+
+\begin{figure}[ht]
+\centering
+\hspace*{-1cm}
+\includegraphics[width=1\textwidth]{imagenes/interfaz.jpeg}
+\caption{Interfaz gráfica WEB: Debugging}
+\label{fig:interfaz}
+\end{figure}
+
+\section{Consideraciones finales}
+
+Este trabajo reúne los conocimientos básicos de la arquitectura de computadoras y su resolución es muy útil para su aprendizaje. Es un desafío bastante grande encarar un proyecto tan complejo, pero con ayuda de la bibliografía de referencia, y tiempo y dedicación puede lograrse. Esto asienta las bases de un buen conocimiento en el area de procesadores de propósito general y de prototipado de hardware, las cuales son fundamentales en la formación de un Ingeniero en Computación.
 
 \bibliographystyle{sbc}
 \bibliography{sbc-template}
