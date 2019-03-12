@@ -55,6 +55,9 @@ module MemoryStage
     //assign mem_write_enable = (i_debug_read_data) ? 0 : i_MemWrite;
     assign mem_write_enable = (enable) ?  i_MemWrite : 0;
 
+    wire [2:0] load_filter_op;
+    assign load_filter_op = (enable) ? i_ls_filter_op : 3'b011;
+
     //wires for Filter and BRAM connections
     wire [PROC_BITS - 1 : 0] mem_data_raw;
     wire [PROC_BITS - 1 : 0] store_data_filtered;
@@ -72,7 +75,7 @@ module MemoryStage
 
     LoadFilter load_filter_u(
         .i_data_in(mem_data_raw),
-        .i_ls_filter_op(i_ls_filter_op),
+        .i_ls_filter_op(load_filter_op),
         .o_data_out(o_mem_data)
     );
 

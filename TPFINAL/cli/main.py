@@ -33,16 +33,21 @@ class StepForm(FlaskForm):
     stop = SubmitField("Stop")
 
 
+"""
 mem_path = '../src/testasm.mem'
 with open(mem_path) as fp:
     instructions = fp.readlines()
     instructions = map(lambda x: x.replace('\n', ''), instructions)
+"""
+last_nsteps = 1
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
     load_form = LoadForm()
     run_form = RunForm()
     step_form = StepForm()
+    step_form.nsteps.default = last_nsteps
+    step_form.process()
     return render_template('template.html', 
                            load_form=load_form,
                            run_form=run_form,
@@ -80,6 +85,8 @@ def step():
         if step_form.start.data:
             cli.start_step()
         elif step_form.step.data:
+            global last_nsteps
+            last_nsteps = step_form.nsteps.data
             cli.send_step(nsteps=step_form.nsteps.data)
         elif step_form.stop.data:
             cli.stop_step()

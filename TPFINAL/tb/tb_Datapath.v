@@ -20,9 +20,9 @@ module tb_Datapath();
     reg clk;
     reg rst;
     reg enable;
-    reg write_inst_mem;
-    reg [PC_BITS - 1 : 0] inst_mem_addr;
-    reg [INSTRUCTION_BITS - 1 : 0] inst_mem_data;
+    wire write_inst_mem;
+    wire [PC_BITS - 1 : 0] inst_mem_addr;
+    wire [INSTRUCTION_BITS - 1 : 0] inst_mem_data;
     reg                           debug_read_data;
     reg [DATA_ADDRS_BITS - 1 : 0] debug_read_address;
 
@@ -32,19 +32,55 @@ module tb_Datapath();
     wire [RF_REGS_LEN - 1 : 0 ] rf_regs;
     wire [PROC_BITS - 1 : 0]    mem_data;
 
+
+    reg [31:0] mem [0:31];
+
+    reg load_fsm_start;
+    reg rx_done;
+    reg [7:0] rx_data;
+
+    integer i;
     initial begin
         clk = 1;
         rst = 0;
-        enable = 1;
-        write_inst_mem = 0;
-        inst_mem_addr = 0;
-        inst_mem_data = 0;
+        enable = 0;
         debug_read_data = 0;
         debug_read_address = 0;
 
 
         #40
         rst = 1;
+
+        $readmemb("testasm.mem", mem);
+        load_fsm_start = 1;
+        #20
+        load_fsm_start = 0;
+        #20
+        for(i=0;i<15; i=i+1) begin
+            rx_data = mem[i][31 : 24];   
+            rx_done = 1;
+            #20
+            rx_done = 0;
+            #100
+            rx_data = mem[i][23 : 16];   
+            rx_done = 1;
+            #20
+            rx_done = 0;
+            #100
+            rx_data = mem[i][15 : 8];   
+            rx_done = 1;
+            #20
+            rx_done = 0;
+            #100
+            rx_data = mem[i][ 7 : 0];   
+            rx_done = 1;
+            #20
+            rx_done = 0;
+            #100;
+        end
+
+        
+
 
     end
 
@@ -64,6 +100,18 @@ module tb_Datapath();
         .o_ex_mem_signals(ex_mem_signals),
         .o_rf_regs(rf_regs),
         .o_mem_data(mem_data)
+    );
+
+    LoadInstFSM load_fsm(
+        .clk(clk),
+        .rst(rst),
+        .i_start(load_fsm_start),
+        .i_rx_done(rx_done),
+        .i_rx_data(rx_data),
+        .o_write_inst_mem(write_inst_mem),
+        .o_inst_mem_addr(inst_mem_addr),
+        .o_inst_mem_data(inst_mem_data),
+        .o_done(load_fsm_done)
     );
 
 endmodule

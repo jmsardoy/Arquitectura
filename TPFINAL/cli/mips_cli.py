@@ -14,7 +14,7 @@ class MipsCLI:
     def __init__(self, 
                  uart_port, 
                  uart_baudrate=19200, 
-                 uart_wait_time=0.1):
+                 uart_wait_time=0.01):
 
         self._uart = UartManager(uart_port, 
                                  uart_baudrate, 
